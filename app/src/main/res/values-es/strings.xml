@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AMIScore</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!--menu_mains TEXTS-->
+    <string name="action_settings">Ajustes</string>
+    <string name="action_about">Info</string>
+
+    <!--activity_main_drawer TEXTS-->
+    <string name="diagnose_patient">Diagnosticar Paciente</string>
+    <string name="manage_patient">Gestionar Paientes</string>
+    <string name="manage_users">Gestionar Usuarios</string>
+
+    <!--activity_main_drawer TEXTS-->
+    <string name="app_name_version">Medical Manager 0.1</string>
+	
+	
+	<string name="very_high_probability">Muy alta probabilidad</string>
+	<string name="high_probability">Alta probabilidad</string>
+	<string name="low_probability">Baja probabilidad</string>
+
+</resources>
