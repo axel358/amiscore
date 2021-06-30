@@ -1,23 +1,25 @@
 package cu.daxyel.amiscore;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.*;
-import android.content.*;
-import java.util.*;
-import android.view.*;
-import android.widget.AdapterView.*;
-import android.widget.CompoundButton.*;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import com.google.android.material.navigation.NavigationView;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
 implements NavigationView.OnNavigationItemSelectedListener
@@ -33,21 +35,21 @@ implements NavigationView.OnNavigationItemSelectedListener
 	{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
 			this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-		criteriasLv = (ListView) findViewById(R.id.criteria_lv);
-		diagnosisTv = (TextView) findViewById(R.id.diagnosis_tv);
-		diagnosisPb = (ProgressBar) findViewById(R.id.diagnosis_pb);
+		criteriasLv =  findViewById(R.id.criteria_lv);
+		diagnosisTv =  findViewById(R.id.diagnosis_tv);
+		diagnosisPb =  findViewById(R.id.diagnosis_pb);
 
 		//Subject to changes depending on the loaded index
 
@@ -74,7 +76,7 @@ implements NavigationView.OnNavigationItemSelectedListener
     @Override
     public void onBackPressed()
 	{
-		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+		DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START))
 		{
 			drawer.closeDrawer(GravityCompat.START);
@@ -110,7 +112,7 @@ implements NavigationView.OnNavigationItemSelectedListener
 
 		}
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
 	}
@@ -143,7 +145,7 @@ implements NavigationView.OnNavigationItemSelectedListener
 		{
 			View view = getLayoutInflater().inflate(R.layout.entry_criteria, null);
 
-			CheckBox criteriaChkbx= (CheckBox) view.findViewById(R.id.criteria_chkbx);
+			CheckBox criteriaChkbx = view.findViewById(R.id.criteria_chkbx);
 
 			final Criteria criteria = getItem(position);
 
@@ -173,28 +175,6 @@ implements NavigationView.OnNavigationItemSelectedListener
 		}
 
 
-	}
-
-	class Criteria
-	{
-		private int weight;
-		private String name;
-
-		public Criteria(int weight, String name)
-		{
-			this.weight = weight;
-			this.name = name;
-		}
-
-		public int getWeight()
-		{
-			return weight;
-		}
-
-		public String getName()
-		{
-			return name;
-		}
 	}
 
 
