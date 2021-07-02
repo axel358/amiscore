@@ -20,21 +20,21 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
+import androidx.fragment.app.FragmentManager;
+import cu.daxyel.amiscore.fragments.DiagnoseFragment;
 
 public class MainActivity extends AppCompatActivity
 implements NavigationView.OnNavigationItemSelectedListener
 {
-	private ListView criteriasLv;
-	private TextView diagnosisTv;
-	private int index;
-	private int total;
-	private int critValueMed,critValueHigh;
-	private ProgressBar diagnosisPb;
+	private FragmentManager fm;
     @Override
     protected void onCreate(Bundle savedInstanceState)
 	{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        fm = getSupportFragmentManager();
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -46,28 +46,9 @@ implements NavigationView.OnNavigationItemSelectedListener
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-		criteriasLv =  findViewById(R.id.criteria_lv);
-		diagnosisTv =  findViewById(R.id.diagnosis_tv);
-		diagnosisPb =  findViewById(R.id.diagnosis_pb);
-
-		//Subject to changes depending on the loaded index
-
-		total = 121;
-		critValueMed = 58;
-		critValueHigh = 81;
-
-		diagnosisPb.setMax(total);
-
-		ArrayList < Criteria > criterias = new ArrayList<Criteria>();
-		criterias.add(new Criteria(21, "Adenomatosis intensa de la aorta"));
-		criterias.add(new Criteria(25, "Patrón gaseoso aumentado en ultrasonido"));
-		criterias.add(new Criteria(36, "Fibrilacion articular"));
-		criterias.add(new Criteria(39, "Lactato mayor a 2.1"));
-
-		criteriasLv.setAdapter(new CriteriaAdapter(this, criterias));
-
-		updateProbability();
+        
+        navigationView.getMenu().getItem(0).setChecked(true);
+        onNavigationItemSelected(navigationView.getMenu().getItem(0));
 
 
 	}
@@ -109,72 +90,14 @@ implements NavigationView.OnNavigationItemSelectedListener
 	{
 		switch (item.getItemId())
 		{
-
+            case R.id.nav_diagnose:
+                fm.beginTransaction().replace(R.id.main_container, new DiagnoseFragment()).commit();
+                break;
 		}
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-	}
-
-	public void updateProbability()
-	{
-		if (index >  critValueHigh)
-		{
-			diagnosisTv.setText(getString(R.string.very_high_probability) + " " + index + "/" + total);
-		}
-		else if (index > critValueMed)
-		{
-			diagnosisTv.setText(getString(R.string.high_probability) + " " + index + "/" + total);
-		}
-		else
-		{
-			diagnosisTv.setText(getString(R.string.low_probability) + " " + index + "/" + total);
-		}
-	}
-
-	class CriteriaAdapter extends ArrayAdapter<Criteria>
-	{
-		public CriteriaAdapter(Context context, ArrayList<Criteria> criterias)
-		{
-			super(context, R.layout.entry_criteria, criterias);
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent)
-		{
-			View view = getLayoutInflater().inflate(R.layout.entry_criteria, null);
-
-			CheckBox criteriaChkbx = view.findViewById(R.id.criteria_chkbx);
-
-			final Criteria criteria = getItem(position);
-
-			criteriaChkbx.setText(criteria.getName());
-
-			criteriaChkbx.setOnCheckedChangeListener(new OnCheckedChangeListener(){
-
-					@Override
-					public void onCheckedChanged(CompoundButton p1, boolean p2)
-					{
-						if (p2)
-						{
-							index += criteria.getWeight();
-						}
-						else
-						{
-							index -= criteria.getWeight();
-						}
-
-						diagnosisPb.setProgress(index);
-
-						updateProbability();
-					}
-				});
-
-			return view;
-		}
-
-
 	}
 
 

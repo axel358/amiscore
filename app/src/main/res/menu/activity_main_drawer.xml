@@ -3,17 +3,25 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
+            android:id="@+id/nav_diagnose"
+            android:icon="@drawable/ic_nav_diagnose"
             android:title="@string/diagnose_patient" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
+            android:id="@+id/nav_manage_patients"
+            android:icon="@drawable/ic_nav_manage_patients"
             android:title="@string/manage_patient" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:id="@+id/nav_manage_users"
+            android:icon="@drawable/ic_nav_manage_users"
             android:title="@string/manage_users" />
+        <item
+            android:id="@+id/nav_manage_indexes"
+            android:icon="@drawable/ic_nav_manage_indexes"
+            android:title="@string/manage_indexes" />
+        <item
+            android:id="@+id/nav_statistics"
+            android:icon="@drawable/ic_nav_chart"
+            android:title="@string/statistics" />
     </group>
 
 </menu>

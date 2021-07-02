@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "cu.daxyel.amiscore"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -22,6 +22,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-core:2.3.1'
     implementation 'com.google.android.material:material:1.0.0'
 }

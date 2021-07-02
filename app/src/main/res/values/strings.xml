@@ -9,11 +9,13 @@
 
     <!--activity_main_drawer TEXTS-->
     <string name="diagnose_patient">Diagnose Patient</string>
-    <string name="manage_patient">Manage Patient</string>
+    <string name="manage_patient">Manage Patients</string>
     <string name="manage_users">Manage Users</string>
+    <string name="manage_indexes">Manage Indexes</string>
+    <string name="statistics">Statistics</string>
 
     <!--activity_main_drawer TEXTS-->
-    <string name="app_name_version">Medical Manager 0.1</string>
+    <string name="app_name_version">AMIScore 1.0</string>
 	 
 	<string name="high_probability">High chance</string>
 	<string name="very_high_probability">Very high chance</string>
