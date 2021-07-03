@@ -22,6 +22,7 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
 import androidx.fragment.app.FragmentManager;
 import cu.daxyel.amiscore.fragments.DiagnoseFragment;
+import cu.daxyel.amiscore.fragments.ManageIndexesFragment;
 
 public class MainActivity extends AppCompatActivity
 implements NavigationView.OnNavigationItemSelectedListener
@@ -69,23 +70,6 @@ implements NavigationView.OnNavigationItemSelectedListener
 	}
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-	{
-		getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-	}
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-	{
-		switch (item.getItemId())
-		{
-
-		}
-        return super.onOptionsItemSelected(item);
-	}
-
-    @Override
     public boolean onNavigationItemSelected(MenuItem item)
 	{
 		switch (item.getItemId())
@@ -93,6 +77,8 @@ implements NavigationView.OnNavigationItemSelectedListener
             case R.id.nav_diagnose:
                 fm.beginTransaction().replace(R.id.main_container, new DiagnoseFragment()).commit();
                 break;
+            case R.id.nav_manage_indexes:
+                fm.beginTransaction().replace(R.id.main_container, new ManageIndexesFragment()).commit();
 		}
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
