@@ -18,6 +18,11 @@ import java.util.ArrayList;
 import android.view.MenuInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import androidx.appcompat.app.AlertDialog;
+import android.content.DialogInterface;
+import android.widget.Button;
+import android.view.View.OnClickListener;
+import com.google.android.material.textfield.TextInputEditText;
 
 public class DiagnoseFragment extends Fragment
 {
@@ -27,6 +32,7 @@ public class DiagnoseFragment extends Fragment
     private int total;
     private int critValueMed,critValueHigh;
 	private ProgressBar diagnosisPb;
+    private Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -34,6 +40,14 @@ public class DiagnoseFragment extends Fragment
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
+
+    @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+        this.context = context;
+    }
+
 
 
 
@@ -134,7 +148,8 @@ public class DiagnoseFragment extends Fragment
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        switch(item.getItemId()){
+        switch (item.getItemId())
+        {
             case R.id.menu_save:
                 showSaveDialog();
         }
@@ -143,7 +158,52 @@ public class DiagnoseFragment extends Fragment
 
     private void showSaveDialog()
     {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Save diagnosis");
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_save_diagnosis, null);
+        builder.setView(view);
+        builder.setPositiveButton("Save", null);
+        builder.setNegativeButton("Cancel", null);
+        builder.setNeutralButton("Scan QR", new DialogInterface.OnClickListener(){
 
+                @Override
+                public void onClick(DialogInterface p1, int p2)
+                {
+
+                }
+            });
+
+        final TextInputEditText nameEt=view.findViewById(R.id.name_et);
+        final TextInputEditText idEt=view.findViewById(R.id.id_et);
+
+        final AlertDialog dialog = builder.create();
+
+        dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new OnClickListener(){
+
+                @Override
+                public void onClick(View p1)
+                {
+                    String name=nameEt.getText().toString();
+                    String id=idEt.getText().toString();
+                    if (name.isEmpty())
+                    {
+                        nameEt.setError("Name cannot be empty");
+                    }
+                    else
+                    {
+                        if (id.isEmpty())
+                        {
+                            idEt.setError("ID cannot be empty");
+                        }
+                        else
+                        {
+                            dialog.dismiss();
+                        }
+                    }
+
+                }
+            });
     }
 
 }
