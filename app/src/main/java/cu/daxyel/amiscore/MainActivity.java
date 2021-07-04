@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import androidx.fragment.app.FragmentManager;
 import cu.daxyel.amiscore.fragments.DiagnoseFragment;
 import cu.daxyel.amiscore.fragments.ManageIndexesFragment;
+import cu.daxyel.amiscore.fragments.ManageDiagnosticsFragment;
 
 public class MainActivity extends AppCompatActivity
 implements NavigationView.OnNavigationItemSelectedListener
@@ -47,7 +48,7 @@ implements NavigationView.OnNavigationItemSelectedListener
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        
+
         navigationView.getMenu().getItem(0).setChecked(true);
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
 
@@ -79,6 +80,10 @@ implements NavigationView.OnNavigationItemSelectedListener
                 break;
             case R.id.nav_manage_indexes:
                 fm.beginTransaction().replace(R.id.main_container, new ManageIndexesFragment()).commit();
+                break;
+            case R.id.nav_manage_diagnosis:
+                fm.beginTransaction().replace(R.id.main_container, new ManageDiagnosticsFragment()).commit();
+                break;
 		}
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

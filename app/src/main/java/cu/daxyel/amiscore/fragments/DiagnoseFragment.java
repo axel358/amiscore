@@ -208,6 +208,7 @@ public class DiagnoseFragment extends Fragment
                         }
                         else
                         {
+                            //Ready to save
                             dialog.dismiss();
                         }
                     }

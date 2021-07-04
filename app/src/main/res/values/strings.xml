@@ -9,7 +9,7 @@
 
     <!--activity_main_drawer TEXTS-->
     <string name="diagnose_patient">Diagnose Patient</string>
-    <string name="manage_patient">Manage Patients</string>
+    <string name="manage_diagnosis">Manage Diagnosis</string>
     <string name="manage_users">Manage Users</string>
     <string name="manage_indexes">Manage Indexes</string>
     <string name="statistics">Statistics</string>

@@ -7,9 +7,9 @@
             android:icon="@drawable/ic_nav_diagnose"
             android:title="@string/diagnose_patient" />
         <item
-            android:id="@+id/nav_manage_patients"
+            android:id="@+id/nav_manage_diagnosis"
             android:icon="@drawable/ic_nav_manage_patients"
-            android:title="@string/manage_patient" />
+            android:title="@string/manage_diagnosis" />
         <item
             android:id="@+id/nav_manage_users"
             android:icon="@drawable/ic_nav_manage_users"
