@@ -23,6 +23,10 @@ import android.content.DialogInterface;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 import com.google.android.material.textfield.TextInputEditText;
+import android.content.Intent;
+import cu.daxyel.amiscore.ScanQRActivity;
+import cu.daxyel.amiscore.Utils;
+import android.widget.Toast;
 
 public class DiagnoseFragment extends Fragment
 {
@@ -151,12 +155,12 @@ public class DiagnoseFragment extends Fragment
         switch (item.getItemId())
         {
             case R.id.menu_save:
-                showSaveDialog();
+                showSaveDialog(null);
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void showSaveDialog()
+    private void showSaveDialog(String[] info)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Save diagnosis");
@@ -169,12 +173,18 @@ public class DiagnoseFragment extends Fragment
                 @Override
                 public void onClick(DialogInterface p1, int p2)
                 {
-
+                    startActivityForResult(new Intent(context, ScanQRActivity.class), Utils.SCAN_REQUEST_CODE);
                 }
             });
 
         final TextInputEditText nameEt=view.findViewById(R.id.name_et);
         final TextInputEditText idEt=view.findViewById(R.id.id_et);
+
+        if (info != null)
+        {
+            nameEt.setText(info[0]);
+            idEt.setText(info[1]);
+        }
 
         final AlertDialog dialog = builder.create();
 
@@ -205,5 +215,16 @@ public class DiagnoseFragment extends Fragment
                 }
             });
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == Utils.SCAN_REQUEST_CODE && data != null)
+        {
+            String result=data.getStringExtra("result");
+            showSaveDialog(Utils.parseScanResult(result));
+        }
+    }
+
 
 }
