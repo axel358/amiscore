@@ -11,22 +11,31 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import cu.daxyel.amiscore.Criteria;
 import cu.daxyel.amiscore.R;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+
 import android.view.MenuInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import androidx.appcompat.app.AlertDialog;
 import android.content.DialogInterface;
-import android.widget.Button;
 import android.view.View.OnClickListener;
 import com.google.android.material.textfield.TextInputEditText;
 import android.content.Intent;
+import android.widget.Toast;
+
 import cu.daxyel.amiscore.ScanQRActivity;
 import cu.daxyel.amiscore.Utils;
-import android.widget.Toast;
+import cu.daxyel.amiscore.db.DbDiagnostics;
 
 public class DiagnoseFragment extends Fragment
 {
@@ -51,8 +60,6 @@ public class DiagnoseFragment extends Fragment
         super.onAttach(context);
         this.context = context;
     }
-
-
 
 
     @Override
@@ -162,6 +169,11 @@ public class DiagnoseFragment extends Fragment
 
     private void showSaveDialog(String[] info)
     {
+        final String DISEASE="Disease";
+        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Date date= new Date();
+        String consult_date=dateFormat.format(date);
+        DbDiagnostics dbDiagnostics =new DbDiagnostics(context);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Save diagnosis");
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_save_diagnosis, null);
@@ -208,8 +220,15 @@ public class DiagnoseFragment extends Fragment
                         }
                         else
                         {
-                            //Ready to save
+                            long rowId = dbDiagnostics.addDiagnostic(name,id,DISEASE,consult_date);
+                            if(rowId>0){
+                                Toast.makeText(context,"Diagnosis Saved!",Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                Toast.makeText(context,"Diagnosis Not Saved!",Toast.LENGTH_LONG).show();
+                            }
                             dialog.dismiss();
+
                         }
                     }
 

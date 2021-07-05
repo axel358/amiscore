@@ -29,13 +29,13 @@
 	</LinearLayout>
 
 	<ListView
-		android:divider="@null"
-		android:layout_height="match_parent"
-		android:layout_width="match_parent"
 		android:id="@+id/criteria_lv"
-		android:layout_weight="0.8"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
 		android:layout_marginLeft="10dp"
-		android:layout_marginRight="10dp"/>
+		android:layout_marginRight="10dp"
+		android:layout_weight="0.8"
+		android:divider="@null" />
 
 	<LinearLayout
 		android:layout_height="wrap_content"

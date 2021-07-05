@@ -13,6 +13,8 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity
 implements NavigationView.OnNavigationItemSelectedListener
 {
 	private FragmentManager fm;
+	MenuItem item;
     @Override
     protected void onCreate(Bundle savedInstanceState)
 	{
@@ -36,6 +39,7 @@ implements NavigationView.OnNavigationItemSelectedListener
         setContentView(R.layout.activity_main);
 
         fm = getSupportFragmentManager();
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -47,14 +51,13 @@ implements NavigationView.OnNavigationItemSelectedListener
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+         navigationView.setNavigationItemSelectedListener(this);
 
         navigationView.getMenu().getItem(0).setChecked(true);
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
 
 
 	}
-
 
     @Override
     public void onBackPressed()

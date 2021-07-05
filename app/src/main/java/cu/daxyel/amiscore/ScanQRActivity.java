@@ -3,11 +3,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
-import com.budiyev.android.codescanner.CodeScanner;
+/*import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.zxing.Result;
-import cu.daxyel.amiscore.MainActivity;
+import cu.daxyel.amiscore.MainActivity;*/
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Build;
 import android.Manifest;
@@ -16,7 +16,7 @@ import android.content.Intent;
 
 public class ScanQRActivity extends AppCompatActivity
 {
-    private CodeScanner mCodeScanner;
+    //private CodeScanner mCodeScanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -32,7 +32,7 @@ public class ScanQRActivity extends AppCompatActivity
         }
 
         setContentView(R.layout.activity_scan_qr);
-        CodeScannerView scannerView = findViewById(R.id.scanner_view);
+        /*CodeScannerView scannerView = findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(this, scannerView);
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
                 @Override
@@ -69,5 +69,5 @@ public class ScanQRActivity extends AppCompatActivity
     {
         mCodeScanner.releaseResources();
         super.onPause();
-    }
-}
+    }*/
+}}
