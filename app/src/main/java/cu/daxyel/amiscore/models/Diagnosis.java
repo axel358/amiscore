@@ -1,49 +1,45 @@
 package cu.daxyel.amiscore.models;
 
-public class Diagnosis {
+public class Diagnosis
+{
     private int id;
-    private String full_name;
+    private String name;
     private String ci;
     private String disease;
-    private String consult_date;
+    private String date;
 
-    public int getId() {
+    public Diagnosis(int id, String name, String ci, String disease, String date)
+    {
+        this.id = id;
+        this.name = name;
+        this.ci = ci;
+        this.disease = disease;
+        this.date = date;
+    }
+
+    public int getId()
+    {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getName()
+    {
+        return name;
     }
 
-    public String getFull_name() {
-        return full_name;
-    }
-
-    public void setFull_name(String full_name) {
-        this.full_name = full_name;
-    }
-
-    public String getCi() {
+    public String getCi()
+    {
         return ci;
     }
 
-    public void setCi(String ci) {
-        this.ci = ci;
-    }
-
-    public String getDisease() {
+    public String getDisease()
+    {
         return disease;
     }
 
-    public void setDisease(String disease) {
-        this.disease = disease;
+    public String getDate()
+    {
+        return date;
     }
 
-    public String getConsult_date() {
-        return consult_date;
-    }
-
-    public void setConsult_date(String consult_date) {
-        this.consult_date = consult_date;
-    }
 }

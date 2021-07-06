@@ -5,28 +5,7 @@
 	android:layout_height="fill_parent"
 	android:orientation="vertical">
 
-	<LinearLayout
-		android:layout_height="wrap_content"
-		android:layout_width="match_parent"
-		android:orientation="horizontal"
-		android:gravity="center"
-		android:padding="16dp"
-		android:background="@color/colorPrimary">
-
-		<TextView
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:text="Loaded index"
-			android:layout_weight="1.0"
-			android:textSize="16sp"
-			android:textColor="#FFFFFFFF"/>
-
-		<Spinner
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:id="@+id/indexes_spnr"/>
-
-	</LinearLayout>
+    <include layout="@layout/ribbon_index" />
 
 	<ListView
 		android:id="@+id/criteria_lv"

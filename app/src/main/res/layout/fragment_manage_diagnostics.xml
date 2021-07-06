@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
+	android:gravity="center"
 	android:orientation="vertical">
+
+	<include
+		layout="@layout/ribbon_index"
+		android:id="@+id/ribbon_index_layout"/>
 
 	<ListView
 		android:id="@+id/diagnosis_lv"
@@ -11,7 +16,29 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:layout_marginLeft="10dp"
-		android:layout_marginRight="10dp"/>
+		android:layout_marginRight="10dp"
+		android:layout_below="@id/ribbon_index_layout"
+		android:layout_marginTop="5dp"/>
 
-</LinearLayout>
+	<TextView
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:text="Loading..."
+		android:layout_centerInParent="true"
+		android:id="@+id/diagnosis_loading_tv"
+		android:visibility="gone"/>
+
+	<ProgressBar
+		android:id="@+id/diagnosis_loading_pb"
+		style="?android:attr/progressBarStyleHorizontal"
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:layout_below="@id/diagnosis_loading_tv"
+		android:indeterminate="true"
+		android:layout_centerInParent="true"
+		android:layout_marginEnd="20dp"
+		android:layout_marginStart="20dp"
+		android:visibility="gone"/>
+
+</RelativeLayout>
 

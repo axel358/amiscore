@@ -10,15 +10,19 @@ import java.util.ArrayList;
 import cu.daxyel.amiscore.models.Diagnosis;
 import cu.daxyel.amiscore.db.DatabaseContract.*;
 
-public class DbDiagnostics extends DbHelper {
+public class DbDiagnostics extends DbHelper
+{
     Context context;
-    public DbDiagnostics(@Nullable Context context) {
+    public DbDiagnostics(@Nullable Context context)
+    {
         super(context);
-        this.context=context;
+        this.context = context;
     }
-    public long addDiagnostic(String full_name, String ci, String diseases, String consult_date){
+    public long addDiagnostic(String full_name, String ci, String diseases, String consult_date)
+    {
         long id=0;
-        try {
+        try
+        {
             DbHelper dbHelper=new DbHelper(context);
             SQLiteDatabase db= dbHelper.getWritableDatabase();
 
@@ -28,86 +32,92 @@ public class DbDiagnostics extends DbHelper {
             values.put(DiagnosisTable.COLUMN_DISEASES, diseases);
             values.put(DiagnosisTable.COLUMN_CONSULT_DATE, consult_date);
 
-            id= db.insert(DiagnosisTable.TABLE_NAME,null,values);
-        }catch (Exception e){
+            id = db.insert(DiagnosisTable.TABLE_NAME, null, values);
+        }
+        catch (Exception e)
+        {
             e.toString();
         }
         return id;
     }
-    public ArrayList<Diagnosis> listAllDiagnostics(){
+    public ArrayList<Diagnosis> listAllDiagnostics()
+    {
         DbHelper dbHelper=new DbHelper(context);
         SQLiteDatabase db= dbHelper.getWritableDatabase();
-        ArrayList<Diagnosis> consultsList =new ArrayList<>();
-        Diagnosis diagnosis =null;
+        ArrayList<Diagnosis> diagnosisList =new ArrayList<>();
         String sortOrder = BaseColumns._ID + " DESC";
         Cursor cursor = db.query(
-                DiagnosisTable.TABLE_NAME,
-                null,
-                null,
-                null,
-                null,
-                null,
-                sortOrder
+            DiagnosisTable.TABLE_NAME,
+            null,
+            null,
+            null,
+            null,
+            null,
+            sortOrder
         );
-        while(cursor.moveToNext()) {
-            diagnosis =new Diagnosis();
-            diagnosis.setId(cursor.getInt(0));
-            diagnosis.setFull_name(cursor.getString(1));
-            diagnosis.setCi(cursor.getString(2));
-            diagnosis.setDisease(cursor.getString(3));
-            diagnosis.setConsult_date(cursor.getString(4));
-            consultsList.add(diagnosis);
+        while (cursor.moveToNext())
+        {
+            diagnosisList.add(new Diagnosis(cursor.getInt(cursor.getColumnIndex(DiagnosisTable._ID)),
+                                            cursor.getString(cursor.getColumnIndex(DiagnosisTable.COLUMN_FULL_NAME)), 
+                                            cursor.getString(cursor.getColumnIndex(DiagnosisTable.COLUMN_CI)), 
+                                            cursor.getString(cursor.getColumnIndex(DiagnosisTable.COLUMN_DISEASES)), 
+                                            cursor.getString(cursor.getColumnIndex(DiagnosisTable.COLUMN_CONSULT_DATE))));
         }
         cursor.close();
-    return consultsList;
+        return diagnosisList;
     }
-    public ArrayList<Diagnosis> listDiagnosticsByDiseases(String disease){
+    public ArrayList<Diagnosis> listDiagnosticsByDiseases(String disease)
+    {
         DbHelper dbHelper=new DbHelper(context);
         SQLiteDatabase db= dbHelper.getWritableDatabase();
-        ArrayList<Diagnosis> consultsListByDisease =new ArrayList<>();
-        Diagnosis diagnosis =null;
+        ArrayList<Diagnosis> diagnosisListByDisease =new ArrayList<>();
 
         String selection = DiagnosisTable.COLUMN_DISEASES + " = ?";
         String[] selectionArgs = { disease };
 
         String sortOrder = BaseColumns._ID + " DESC";
         Cursor cursor = db.query(
-                DiagnosisTable.TABLE_NAME,
-                null,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                sortOrder
+            DiagnosisTable.TABLE_NAME,
+            null,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            sortOrder
         );
-        while(cursor.moveToNext()) {
-            diagnosis =new Diagnosis();
-            diagnosis.setId(cursor.getInt(0));
-            diagnosis.setFull_name(cursor.getString(1));
-            diagnosis.setCi(cursor.getString(2));
-            diagnosis.setDisease(cursor.getString(3));
-            diagnosis.setConsult_date(cursor.getString(4));
-            consultsListByDisease.add(diagnosis);
+        while (cursor.moveToNext())
+        {
+            diagnosisListByDisease.add(new Diagnosis(cursor.getInt(cursor.getColumnIndex(DiagnosisTable._ID)),
+                                                     cursor.getString(cursor.getColumnIndex(DiagnosisTable.COLUMN_FULL_NAME)), 
+                                                     cursor.getString(cursor.getColumnIndex(DiagnosisTable.COLUMN_CI)), 
+                                                     cursor.getString(cursor.getColumnIndex(DiagnosisTable.COLUMN_DISEASES)), 
+                                                     cursor.getString(cursor.getColumnIndex(DiagnosisTable.COLUMN_CONSULT_DATE))));
+
         }
         cursor.close();
-        return consultsListByDisease;
+        return diagnosisListByDisease;
     }
 
-    public int deleteDiagnostic(int id){
+    public int deleteDiagnostic(int id)
+    {
         int deletedRows=0;
         DbHelper dbHelper=new DbHelper(context);
         SQLiteDatabase db= dbHelper.getWritableDatabase();
 
         String selection = BaseColumns._ID + " LIKE ?";
         String[] selectionArgs = {Integer.toString(id)};
-        try{
+        try
+        {
             deletedRows = db.delete(DiagnosisTable.TABLE_NAME, selection, selectionArgs);
-        }catch (Exception e){
+        }
+        catch (Exception e)
+        {
             e.toString();
         }
         return deletedRows;
     }
-    public int editDiagnostic(int id, String full_name, String ci, String diseases, String consult_date){
+    public int editDiagnostic(int id, String full_name, String ci, String diseases, String consult_date)
+    {
         int count=0;
         DbHelper dbHelper=new DbHelper(context);
         SQLiteDatabase db= dbHelper.getWritableDatabase();
@@ -120,13 +130,16 @@ public class DbDiagnostics extends DbHelper {
 
         String selection = BaseColumns._ID + " LIKE ?";
         String[] selectionArgs = {Integer.toString(id)};
-        try{
+        try
+        {
             count = db.update(
-                    DiagnosisTable.TABLE_NAME,
-                    values,
-                    selection,
-                    selectionArgs);
-        }catch (Exception e){
+                DiagnosisTable.TABLE_NAME,
+                values,
+                selection,
+                selectionArgs);
+        }
+        catch (Exception e)
+        {
             e.toString();
         }
         return count;

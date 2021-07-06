@@ -1,4 +1,4 @@
-package cu.daxyel.amiscore;
+package cu.daxyel.amiscore.models;
 
 public class Criteria
 {
