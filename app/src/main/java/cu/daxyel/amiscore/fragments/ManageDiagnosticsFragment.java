@@ -1,9 +1,12 @@
 package cu.daxyel.amiscore.fragments;
+
 import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.os.Bundle;
 import android.view.ViewGroup;
+
 import cu.daxyel.amiscore.R;
 import cu.daxyel.amiscore.db.DbDiagnostics;
 import cu.daxyel.amiscore.models.Diagnosis;
@@ -11,21 +14,21 @@ import cu.daxyel.amiscore.models.Diagnosis;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
 import android.content.Context;
+
 import java.util.ArrayList;
+
 import android.widget.TextView;
 import android.os.AsyncTask;
 import android.widget.ProgressBar;
 
-public class ManageDiagnosticsFragment extends Fragment
-{
+public class ManageDiagnosticsFragment extends Fragment {
     private ListView diagnosisLv;
     private DbDiagnostics dbDiagnostics;
     private TextView loadingTv;
     private ProgressBar loadingPb;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_manage_diagnostics, container, false);
         diagnosisLv = view.findViewById(R.id.diagnosis_lv);
         loadingTv = view.findViewById(R.id.diagnosis_loading_tv);
@@ -38,18 +41,16 @@ public class ManageDiagnosticsFragment extends Fragment
         return view;
     }
 
-    class DiagnosisAdapter extends ArrayAdapter<Diagnosis>
-    {
+    class DiagnosisAdapter extends ArrayAdapter<Diagnosis> {
         private Context context;
-        public DiagnosisAdapter(Context context, ArrayList<Diagnosis> diagnosis)
-        {
+
+        public DiagnosisAdapter(Context context, ArrayList<Diagnosis> diagnosis) {
             super(context, R.layout.entry_diagnosis, diagnosis);
             this.context = context;
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent)
-        {
+        public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null)
                 convertView = LayoutInflater.from(context).inflate(R.layout.entry_diagnosis, null);
 
@@ -71,26 +72,23 @@ public class ManageDiagnosticsFragment extends Fragment
 
 
     }
-    class LoadDiagnosisTask extends AsyncTask<Void,Void,ArrayList<Diagnosis>>
-    {
+
+    class LoadDiagnosisTask extends AsyncTask<Void, Void, ArrayList<Diagnosis>> {
 
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
             loadingTv.setVisibility(View.VISIBLE);
             loadingPb.setVisibility(View.VISIBLE);
         }
 
         @Override
-        protected ArrayList<Diagnosis> doInBackground(Void[] p1)
-        {
-            return dbDiagnostics.listAllDiagnostics(); 
+        protected ArrayList<Diagnosis> doInBackground(Void[] p1) {
+            return dbDiagnostics.listAllDiagnostics();
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Diagnosis> result)
-        {
+        protected void onPostExecute(ArrayList<Diagnosis> result) {
             super.onPostExecute(result);
             loadingTv.setVisibility(View.GONE);
             loadingPb.setVisibility(View.GONE);
