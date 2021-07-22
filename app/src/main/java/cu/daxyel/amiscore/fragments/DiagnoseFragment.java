@@ -32,6 +32,7 @@ import android.widget.Toast;
 import cu.daxyel.amiscore.ScanQRActivity;
 import cu.daxyel.amiscore.Utils;
 import cu.daxyel.amiscore.db.DbDiagnostics;
+import android.widget.Spinner;
 
 public class DiagnoseFragment extends Fragment
 {
@@ -42,6 +43,7 @@ public class DiagnoseFragment extends Fragment
     private int critValueMed,critValueHigh;
 	private ProgressBar diagnosisPb;
     private Context context;
+    private Spinner indexSpinner;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -81,6 +83,14 @@ public class DiagnoseFragment extends Fragment
         criterias.add(new Criteria(39, "Lactato mayor a 2.1"));
 
         criteriasLv.setAdapter(new CriteriaAdapter(getActivity(), criterias));
+
+        indexSpinner = view.findViewById(R.id.indexes_spnr);
+
+        //Create dummy data
+        String[] inexes=new String[]{"Index 1", "Index 2"};
+
+        indexSpinner.setAdapter(new ArrayAdapter<String>(context, R.layout.entry_index_spnr, inexes));
+
 
 		updateProbability();
         return view;
@@ -165,7 +175,6 @@ public class DiagnoseFragment extends Fragment
 
     private void showSaveDialog(String[] info)
     {
-        final String DISEASE="Disease";
         SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Date date= new Date();
         final String consult_date=dateFormat.format(date);
@@ -210,18 +219,20 @@ public class DiagnoseFragment extends Fragment
                     }
                     else
                     {
-                        if (id.isEmpty())
+                        if (id.length() < 11)
                         {
-                            idEt.setError("ID cannot be empty");
+                            idEt.setError("ID must be 11 digits long");
                         }
                         else
                         {
-                            long rowId = dbDiagnostics.addDiagnostic(name,id,DISEASE,consult_date);
-                            if(rowId>0){
-                                Toast.makeText(context,"Diagnosis Saved!",Toast.LENGTH_LONG).show();
+                            long rowId = dbDiagnostics.addDiagnostic(name, id, indexSpinner.getSelectedItem().toString(), consult_date);
+                            if (rowId > 0)
+                            {
+                                Toast.makeText(context, "Diagnosis Saved!", Toast.LENGTH_LONG).show();
                             }
-                            else{
-                                Toast.makeText(context,"Diagnosis Not Saved!",Toast.LENGTH_LONG).show();
+                            else
+                            {
+                                Toast.makeText(context, "Diagnosis Not Saved!", Toast.LENGTH_LONG).show();
                             }
                             dialog.dismiss();
 

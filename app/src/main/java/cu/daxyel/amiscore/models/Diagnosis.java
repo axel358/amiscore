@@ -42,4 +42,9 @@ public class Diagnosis
         return date;
     }
 
+    @Override
+    public String toString()
+    {
+        return name;
+    }
 }
