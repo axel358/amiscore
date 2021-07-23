@@ -1,4 +1,5 @@
 package cu.daxyel.amiscore.fragments;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,66 +8,73 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import cu.daxyel.amiscore.models.Criteria;
 import cu.daxyel.amiscore.R;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+
 import android.view.MenuInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.DialogInterface;
 import android.view.View.OnClickListener;
+
 import com.google.android.material.textfield.TextInputEditText;
+
 import android.content.Intent;
 import android.widget.Toast;
+
 import cu.daxyel.amiscore.ScanQRActivity;
 import cu.daxyel.amiscore.Utils;
 import cu.daxyel.amiscore.db.DbDiagnostics;
+
 import android.widget.Spinner;
 
-public class DiagnoseFragment extends Fragment
-{
-    private ListView criteriasLv;
+public class DiagnoseFragment extends Fragment {
+    private RecyclerView criteriasRv;
     private TextView diagnosisTv;
     private int index;
     private int total;
-    private int critValueMed,critValueHigh;
-	private ProgressBar diagnosisPb;
+    private int critValueMed, critValueHigh;
+    private ProgressBar diagnosisPb;
     private Context context;
     private Spinner indexSpinner;
+    private String probabilityInfo;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
     @Override
-    public void onAttach(Context context)
-    {
+    public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
     }
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_diagnose, container, false);
-        criteriasLv =  view.findViewById(R.id.criteria_lv);
-        diagnosisTv =  view.findViewById(R.id.diagnosis_tv);
-        diagnosisPb =  view.findViewById(R.id.diagnosis_pb);
+        criteriasRv = view.findViewById(R.id.criteria_rv);
+        criteriasRv.setLayoutManager(new LinearLayoutManager(context));
+        diagnosisTv = view.findViewById(R.id.diagnosis_tv);
+        diagnosisPb = view.findViewById(R.id.diagnosis_pb);
 
         //Subject to changes depending on the loaded index
 
@@ -76,72 +84,115 @@ public class DiagnoseFragment extends Fragment
 
         diagnosisPb.setMax(total);
 
-        ArrayList < Criteria > criterias = new ArrayList<Criteria>();
+        ArrayList<Criteria> criterias = new ArrayList<Criteria>();
         criterias.add(new Criteria(21, "Adenomatosis intensa de la aorta"));
         criterias.add(new Criteria(25, "Patrón gaseoso aumentado en ultrasonido"));
         criterias.add(new Criteria(36, "Fibrilacion articular"));
         criterias.add(new Criteria(39, "Lactato mayor a 2.1"));
 
-        criteriasLv.setAdapter(new CriteriaAdapter(getActivity(), criterias));
-
+        criteriasRv.setAdapter(new CriteriaAdapter(criterias));
         indexSpinner = view.findViewById(R.id.indexes_spnr);
 
         //Create dummy data
-        String[] inexes=new String[]{"Index 1", "Index 2"};
+        String[] inexes = new String[]{"Index 1", "Index 2"};
 
         indexSpinner.setAdapter(new ArrayAdapter<String>(context, R.layout.entry_index_spnr, inexes));
 
 
-		updateProbability();
+        updateProbability();
+
         return view;
     }
 
-    public void updateProbability()
-    {
-        if (index >  critValueHigh)
-        {
+    public void updateProbability() {
+        if (index > critValueHigh) {
             diagnosisTv.setText(getString(R.string.very_high_probability) + " " + index + "/" + total);
-        }
-        else if (index > critValueMed)
-        {
+            probabilityInfo = getString(R.string.very_high_probability).toLowerCase();
+        } else if (index > critValueMed) {
             diagnosisTv.setText(getString(R.string.high_probability) + " " + index + "/" + total);
-        }
-        else
-        {
+            probabilityInfo = getString(R.string.high_probability).toLowerCase();
+        } else {
             diagnosisTv.setText(getString(R.string.low_probability) + " " + index + "/" + total);
+            probabilityInfo = getString(R.string.low_probability).toLowerCase();
         }
     }
 
-    class CriteriaAdapter extends ArrayAdapter<Criteria>
-    {
-        public CriteriaAdapter(Context context, ArrayList<Criteria> criterias)
-        {
+    /*class CriteriaAdapter extends ArrayAdapter<Criteria> {
+        public CriteriaAdapter(Context context, ArrayList<Criteria> criterias) {
             super(context, R.layout.entry_criteria, criterias);
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent)
-        {
+        public View getView(int position, View convertView, ViewGroup parent) {
             View view = getLayoutInflater().inflate(R.layout.entry_criteria, null);
 
             CheckBox criteriaChkbx = view.findViewById(R.id.criteria_chkbx);
 
             final Criteria criteria = getItem(position);
 
+
             criteriaChkbx.setText(criteria.getName());
 
-            criteriaChkbx.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+
+            criteriaChkbx.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+                @Override
+                public void onCheckedChanged(CompoundButton p1, boolean p2) {
+                    if (p2) {
+                        index += criteria.getWeight();
+                    } else {
+                        index -= criteria.getWeight();
+                    }
+
+                    diagnosisPb.setProgress(index);
+
+                    updateProbability();
+                }
+            });
+
+            return view;
+        }
+
+
+    }*/
+
+    class CriteriaAdapter extends RecyclerView.Adapter<CriteriaAdapter.CriteriaViewHolder> {
+        ArrayList<Criteria> criteriaArrayList;
+
+        public CriteriaAdapter(ArrayList<Criteria> criteriaArrayList) {
+            this.criteriaArrayList = criteriaArrayList;
+        }
+
+        @NonNull
+        @Override
+        public CriteriaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_criteria,null,false);
+            return new CriteriaViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull CriteriaViewHolder holder, int position) {
+            holder.criteriaChkbx.setText(criteriaArrayList.get(position).getName());
+        }
+
+        @Override
+        public int getItemCount() {
+            return criteriaArrayList.size();
+        }
+
+        public class CriteriaViewHolder extends RecyclerView.ViewHolder {
+            CheckBox criteriaChkbx;
+            public CriteriaViewHolder(@NonNull View itemView) {
+                super(itemView);
+                criteriaChkbx =itemView.findViewById(R.id.criteria_chkbx);
+                criteriaChkbx.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
                     @Override
-                    public void onCheckedChanged(CompoundButton p1, boolean p2)
-                    {
-                        if (p2)
-                        {
-                            index += criteria.getWeight();
-                        }
-                        else
-                        {
-                            index -= criteria.getWeight();
+                    public void onCheckedChanged(CompoundButton p1, boolean p2) {
+                        if (p2) {
+                            index += criteriaArrayList.get(getLayoutPosition()).getWeight();
+                        } else {
+                            index -= criteriaArrayList.get(getLayoutPosition()).getWeight();;
                         }
 
                         diagnosisPb.setProgress(index);
@@ -149,56 +200,47 @@ public class DiagnoseFragment extends Fragment
                         updateProbability();
                     }
                 });
-
-            return view;
+            }
         }
-
-
-	}
+    }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-    {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_diagnose, menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.menu_save:
                 showSaveDialog(null);
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void showSaveDialog(String[] info)
-    {
-        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        Date date= new Date();
-        final String consult_date=dateFormat.format(date);
-        final DbDiagnostics dbDiagnostics =new DbDiagnostics(context);
+    private void showSaveDialog(String[] info) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Date date = new Date();
+        final String consult_date = dateFormat.format(date);
+        final DbDiagnostics dbDiagnostics = new DbDiagnostics(context);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Save diagnosis");
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_save_diagnosis, null);
         builder.setView(view);
         builder.setPositiveButton("Save", null);
         builder.setNegativeButton("Cancel", null);
-        builder.setNeutralButton("Scan QR", new DialogInterface.OnClickListener(){
+        builder.setNeutralButton("Scan QR", new DialogInterface.OnClickListener() {
 
-                @Override
-                public void onClick(DialogInterface p1, int p2)
-                {
-                    startActivityForResult(new Intent(context, ScanQRActivity.class), Utils.SCAN_REQUEST_CODE);
-                }
-            });
+            @Override
+            public void onClick(DialogInterface p1, int p2) {
+                startActivityForResult(new Intent(context, ScanQRActivity.class), Utils.SCAN_REQUEST_CODE);
+            }
+        });
 
-        final TextInputEditText nameEt=view.findViewById(R.id.name_et);
-        final TextInputEditText idEt=view.findViewById(R.id.id_et);
+        final TextInputEditText nameEt = view.findViewById(R.id.name_et);
+        final TextInputEditText idEt = view.findViewById(R.id.id_et);
 
-        if (info != null)
-        {
+        if (info != null) {
             nameEt.setText(info[0]);
             idEt.setText(info[1]);
         }
@@ -206,49 +248,36 @@ public class DiagnoseFragment extends Fragment
         final AlertDialog dialog = builder.create();
 
         dialog.show();
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new OnClickListener(){
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new OnClickListener() {
 
-                @Override
-                public void onClick(View p1)
-                {
-                    String name=nameEt.getText().toString();
-                    String id=idEt.getText().toString();
-                    if (name.isEmpty())
-                    {
-                        nameEt.setError("Name cannot be empty");
-                    }
-                    else
-                    {
-                        if (id.length() < 11)
-                        {
-                            idEt.setError("ID must be 11 digits long");
+            @Override
+            public void onClick(View p1) {
+                String name = nameEt.getText().toString();
+                String id = idEt.getText().toString();
+                if (name.isEmpty()) {
+                    nameEt.setError("Name cannot be empty");
+                } else {
+                    if (id.length() < 11) {
+                        idEt.setError("ID must be 11 digits long");
+                    } else {
+                        long rowId = dbDiagnostics.addDiagnostic(name, id, indexSpinner.getSelectedItem().toString(), probabilityInfo, consult_date);
+                        if (rowId > 0) {
+                            Toast.makeText(context, "Diagnosis Saved!", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(context, "Diagnosis Not Saved!", Toast.LENGTH_LONG).show();
                         }
-                        else
-                        {
-                            long rowId = dbDiagnostics.addDiagnostic(name, id, indexSpinner.getSelectedItem().toString(), consult_date);
-                            if (rowId > 0)
-                            {
-                                Toast.makeText(context, "Diagnosis Saved!", Toast.LENGTH_LONG).show();
-                            }
-                            else
-                            {
-                                Toast.makeText(context, "Diagnosis Not Saved!", Toast.LENGTH_LONG).show();
-                            }
-                            dialog.dismiss();
+                        dialog.dismiss();
 
-                        }
                     }
-
                 }
-            });
-    }
 
+            }
+        });
+    }
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (requestCode == Utils.SCAN_REQUEST_CODE && data != null)
-        {
-            String result=data.getStringExtra("result");
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Utils.SCAN_REQUEST_CODE && data != null) {
+            String result = data.getStringExtra("result");
             showSaveDialog(Utils.parseScanResult(result));
         }
     }

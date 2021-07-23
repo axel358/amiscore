@@ -15,6 +15,7 @@ public class DbHelper extends SQLiteOpenHelper {
                     DiagnosisTable.COLUMN_FULL_NAME + " TEXT NOT NULL," +
                     DiagnosisTable.COLUMN_CI + " TEXT NOT NULL," +
                     DiagnosisTable.COLUMN_DISEASES + " TEXT NOT NULL," +
+                    DiagnosisTable.COLUMN_PROBABILITY_INFO + " TEXT NOT NULL," +
                     DiagnosisTable.COLUMN_CONSULT_DATE + " TEXT NOT NULL)";
 
     private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + DiagnosisTable.TABLE_NAME;

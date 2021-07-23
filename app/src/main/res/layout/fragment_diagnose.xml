@@ -7,8 +7,8 @@
 
     <include layout="@layout/ribbon_index" />
 
-	<ListView
-		android:id="@+id/criteria_lv"
+	<androidx.recyclerview.widget.RecyclerView
+		android:id="@+id/criteria_rv"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:layout_marginLeft="10dp"

@@ -10,8 +10,8 @@
 		layout="@layout/ribbon_index"
 		android:id="@+id/ribbon_index_layout"/>
 
-	<ListView
-		android:id="@+id/diagnosis_lv"
+	<androidx.recyclerview.widget.RecyclerView
+		android:id="@+id/diagnosis_rv"
 		android:divider="@null"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"

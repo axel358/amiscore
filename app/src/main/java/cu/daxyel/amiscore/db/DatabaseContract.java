@@ -10,6 +10,7 @@ public class DatabaseContract {
         public static final String COLUMN_FULL_NAME = "full_name";
         public static final String COLUMN_CI = "ci";
         public static final String COLUMN_DISEASES = "diseases";
+        public static final String COLUMN_PROBABILITY_INFO = "probability_info";
         public static final String COLUMN_CONSULT_DATE = "consult_date";
     }
 }

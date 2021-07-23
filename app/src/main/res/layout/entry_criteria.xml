@@ -13,13 +13,12 @@
 		android:layout_margin="10dp">
 
 		<CheckBox
-			android:layout_height="wrap_content"
+			android:id="@+id/criteria_chkbx"
 			android:layout_width="match_parent"
-			android:text="Some dummy text"
+			android:layout_height="wrap_content"
 			android:layout_margin="10dp"
-			android:id="@+id/criteria_chkbx"/>
+			android:text="Some dummy text" />
 
 	</LinearLayout>
 
 </LinearLayout>
-

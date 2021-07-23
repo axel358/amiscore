@@ -1,50 +1,45 @@
 package cu.daxyel.amiscore.models;
 
-public class Diagnosis
-{
+public class Diagnosis {
     private int id;
     private String name;
     private String ci;
     private String disease;
+    private String probabilityInfo;
     private String date;
 
-    public Diagnosis(int id, String name, String ci, String disease, String date)
-    {
+
+
+    public Diagnosis(int id, String name, String ci, String disease, String probabilityInfo, String date) {
         this.id = id;
         this.name = name;
         this.ci = ci;
         this.disease = disease;
+        this.probabilityInfo = probabilityInfo;
         this.date = date;
     }
 
-    public int getId()
-    {
+    public int getId() {
         return id;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public String getCi()
-    {
+    public String getCi() {
         return ci;
     }
 
-    public String getDisease()
-    {
+    public String getDisease() {
         return disease;
     }
 
-    public String getDate()
-    {
+    public String getDate() {
         return date;
     }
 
-    @Override
-    public String toString()
-    {
-        return name;
+    public String getProbabilityInfo() {
+        return probabilityInfo;
     }
 }
