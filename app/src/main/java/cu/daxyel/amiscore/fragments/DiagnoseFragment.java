@@ -98,7 +98,6 @@ public class DiagnoseFragment extends Fragment {
 
         indexSpinner.setAdapter(new ArrayAdapter<String>(context, R.layout.entry_index_spnr, inexes));
 
-
         updateProbability();
 
         return view;
@@ -166,8 +165,8 @@ public class DiagnoseFragment extends Fragment {
         @NonNull
         @Override
         public CriteriaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_criteria,null,false);
-            return new CriteriaViewHolder(view);
+            View view_entry_criteria = LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_criteria,null,false);
+            return new CriteriaViewHolder(view_entry_criteria);
         }
 
         @Override

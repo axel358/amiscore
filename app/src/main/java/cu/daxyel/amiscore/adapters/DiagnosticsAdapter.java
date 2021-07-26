@@ -18,7 +18,6 @@ import cu.daxyel.amiscore.models.Diagnosis;
 
 public class DiagnosticsAdapter extends RecyclerView.Adapter<DiagnosticsAdapter.DiagnosticsViewHolder>implements Filterable {
     ArrayList<Diagnosis> diagnosisArrayList;
-
     private ArrayList<Diagnosis> diagnosisArrayListFilter;
     private CustomFilter mFilter;
 
@@ -29,6 +28,7 @@ public class DiagnosticsAdapter extends RecyclerView.Adapter<DiagnosticsAdapter.
         this.diagnosisArrayListFilter.addAll(diagnosisArrayList);
         this.mFilter = new CustomFilter(DiagnosticsAdapter.this);
     }
+
     @NonNull
     @Override
     public DiagnosticsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

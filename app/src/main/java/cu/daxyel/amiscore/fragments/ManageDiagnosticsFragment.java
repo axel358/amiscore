@@ -25,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 
 import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,6 +41,9 @@ public class ManageDiagnosticsFragment extends Fragment {
     private Context context;
     private SearchView searchView;
     private DiagnosticsAdapter diagnosticsAdapter;
+    private ArrayList<Diagnosis> results;
+    private String index;
+    private boolean show_load;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,9 +77,11 @@ public class ManageDiagnosticsFragment extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> p1, View p2, int p3, long p4) {
-                String index = p1.getItemAtPosition(p3).toString();
-                if (index.equalsIgnoreCase("all"))
-                    new LoadDiagnosisTask().execute();
+                index = p1.getItemAtPosition(p3).toString();
+                show_load=true;
+                if (index.equalsIgnoreCase("all")){
+
+                    new LoadDiagnosisTask().execute();}
                 else new LoadDiagnosisTask().execute(index);
             }
 
@@ -84,6 +90,8 @@ public class ManageDiagnosticsFragment extends Fragment {
             }
         });
 
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(diagnosisRv);
         return view;
     }
 
@@ -110,14 +118,54 @@ public class ManageDiagnosticsFragment extends Fragment {
         });
     }
 
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            int selectedEntryLayotPosition = viewHolder.getAdapterPosition();
+            TextView ci =viewHolder.itemView.findViewById(R.id.diagnosis_patient_id);
+            int selectedEntryId=0;
+            for (Diagnosis diagnosis:results) {
+                if(diagnosis.getCi().equals((ci.getText()).toString())){
+                    selectedEntryId=diagnosis.getId();
+                }
+            }
+            switch (direction) {
+                case ItemTouchHelper.LEFT:
+                    dbDiagnostics.deleteDiagnostic(selectedEntryId);
+                    diagnosticsAdapter.notifyItemRemoved(selectedEntryLayotPosition);
+                    show_load=false;
+                    if (index.equalsIgnoreCase("all"))
+                        new LoadDiagnosisTask().execute();
+                    else new LoadDiagnosisTask().execute(index);
+                    break;
+                case ItemTouchHelper.RIGHT:
+                    System.out.println("right");
+                    break;
+            }
+
+        }
+    };
+
 
     class LoadDiagnosisTask extends AsyncTask<String, Void, ArrayList<Diagnosis>> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            loadingTv.setVisibility(View.VISIBLE);
-            loadingPb.setVisibility(View.VISIBLE);
+            if (show_load){
+                loadingTv.setVisibility(View.VISIBLE);
+                loadingPb.setVisibility(View.VISIBLE);
+            }
+            else{
+                loadingTv.setVisibility(View.INVISIBLE);
+                loadingPb.setVisibility(View.INVISIBLE);
+            }
+
         }
 
         @Override
@@ -132,6 +180,8 @@ public class ManageDiagnosticsFragment extends Fragment {
             loadingPb.setVisibility(View.GONE);
             diagnosticsAdapter = new DiagnosticsAdapter(result);
             diagnosisRv.setAdapter(diagnosticsAdapter);
+            results = result;
+
         }
     }
 }
