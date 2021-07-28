@@ -1,34 +1,25 @@
 package cu.daxyel.amiscore.fragments;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.os.Bundle;
 import android.view.ViewGroup;
-
 import cu.daxyel.amiscore.R;
 import cu.daxyel.amiscore.adapters.DiagnosticsAdapter;
 import cu.daxyel.amiscore.db.DbDiagnostics;
-import cu.daxyel.amiscore.models.Diagnosis;
-
+import cu.daxyel.amiscore.models.Diagnosis;;
 import android.widget.ArrayAdapter;
 import android.content.Context;
-
 import java.util.ArrayList;
-
 import android.widget.TextView;
 import android.os.AsyncTask;
 import android.widget.ProgressBar;
 import android.view.Menu;
 import android.view.MenuInflater;
-
 import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.AdapterView;
@@ -72,26 +63,23 @@ public class ManageDiagnosticsFragment extends Fragment {
         String[] inexes = new String[]{"All", "Index 1", "Index 2"};
 
         indexSpinner.setAdapter(new ArrayAdapter<String>(context, R.layout.entry_index_spnr, inexes));
-
         indexSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> p1, View p2, int p3, long p4) {
                 index = p1.getItemAtPosition(p3).toString();
-                show_load=true;
-                if (index.equalsIgnoreCase("all")){
-
-                    new LoadDiagnosisTask().execute();}
-                else new LoadDiagnosisTask().execute(index);
+                show_load = true;
+                if (index.equalsIgnoreCase("all")) {
+                    new LoadDiagnosisTask().execute();
+                } else {
+                    new LoadDiagnosisTask().execute(index);
+                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> p1) {
             }
         });
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-        itemTouchHelper.attachToRecyclerView(diagnosisRv);
         return view;
     }
 
@@ -99,7 +87,6 @@ public class ManageDiagnosticsFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_manage_diagnosis, menu);
         searchView = (SearchView) menu.findItem(R.id.menu_search_diagnosis).getActionView();
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
@@ -118,50 +105,15 @@ public class ManageDiagnosticsFragment extends Fragment {
         });
     }
 
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            int selectedEntryLayotPosition = viewHolder.getAdapterPosition();
-            TextView ci =viewHolder.itemView.findViewById(R.id.diagnosis_patient_id);
-            int selectedEntryId=0;
-            for (Diagnosis diagnosis:results) {
-                if(diagnosis.getCi().equals((ci.getText()).toString())){
-                    selectedEntryId=diagnosis.getId();
-                }
-            }
-            switch (direction) {
-                case ItemTouchHelper.LEFT:
-                    dbDiagnostics.deleteDiagnostic(selectedEntryId);
-                    diagnosticsAdapter.notifyItemRemoved(selectedEntryLayotPosition);
-                    show_load=false;
-                    if (index.equalsIgnoreCase("all"))
-                        new LoadDiagnosisTask().execute();
-                    else new LoadDiagnosisTask().execute(index);
-                    break;
-                case ItemTouchHelper.RIGHT:
-                    System.out.println("right");
-                    break;
-            }
-
-        }
-    };
-
-
     class LoadDiagnosisTask extends AsyncTask<String, Void, ArrayList<Diagnosis>> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (show_load){
+            if (show_load) {
                 loadingTv.setVisibility(View.VISIBLE);
                 loadingPb.setVisibility(View.VISIBLE);
-            }
-            else{
+            } else {
                 loadingTv.setVisibility(View.INVISIBLE);
                 loadingPb.setVisibility(View.INVISIBLE);
             }
@@ -178,10 +130,8 @@ public class ManageDiagnosticsFragment extends Fragment {
             super.onPostExecute(result);
             loadingTv.setVisibility(View.GONE);
             loadingPb.setVisibility(View.GONE);
-            diagnosticsAdapter = new DiagnosticsAdapter(result);
+            diagnosticsAdapter = new DiagnosticsAdapter(result,context);
             diagnosisRv.setAdapter(diagnosticsAdapter);
-            results = result;
-
         }
     }
 }
