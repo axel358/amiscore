@@ -36,6 +36,9 @@ import java.util.ArrayList;
 import android.view.View.OnTouchListener;
 import android.view.MotionEvent;
 import android.widget.Toast;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.Color;
 
 public class ManageDiagnosticsFragment extends Fragment {
     private RecyclerView diagnosisRv;
@@ -70,11 +73,12 @@ public class ManageDiagnosticsFragment extends Fragment {
         Spinner indexSpinner = view.findViewById(R.id.indexes_spnr);
 
         dbDiagnostics = new DbDiagnostics(getActivity());
+        
 
         //Create dummy data
-        String[] inexes = new String[]{"All", "Index 1", "Index 2"};
+        String[] indexes = new String[]{"All", "Index 1", "Index 2"};
 
-        indexSpinner.setAdapter(new ArrayAdapter<String>(context, R.layout.entry_index_spnr, inexes));
+        indexSpinner.setAdapter(new ArrayAdapter<String>(context, R.layout.entry_index_spnr, indexes));
         indexSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
                 @Override
@@ -93,97 +97,98 @@ public class ManageDiagnosticsFragment extends Fragment {
                 }
             });
 
-        ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+        ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
-            private Bitmap editIcon=getBitmapFromVector(R.drawable.ic_edit);
-            private Bitmap deletIcon=getBitmapFromVector(R.drawable.ic_delete);
-            private Paint paint = new Paint();
+            private int backgroundColor=ContextCompat.getColor(context, R.color.delete_background);;
+            private int deleteColor= ContextCompat.getColor(context, R.color.color_delete);;
+            private int iconPadding = dpToPx(16);
+            private Drawable deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_delete);
+            private Paint circlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+            public final float CIRCLE_ACCELERATION = 3;
+
+            {
+                circlePaint.setColor(deleteColor);   
+            }
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
             }
-            
+
 
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
 
                 final int position = viewHolder.getAdapterPosition();
-                if (direction == ItemTouchHelper.RIGHT) {
-                    diagnosticsAdapter.notifyItemChanged(position);
-                } else {
-                    final Diagnosis diagnosis = diagnosticsAdapter.getDiagnosis().get(viewHolder.getAdapterPosition());
-                    diagnosticsAdapter.getDiagnosis().remove(position);
-                    diagnosticsAdapter.notifyItemRemoved(position);
 
-                    Snackbar.make(diagnosisRv, "Item removed", Snackbar.LENGTH_LONG).setAction("Undo", new OnClickListener(){
+                final Diagnosis diagnosis = diagnosticsAdapter.getDiagnosis().get(viewHolder.getAdapterPosition());
+                diagnosticsAdapter.getDiagnosis().remove(position);
+                diagnosticsAdapter.notifyItemRemoved(position);
 
-                            @Override
-                            public void onClick(View p1) {
-                                diagnosticsAdapter.getDiagnosis().add(position, diagnosis);
-                                diagnosticsAdapter.notifyItemInserted(position);
-                            }
-                        }).setCallback(new Snackbar.Callback(){ 
-                            @Override
-                            public void onDismissed(Snackbar snackbar, int event) {
-                                //Its gone, remove it from db
-                            }
-                        }).show();
-                }
+                Snackbar.make(diagnosisRv, "Item removed", Snackbar.LENGTH_LONG).setAction("Undo", new OnClickListener(){
+
+                        @Override
+                        public void onClick(View p1) {
+                            diagnosticsAdapter.getDiagnosis().add(position, diagnosis);
+                            diagnosticsAdapter.notifyItemInserted(position);
+                        }
+                    }).setCallback(new Snackbar.Callback(){ 
+                        @Override
+                        public void onDismissed(Snackbar snackbar, int event) {
+                            //Its gone, remove it from db
+                        }
+                    }).show();
             }
 
-            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                View itemView = viewHolder.itemView;
-                int top = dpToPx(32) + editIcon.getWidth();
-                if (dX < 0) {
-                    paint.setColor(context.getResources().getColor(R.color.color_delete));
+            public void onChildDraw(Canvas canvas, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
 
-                    c.drawRect((float) itemView.getRight() + dX, (float) itemView.getTop(),
-                               (float) itemView.getRight(), (float) itemView.getBottom(), paint);
-
-                    c.drawBitmap(deletIcon,
-                                 (float) itemView.getRight() - dpToPx(16) - deletIcon.getWidth(),
-                                 (float) itemView.getTop() + ((float) itemView.getBottom() - (float) itemView.getTop() - deletIcon.getHeight()) / 2,
-                                 paint);
-
-                } else if (dX > 0) {
-
-
-                    if (dX >= top) {
-                        dX = top;
-                        Toast.makeText(context, "Yahoo", Toast.LENGTH_SHORT).show();
-                        itemView.setOnTouchListener(new OnTouchListener(){
-
-                                @Override
-                                public boolean onTouch(View p1, MotionEvent p2) {
-                                    if (p2.getAction() == MotionEvent.ACTION_UP) {
-                                        Toast.makeText(context, "Yahoo", Toast.LENGTH_SHORT).show();
-                                    }
-                                    return false;
-                                }
-                            });
-                    }
-
-                    paint.setColor(context.getResources().getColor(R.color.color_edit));
-
-                    c.drawRect((float) itemView.getLeft(), (float) itemView.getTop(), dX,
-                               (float) itemView.getBottom(), paint);
-
-                    c.drawBitmap(editIcon,
-                                 (float) itemView.getLeft() + dpToPx(16),
-                                 (float) itemView.getTop() + ((float) itemView.getBottom() - (float) itemView.getTop() - editIcon.getHeight()) / 2,
-                                 paint);
-                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, ItemTouchHelper.ACTION_STATE_IDLE, isCurrentlyActive);
+                if (dX == 0f) {
+                    super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                    return;
                 }
 
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                float left = viewHolder.itemView.getLeft();
+                float top = viewHolder.itemView.getTop();
+                float right = viewHolder.itemView.getRight();
+                float bottom = viewHolder.itemView.getBottom();
+                float width = right - left;
+                float height = bottom - top;
+                float saveCount = canvas.save();
+
+                canvas.clipRect(right + dX, top, right, bottom);
+                canvas.drawColor(backgroundColor);
+
+                float progress = -dX / width;
+                float swipeThreshold = getSwipeThreshold(viewHolder);
+                float iconScale = 1f;
+                float circleRadius = 0f;
+
+                circleRadius = (progress - swipeThreshold) * width * CIRCLE_ACCELERATION;
+
+                if (deleteIcon != null) {
+                    float cx = right - iconPadding - deleteIcon.getIntrinsicWidth() / 2f;
+                    float cy = top + height / 2f;
+                    float halfIconSize = deleteIcon.getIntrinsicWidth() * iconScale / 2f;
+
+                    deleteIcon.setBounds((int)(cx - halfIconSize), (int)(cy - halfIconSize), (int)(cx + halfIconSize), (int)(cy + halfIconSize));
+
+                    if (circleRadius > 0f) {
+                        canvas.drawCircle(cx, cy, circleRadius, circlePaint);
+                        deleteIcon.setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP));
+                    } else
+                        deleteIcon.setColorFilter(new PorterDuffColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN));
+
+                    deleteIcon.draw(canvas);
+                }
+                canvas.restoreToCount(Math.round(saveCount));
+
+                super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+
             }
 
         };
-
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(diagnosisRv);
-
-
 
         return view;
     }
@@ -219,10 +224,10 @@ public class ManageDiagnosticsFragment extends Fragment {
 
                 @Override
                 public boolean onQueryTextChange(String p1) {
-                    if (p1.length() > 0)
-                        diagnosticsAdapter.getFilter().filter(p1);
-                    else if (p1.length() == 0)
-                        diagnosticsAdapter.getFilter().filter("");
+                    if (p1.length() > 1)
+                        diagnosticsAdapter.filter(p1);
+                    else
+                        diagnosticsAdapter.clearFilter();
                     return true;
                 }
             });
