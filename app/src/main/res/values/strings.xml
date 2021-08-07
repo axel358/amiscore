@@ -13,12 +13,25 @@
     <string name="manage_users">Manage Users</string>
     <string name="manage_indexes">Manage Indexes</string>
     <string name="statistics">Statistics</string>
-
-    <!--activity_main_drawer TEXTS-->
+    <!--app TEXTS-->
     <string name="app_name_version">AMIScore 1.0</string>
-	 
 	<string name="high_probability">High chance</string>
 	<string name="very_high_probability">Very high chance</string>
 	<string name="low_probability">Low chance</string>
-	
+    <string name="snackbar_text">Diagnose removed</string>
+    <string name="snackbar_action">UNDO</string>
+    <string name="index_ribbon">Loaded index</string>
+    <string name="menu_save">Save</string>
+    <string name="menu_delete">Delete</string>
+    <string name="dialog_save_diagnosis_TITLE">Save Diagnosis</string>
+    <string name="dialog_save_diagnosis_SAVE">Save</string>
+    <string name="dialog_save_diagnosis_CANCEL">cancel</string>
+    <string name="dialog_save_diagnosis_QR">Scan QR</string>
+    <string name="dialog_save_diagnosis_input_name">Name</string>
+    <string name="dialog_save_diagnosis_ID">ID</string>
+    <string name="toast_save_diagnosis_success">Diagnosis Saved!</string>
+    <string name="toast_save_diagnosis_failed">Diagnosis Not Saved!</string>
+    <string name="dialog_save_diagnosis_input_name_error">Name cannot be empty</string>
+    <string name="dialog_save_diagnosis_input_ID_error">ID must be 11 digits long</string>
+
 </resources>

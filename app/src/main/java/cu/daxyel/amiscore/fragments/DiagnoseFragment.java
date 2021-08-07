@@ -116,45 +116,6 @@ public class DiagnoseFragment extends Fragment {
         }
     }
 
-    /*class CriteriaAdapter extends ArrayAdapter<Criteria> {
-        public CriteriaAdapter(Context context, ArrayList<Criteria> criterias) {
-            super(context, R.layout.entry_criteria, criterias);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View view = getLayoutInflater().inflate(R.layout.entry_criteria, null);
-
-            CheckBox criteriaChkbx = view.findViewById(R.id.criteria_chkbx);
-
-            final Criteria criteria = getItem(position);
-
-
-            criteriaChkbx.setText(criteria.getName());
-
-
-            criteriaChkbx.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-                @Override
-                public void onCheckedChanged(CompoundButton p1, boolean p2) {
-                    if (p2) {
-                        index += criteria.getWeight();
-                    } else {
-                        index -= criteria.getWeight();
-                    }
-
-                    diagnosisPb.setProgress(index);
-
-                    updateProbability();
-                }
-            });
-
-            return view;
-        }
-
-
-    }*/
-
     class CriteriaAdapter extends RecyclerView.Adapter<CriteriaAdapter.CriteriaViewHolder> {
         ArrayList<Criteria> criteriaArrayList;
 
@@ -223,12 +184,12 @@ public class DiagnoseFragment extends Fragment {
         final String consult_date = dateFormat.format(date);
         final DbDiagnostics dbDiagnostics = new DbDiagnostics(context);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Save diagnosis");
+        builder.setTitle(getString(R.string.dialog_save_diagnosis_TITLE));
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_save_diagnosis, null);
         builder.setView(view);
-        builder.setPositiveButton("Save", null);
-        builder.setNegativeButton("Cancel", null);
-        builder.setNeutralButton("Scan QR", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.dialog_save_diagnosis_SAVE), null);
+        builder.setNegativeButton(getString(R.string.dialog_save_diagnosis_CANCEL), null);
+        builder.setNeutralButton(getString(R.string.dialog_save_diagnosis_QR), new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface p1, int p2) {
@@ -254,16 +215,16 @@ public class DiagnoseFragment extends Fragment {
                 String name = nameEt.getText().toString();
                 String id = idEt.getText().toString();
                 if (name.isEmpty()) {
-                    nameEt.setError("Name cannot be empty");
+                    nameEt.setError(getString(R.string.dialog_save_diagnosis_input_name_error));
                 } else {
                     if (id.length() < 11) {
-                        idEt.setError("ID must be 11 digits long");
+                        idEt.setError(getString(R.string.dialog_save_diagnosis_input_ID_error));
                     } else {
                         long rowId = dbDiagnostics.addDiagnostic(name, id, indexSpinner.getSelectedItem().toString(), probabilityInfo, consult_date);
                         if (rowId > 0) {
-                            Toast.makeText(context, "Diagnosis Saved!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, getString(R.string.toast_save_diagnosis_success), Toast.LENGTH_LONG).show();
                         } else {
-                            Toast.makeText(context, "Diagnosis Not Saved!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, getString(R.string.toast_save_diagnosis_failed), Toast.LENGTH_LONG).show();
                         }
                         dialog.dismiss();
 

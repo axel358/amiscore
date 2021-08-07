@@ -6,19 +6,33 @@
 
     <!--menu_mains TEXTS-->
     <string name="action_settings">Ajustes</string>
-    <string name="action_about">Info</string>
+    <string name="action_about">Acerca de</string>
 
     <!--activity_main_drawer TEXTS-->
     <string name="diagnose_patient">Diagnosticar Paciente</string>
-    <string name="manage_patient">Gestionar Paientes</string>
     <string name="manage_users">Gestionar Usuarios</string>
 
-    <!--activity_main_drawer TEXTS-->
-    <string name="app_name_version">Medical Manager 0.1</string>
-	
-	
+    <!--app TEXTS-->
+    <string name="app_name_version">AMIScore 1.0</string>
 	<string name="very_high_probability">Muy alta probabilidad</string>
 	<string name="high_probability">Alta probabilidad</string>
 	<string name="low_probability">Baja probabilidad</string>
-
+    <string name="manage_diagnosis">Gestionar Diagnósticos</string>
+    <string name="manage_indexes">Gestionar Índices</string>
+    <string name="statistics">Estadísticas</string>
+    <string name="snackbar_text">Diagnóstico eliminado</string>
+    <string name="snackbar_action">DESHACER</string>
+    <string name="index_ribbon">Cargar Índice</string>
+    <string name="menu_save">Guardar</string>
+    <string name="menu_delete">Eliminar</string>
+    <string name="dialog_save_diagnosis_TITLE">Guardar Diagnóstico</string>
+    <string name="dialog_save_diagnosis_SAVE">Guardar</string>
+    <string name="dialog_save_diagnosis_CANCEL">cancelar</string>
+    <string name="dialog_save_diagnosis_QR">Escarnear QR</string>
+    <string name="dialog_save_diagnosis_input_name">Nombre</string>
+    <string name="dialog_save_diagnosis_ID">CI</string>
+    <string name="toast_save_diagnosis_success">¡Diagnóstico Guardado!</string>
+    <string name="toast_save_diagnosis_failed">¡Diagnóstico No Guardado!</string>
+    <string name="dialog_save_diagnosis_input_name_error">Debe rellenar este campo</string>
+    <string name="dialog_save_diagnosis_input_ID_error">El CI debe de tener 11 dígitos</string>
 </resources>

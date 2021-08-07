@@ -8,18 +8,28 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.util.Log;
+
+import androidx.appcompat.view.ActionMode;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -27,12 +37,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.snackbar.Snackbar;
+
 import cu.daxyel.amiscore.R;
 import cu.daxyel.amiscore.adapters.DiagnosticsAdapter;
 import cu.daxyel.amiscore.db.DbDiagnostics;
 import cu.daxyel.amiscore.models.Diagnosis;
+
 import java.util.ArrayList;
+
 import android.view.View.OnTouchListener;
 import android.view.MotionEvent;
 import android.widget.Toast;
@@ -40,7 +54,7 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.Color;
 
-public class ManageDiagnosticsFragment extends Fragment {
+public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAdapter.ViewHolder.ClickListener {
     private RecyclerView diagnosisRv;
     private DbDiagnostics dbDiagnostics;
     private TextView loadingTv;
@@ -50,6 +64,8 @@ public class ManageDiagnosticsFragment extends Fragment {
     private DiagnosticsAdapter diagnosticsAdapter;
     private String index;
     private boolean show_load;
+    private ActionMode actionMode;
+    private ActionModeCallback actionModeCallback = new ActionModeCallback();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,7 +89,7 @@ public class ManageDiagnosticsFragment extends Fragment {
         Spinner indexSpinner = view.findViewById(R.id.indexes_spnr);
 
         dbDiagnostics = new DbDiagnostics(getActivity());
-        
+
 
         //Create dummy data
         String[] indexes = new String[]{"All", "Index 1", "Index 2"};
@@ -81,26 +97,28 @@ public class ManageDiagnosticsFragment extends Fragment {
         indexSpinner.setAdapter(new ArrayAdapter<String>(context, R.layout.entry_index_spnr, indexes));
         indexSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-                @Override
-                public void onItemSelected(AdapterView<?> p1, View p2, int p3, long p4) {
-                    index = p1.getItemAtPosition(p3).toString();
-                    show_load = true;
-                    if (index.equalsIgnoreCase("all")) {
-                        new LoadDiagnosisTask().execute();
-                    } else {
-                        new LoadDiagnosisTask().execute(index);
-                    }
+            @Override
+            public void onItemSelected(AdapterView<?> p1, View p2, int p3, long p4) {
+                index = p1.getItemAtPosition(p3).toString();
+                show_load = true;
+                if (index.equalsIgnoreCase("all")) {
+                    new LoadDiagnosisTask().execute();
+                } else {
+                    new LoadDiagnosisTask().execute(index);
                 }
+            }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> p1) {
-                }
-            });
+            @Override
+            public void onNothingSelected(AdapterView<?> p1) {
+            }
+        });
 
         ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
-            private int backgroundColor=ContextCompat.getColor(context, R.color.delete_background);;
-            private int deleteColor= ContextCompat.getColor(context, R.color.color_delete);;
+            private int backgroundColor = ContextCompat.getColor(context, R.color.delete_background);
+            ;
+            private int deleteColor = ContextCompat.getColor(context, R.color.color_delete);
+            ;
             private int iconPadding = dpToPx(16);
             private Drawable deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_delete);
             private Paint circlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -108,8 +126,9 @@ public class ManageDiagnosticsFragment extends Fragment {
             public final float CIRCLE_ACCELERATION = 3;
 
             {
-                circlePaint.setColor(deleteColor);   
+                circlePaint.setColor(deleteColor);
             }
+
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
@@ -119,25 +138,40 @@ public class ManageDiagnosticsFragment extends Fragment {
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
 
-                final int position = viewHolder.getAdapterPosition();
+                int position = viewHolder.getAdapterPosition();
 
-                final Diagnosis diagnosis = diagnosticsAdapter.getDiagnosis().get(viewHolder.getAdapterPosition());
+                Diagnosis diagnosis = diagnosticsAdapter.getDiagnosis().get(viewHolder.getAdapterPosition());
                 diagnosticsAdapter.getDiagnosis().remove(position);
                 diagnosticsAdapter.notifyItemRemoved(position);
 
-                Snackbar.make(diagnosisRv, "Item removed", Snackbar.LENGTH_LONG).setAction("Undo", new OnClickListener(){
+                Snackbar.make(diagnosisRv,getString(R.string.snackbar_text), Snackbar.LENGTH_LONG).setAction(getString(R.string.snackbar_action), new OnClickListener() {
 
-                        @Override
-                        public void onClick(View p1) {
-                            diagnosticsAdapter.getDiagnosis().add(position, diagnosis);
-                            diagnosticsAdapter.notifyItemInserted(position);
+                    @Override
+                    public void onClick(View p1) {
+                        diagnosticsAdapter.getDiagnosis().add(position, diagnosis);
+                        diagnosticsAdapter.notifyItemInserted(position);
+                    }
+
+                }).addCallback(new Snackbar.Callback() {
+                    @Override
+                    public void onShown(Snackbar sb) {
+                        super.onShown(sb);
+                        indexSpinner.setEnabled(false);
+                    }
+
+                    @Override
+                    public void onDismissed(Snackbar snackbar, int event) {
+                        //Its gone, remove it from db
+                        if(event==Snackbar.Callback.DISMISS_EVENT_ACTION){
+                            indexSpinner.setEnabled(true);
                         }
-                    }).setCallback(new Snackbar.Callback(){ 
-                        @Override
-                        public void onDismissed(Snackbar snackbar, int event) {
-                            //Its gone, remove it from db
+                        if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT||event==Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE) {
+                            indexSpinner.setEnabled(true);
+                            dbDiagnostics.deleteDiagnostic(diagnosis.getId());
+                            diagnosticsAdapter.notifyItemRemoved(position);
                         }
-                    }).show();
+                    }
+                }).show();
             }
 
             public void onChildDraw(Canvas canvas, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
@@ -164,22 +198,24 @@ public class ManageDiagnosticsFragment extends Fragment {
                 float circleRadius = 0f;
 
                 circleRadius = (progress - swipeThreshold) * width * CIRCLE_ACCELERATION;
-
                 if (deleteIcon != null) {
                     float cx = right - iconPadding - deleteIcon.getIntrinsicWidth() / 2f;
                     float cy = top + height / 2f;
                     float halfIconSize = deleteIcon.getIntrinsicWidth() * iconScale / 2f;
 
-                    deleteIcon.setBounds((int)(cx - halfIconSize), (int)(cy - halfIconSize), (int)(cx + halfIconSize), (int)(cy + halfIconSize));
+                    deleteIcon.setBounds((int) (cx - halfIconSize), (int) (cy - halfIconSize), (int) (cx + halfIconSize), (int) (cy + halfIconSize));
 
                     if (circleRadius > 0f) {
                         canvas.drawCircle(cx, cy, circleRadius, circlePaint);
                         deleteIcon.setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP));
+
+
                     } else
                         deleteIcon.setColorFilter(new PorterDuffColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN));
 
                     deleteIcon.draw(canvas);
                 }
+
                 canvas.restoreToCount(Math.round(saveCount));
 
                 super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
@@ -217,20 +253,90 @@ public class ManageDiagnosticsFragment extends Fragment {
         searchView = (SearchView) menu.findItem(R.id.menu_search_diagnosis).getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
-                @Override
-                public boolean onQueryTextSubmit(String p1) {
-                    return false;
-                }
+            @Override
+            public boolean onQueryTextSubmit(String p1) {
+                return false;
+            }
 
-                @Override
-                public boolean onQueryTextChange(String p1) {
-                    if (p1.length() > 1)
-                        diagnosticsAdapter.filter(p1);
-                    else
-                        diagnosticsAdapter.clearFilter();
+            @Override
+            public boolean onQueryTextChange(String p1) {
+                if (p1.length() > 1)
+                    diagnosticsAdapter.filter(p1);
+                else
+                    diagnosticsAdapter.clearFilter();
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public void onItemClicked(int position) {
+        if (actionMode != null) {
+            toggleSelection(position);
+        }
+    }
+
+    @Override
+    public boolean onItemLongClicked(int position) {
+        if (actionMode == null) {
+            actionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(actionModeCallback);
+        }
+
+        toggleSelection(position);
+
+        return true;
+    }
+
+    private void toggleSelection(int position) {
+        diagnosticsAdapter.toggleSelection(position);
+        int count = diagnosticsAdapter.getSelectedItemCount();
+
+        if (count == 0) {
+            actionMode.finish();
+        } else {
+            actionMode.setTitle(String.valueOf(count));
+            actionMode.invalidate();
+        }
+    }
+
+    private class ActionModeCallback implements ActionMode.Callback {
+        @SuppressWarnings("unused")
+        private final String TAG = ActionModeCallback.class.getSimpleName();
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.menu_delete, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.menu_delete:
+                    // TODO: actually remove items
+                    for (int i = 0; i < diagnosticsAdapter.getSelectedItems().size(); i++) {
+                        int selected = diagnosticsAdapter.getSelectedItems().get(i);
+                        System.out.println(selected);
+                        System.out.println(diagnosticsAdapter.getDiagnosis().get(selected).getName());
+                    }
+                    mode.finish();
                     return true;
-                }
-            });
+
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            diagnosticsAdapter.clearSelection();
+            actionMode = null;
+        }
     }
 
     class LoadDiagnosisTask extends AsyncTask<String, Void, ArrayList<Diagnosis>> {
@@ -258,7 +364,7 @@ public class ManageDiagnosticsFragment extends Fragment {
             super.onPostExecute(result);
             loadingTv.setVisibility(View.GONE);
             loadingPb.setVisibility(View.GONE);
-            diagnosticsAdapter = new DiagnosticsAdapter(result, context);
+            diagnosticsAdapter = new DiagnosticsAdapter(result, context, ManageDiagnosticsFragment.this);
             diagnosisRv.setAdapter(diagnosticsAdapter);
         }
     }

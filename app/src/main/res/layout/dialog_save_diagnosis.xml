@@ -17,7 +17,7 @@
 			android:layout_width="match_parent"
 			android:ems="10"
 			android:layout_height="wrap_content"
-			android:hint="name"
+			android:hint="@string/dialog_save_diagnosis_input_name"
 			android:id="@+id/name_et"/>
 
 	</com.google.android.material.textfield.TextInputLayout>
@@ -33,7 +33,8 @@
 			android:layout_width="match_parent"
 			android:ems="10"
 			android:layout_height="wrap_content"
-			android:hint="ID"
+			android:maxLength="11"
+			android:hint="@string/dialog_save_diagnosis_ID"
 			android:id="@+id/id_et"/>
 
 	</com.google.android.material.textfield.TextInputLayout>
