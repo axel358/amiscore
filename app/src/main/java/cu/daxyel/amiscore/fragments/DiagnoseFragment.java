@@ -222,9 +222,9 @@ public class DiagnoseFragment extends Fragment {
                     } else {
                         long rowId = dbDiagnostics.addDiagnostic(name, id, indexSpinner.getSelectedItem().toString(), probabilityInfo, consult_date);
                         if (rowId > 0) {
-                            Toast.makeText(context, getString(R.string.toast_save_diagnosis_success), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, getString(R.string.toast_save_diagnosis_success), Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(context, getString(R.string.toast_save_diagnosis_failed), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, getString(R.string.toast_save_diagnosis_failed), Toast.LENGTH_SHORT).show();
                         }
                         dialog.dismiss();
 

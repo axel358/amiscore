@@ -33,5 +33,10 @@
     <string name="toast_save_diagnosis_failed">Diagnosis Not Saved!</string>
     <string name="dialog_save_diagnosis_input_name_error">Name cannot be empty</string>
     <string name="dialog_save_diagnosis_input_ID_error">ID must be 11 digits long</string>
+    <string name="dialog_remove_one_diagnosis_TITLE">Delete Diagnosis</string>
+    <string name="dialog_remove_multiple_diagnosis_TITLE">Delete Diagnostics</string>
+    <string name="dialog_remove_one_diagnosis_MESSAGE">Are you sure you want to delete the diagnostic selected?</string>
+    <string name="dialog_remove_diagnosis_DELETE">Delete</string>
+    <string name="dialog_remove_multiple_diagnosis_MESSAGE">Are you sure you want to delete the diagnostics selected?</string>
 
 </resources>

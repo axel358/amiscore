@@ -35,4 +35,10 @@
     <string name="toast_save_diagnosis_failed">¡Diagnóstico No Guardado!</string>
     <string name="dialog_save_diagnosis_input_name_error">Debe rellenar este campo</string>
     <string name="dialog_save_diagnosis_input_ID_error">El CI debe de tener 11 dígitos</string>
+    <string name="dialog_remove_one_diagnosis_TITLE">Eliminar diagnóstico</string>
+    <string name="dialog_remove_multiple_diagnosis_TITLE">Eliminar diagnósticos</string>
+    <string name="dialog_remove_one_diagnosis_MESSAGE">¿Está seguro de eliminar el diagnóstico seleccionado?</string>
+    <string name="dialog_remove_multiple_diagnosis_MESSAGE">¿Está seguro de eliminar los diagnósticos seleccionados?</string>
+    <string name="dialog_remove_diagnosis_DELETE">Eliminar</string>
+
 </resources>

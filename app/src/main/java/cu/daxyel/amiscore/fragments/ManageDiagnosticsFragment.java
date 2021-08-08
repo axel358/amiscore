@@ -8,10 +8,8 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
-import android.util.Log;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ActionMode;
 
 import android.view.LayoutInflater;
@@ -21,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -46,10 +43,8 @@ import cu.daxyel.amiscore.db.DbDiagnostics;
 import cu.daxyel.amiscore.models.Diagnosis;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
 
-import android.view.View.OnTouchListener;
-import android.view.MotionEvent;
-import android.widget.Toast;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.Color;
@@ -144,7 +139,7 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
                 diagnosticsAdapter.getDiagnosis().remove(position);
                 diagnosticsAdapter.notifyItemRemoved(position);
 
-                Snackbar.make(diagnosisRv,getString(R.string.snackbar_text), Snackbar.LENGTH_LONG).setAction(getString(R.string.snackbar_action), new OnClickListener() {
+                Snackbar.make(diagnosisRv, getString(R.string.snackbar_text), Snackbar.LENGTH_LONG).setAction(getString(R.string.snackbar_action), new OnClickListener() {
 
                     @Override
                     public void onClick(View p1) {
@@ -162,13 +157,12 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
                     @Override
                     public void onDismissed(Snackbar snackbar, int event) {
                         //Its gone, remove it from db
-                        if(event==Snackbar.Callback.DISMISS_EVENT_ACTION){
+                        if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) {
                             indexSpinner.setEnabled(true);
                         }
-                        if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT||event==Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE) {
+                        if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT || event == Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE) {
                             indexSpinner.setEnabled(true);
                             dbDiagnostics.deleteDiagnostic(diagnosis.getId());
-                            diagnosticsAdapter.notifyItemRemoved(position);
                         }
                     }
                 }).show();
@@ -280,6 +274,7 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
     public boolean onItemLongClicked(int position) {
         if (actionMode == null) {
             actionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(actionModeCallback);
+
         }
 
         toggleSelection(position);
@@ -303,6 +298,7 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
         @SuppressWarnings("unused")
         private final String TAG = ActionModeCallback.class.getSimpleName();
 
+
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             mode.getMenuInflater().inflate(R.menu.menu_delete, menu);
@@ -318,13 +314,75 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.menu_delete:
-                    // TODO: actually remove items
-                    for (int i = 0; i < diagnosticsAdapter.getSelectedItems().size(); i++) {
-                        int selected = diagnosticsAdapter.getSelectedItems().get(i);
-                        System.out.println(selected);
-                        System.out.println(diagnosticsAdapter.getDiagnosis().get(selected).getName());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+
+                    ArrayList<Diagnosis> diagnosisToRemove = new ArrayList<>();   //array con los objetos a remover
+                    //Array clonado con las posiciones seleccionada se haca porque cuando se ejecuta
+                    // mode.finish pues se resetea el array selecteditems
+                    ArrayList<Integer> clone_selectedItems = new ArrayList<>();
+                    clone_selectedItems.addAll(diagnosticsAdapter.getSelectedItems());
+                    if(diagnosticsAdapter.getSelectedItemCount()==1){
+                        builder.setTitle(getString(R.string.dialog_remove_one_diagnosis_TITLE));
+                        builder.setMessage(getString(R.string.dialog_remove_one_diagnosis_MESSAGE));
+                    }else {
+                        builder.setTitle(getString(R.string.dialog_remove_multiple_diagnosis_TITLE));
+                        builder.setMessage(getString(R.string.dialog_remove_multiple_diagnosis_MESSAGE));
                     }
-                    mode.finish();
+                    builder.setPositiveButton(getString(R.string.dialog_remove_diagnosis_DELETE), null);
+                    builder.setNegativeButton(getString(R.string.dialog_save_diagnosis_CANCEL), null);
+
+                    final AlertDialog dialog = builder.create();
+                    dialog.show();
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //objeto spinner para evitar el bug de q se inserte al array un elemento ya eliminado mientras se muestre el snackbar y se cambie de indice
+                            Spinner spinner = getView().findViewById(R.id.indexes_spnr);
+                            for (int i = 0; i < clone_selectedItems.size(); i++) {
+                                diagnosisToRemove.add(diagnosticsAdapter.getDiagnosis().get(clone_selectedItems.get(i))); //add al array los objetos diagnosis
+                                diagnosticsAdapter.notifyItemRemoved(clone_selectedItems.get(i)); //notificar al recycler q posisiones van a ser removidas
+                            }
+                            diagnosticsAdapter.getDiagnosis().removeAll(diagnosisToRemove);  //remover la colleccion de datos entera
+
+                            Snackbar.make(diagnosisRv, getString(R.string.snackbar_text), Snackbar.LENGTH_LONG).setAction(getString(R.string.snackbar_action), new OnClickListener() {
+
+                                @Override
+                                public void onClick(View p1) {
+                            /*si el user se arrepiente volver a insertar los items aqui es donde se utiliza el arrayclonado
+                            puesto a que en este punto  diagnosticsAdapter.getSelectedItems().size es igual a cero
+                             */
+                                    for (int i = 0; i < diagnosisToRemove.size(); i++) {
+                                        diagnosticsAdapter.getDiagnosis().add(clone_selectedItems.get(i), diagnosisToRemove.get(i));
+                                        diagnosticsAdapter.notifyItemInserted(clone_selectedItems.get(i));
+                                    }
+                                }
+
+                            }).addCallback(new Snackbar.Callback() {
+                                @Override
+                                public void onShown(Snackbar sb) {
+                                    super.onShown(sb);
+                                    spinner.setEnabled(false); //Mientras se muestra el snack el spiner se deshabilita para evitar el bug
+                                }
+
+                                @Override
+                                public void onDismissed(Snackbar snackbar, int event) {
+                                    //Aqui se verifica si en el snackbar se hace la accion de restore se habilita el spinner si no se hace permanece deshbilitado
+                                    if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                                        spinner.setEnabled(true);
+                                    }
+                                    //aqui va a eliminar cuando el snack se va
+                                    if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
+                                        spinner.setEnabled(true);
+                                        for (int i = 0; i < diagnosisToRemove.size(); i++) {
+                                            dbDiagnostics.deleteDiagnostic(diagnosisToRemove.get(i).getId());
+                                        }
+                                    }
+                                }
+                            }).show();
+                            dialog.dismiss();
+                            mode.finish();
+                        }
+                    });
                     return true;
 
                 default:
