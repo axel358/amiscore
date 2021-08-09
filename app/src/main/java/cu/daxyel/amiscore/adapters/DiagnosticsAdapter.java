@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -22,6 +21,7 @@ import java.util.ArrayList;
 import cu.daxyel.amiscore.R;
 import cu.daxyel.amiscore.db.DbDiagnostics;
 import cu.daxyel.amiscore.models.Diagnosis;
+import cu.daxyel.amiscore.Utils;
 
 
 public class DiagnosticsAdapter extends SelectableAdapter<DiagnosticsAdapter.ViewHolder> {
@@ -29,12 +29,14 @@ public class DiagnosticsAdapter extends SelectableAdapter<DiagnosticsAdapter.Vie
     private ArrayList<Diagnosis> diagnosisArrayList;
     private DbDiagnostics dbDiagnostics;
     private ViewHolder.ClickListener clickListener;
+    private Context context;
 
     public DiagnosticsAdapter(ArrayList<Diagnosis> diagnosisArrayList, Context context, ViewHolder.ClickListener clickListener) {
         this.diagnosisArrayList = diagnosisArrayList;
+        this.context = context;
         filteredDiagnosis = diagnosisArrayList;
         dbDiagnostics = new DbDiagnostics(context);
-        this.clickListener=clickListener;
+        this.clickListener = clickListener;
 
     }
 
@@ -72,17 +74,16 @@ public class DiagnosticsAdapter extends SelectableAdapter<DiagnosticsAdapter.Vie
         holder.diagnosis_date.setText(filteredDiagnosis.get(position).getDate());
         holder.disease.setText(txt);
 
-        if(isSelected(position)){
-            Anim anim=new Anim(100,holder.constraintLayout);
+        if (isSelected(position)) {
+            Anim anim=new Anim(Utils.dpToPx(context, 40), holder.checkBox);
             anim.setDuration(300);
-            holder.constraintLayout.setAnimation(anim);
+            holder.checkBox.setAnimation(anim);
             holder.checkBox.setChecked(true);
             holder.checkBox.setClickable(false);
-        }
-        else {
-            Anim anim=new Anim(0,holder.constraintLayout);
+        } else {
+            Anim anim=new Anim(0, holder.checkBox);
             anim.setDuration(300);
-            holder.constraintLayout.setAnimation(anim);
+            holder.checkBox.setAnimation(anim);
             holder.checkBox.setChecked(false);
         }
     }
@@ -96,7 +97,6 @@ public class DiagnosticsAdapter extends SelectableAdapter<DiagnosticsAdapter.Vie
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private TextView nameTv, patient_id, disease, diagnosis_date;
         private ClickListener listener;
-        private ConstraintLayout constraintLayout;
         private LinearLayout linearLayout;
         private CheckBox checkBox;
 
@@ -111,9 +111,8 @@ public class DiagnosticsAdapter extends SelectableAdapter<DiagnosticsAdapter.Vie
             patient_id = itemView.findViewById(R.id.diagnosis_patient_id);
             disease = itemView.findViewById(R.id.diagnosis_disease);
             diagnosis_date = itemView.findViewById(R.id.diagnosis_date);
-            linearLayout=itemView.findViewById(R.id.linear_entry_diagnosis);
-            constraintLayout=itemView.findViewById(R.id.constraint_check_select);
-            checkBox=itemView.findViewById(R.id.checkBox_select);
+            linearLayout = itemView.findViewById(R.id.linear_entry_diagnosis);
+            checkBox = itemView.findViewById(R.id.checkBox_select);
         }
 
         @Override
@@ -144,14 +143,14 @@ public class DiagnosticsAdapter extends SelectableAdapter<DiagnosticsAdapter.Vie
 
         public Anim(int width, View view) {
             this.width = width;
-            this.view=view;
+            this.view = view;
             this.startWidth = view.getWidth();
         }
 
         @Override
         protected void applyTransformation(float interpolatedTime, Transformation t) {
-            int newWidth=startWidth+(int) ((width-startWidth)*interpolatedTime);
-            view.getLayoutParams().width=newWidth;
+            int newWidth=startWidth + (int) ((width - startWidth) * interpolatedTime);
+            view.getLayoutParams().width = newWidth;
             view.requestLayout();
             super.applyTransformation(interpolatedTime, t);
         }

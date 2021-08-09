@@ -48,6 +48,7 @@ import java.util.Dictionary;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.Color;
+import cu.daxyel.amiscore.Utils;
 
 public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAdapter.ViewHolder.ClickListener {
     private RecyclerView diagnosisRv;
@@ -81,7 +82,7 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
         diagnosisRv.setLayoutManager(new LinearLayoutManager(context));
         loadingTv = view.findViewById(R.id.diagnosis_loading_tv);
         loadingPb = view.findViewById(R.id.diagnosis_loading_pb);
-        Spinner indexSpinner = view.findViewById(R.id.indexes_spnr);
+        final Spinner indexSpinner = view.findViewById(R.id.indexes_spnr);
 
         dbDiagnostics = new DbDiagnostics(getActivity());
 
@@ -92,21 +93,21 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
         indexSpinner.setAdapter(new ArrayAdapter<String>(context, R.layout.entry_index_spnr, indexes));
         indexSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-            @Override
-            public void onItemSelected(AdapterView<?> p1, View p2, int p3, long p4) {
-                index = p1.getItemAtPosition(p3).toString();
-                show_load = true;
-                if (index.equalsIgnoreCase("all")) {
-                    new LoadDiagnosisTask().execute();
-                } else {
-                    new LoadDiagnosisTask().execute(index);
+                @Override
+                public void onItemSelected(AdapterView<?> p1, View p2, int p3, long p4) {
+                    index = p1.getItemAtPosition(p3).toString();
+                    show_load = true;
+                    if (index.equalsIgnoreCase("all")) {
+                        new LoadDiagnosisTask().execute();
+                    } else {
+                        new LoadDiagnosisTask().execute(index);
+                    }
                 }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> p1) {
-            }
-        });
+                @Override
+                public void onNothingSelected(AdapterView<?> p1) {
+                }
+            });
 
         ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
@@ -114,7 +115,7 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
             ;
             private int deleteColor = ContextCompat.getColor(context, R.color.color_delete);
             ;
-            private int iconPadding = dpToPx(16);
+            private int iconPadding = Utils.dpToPx(context, 16);
             private Drawable deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_delete);
             private Paint circlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
@@ -133,39 +134,39 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
 
-                int position = viewHolder.getAdapterPosition();
+                final int position = viewHolder.getAdapterPosition();
 
-                Diagnosis diagnosis = diagnosticsAdapter.getDiagnosis().get(viewHolder.getAdapterPosition());
+                final Diagnosis diagnosis = diagnosticsAdapter.getDiagnosis().get(viewHolder.getAdapterPosition());
                 diagnosticsAdapter.getDiagnosis().remove(position);
                 diagnosticsAdapter.notifyItemRemoved(position);
 
                 Snackbar.make(diagnosisRv, getString(R.string.snackbar_text), Snackbar.LENGTH_LONG).setAction(getString(R.string.snackbar_action), new OnClickListener() {
 
-                    @Override
-                    public void onClick(View p1) {
-                        diagnosticsAdapter.getDiagnosis().add(position, diagnosis);
-                        diagnosticsAdapter.notifyItemInserted(position);
-                    }
-
-                }).addCallback(new Snackbar.Callback() {
-                    @Override
-                    public void onShown(Snackbar sb) {
-                        super.onShown(sb);
-                        indexSpinner.setEnabled(false);
-                    }
-
-                    @Override
-                    public void onDismissed(Snackbar snackbar, int event) {
-                        //Its gone, remove it from db
-                        if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) {
-                            indexSpinner.setEnabled(true);
+                        @Override
+                        public void onClick(View p1) {
+                            diagnosticsAdapter.getDiagnosis().add(position, diagnosis);
+                            diagnosticsAdapter.notifyItemInserted(position);
                         }
-                        if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT || event == Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE) {
-                            indexSpinner.setEnabled(true);
-                            dbDiagnostics.deleteDiagnostic(diagnosis.getId());
+
+                    }).addCallback(new Snackbar.Callback() {
+                        @Override
+                        public void onShown(Snackbar sb) {
+                            super.onShown(sb);
+                            indexSpinner.setEnabled(false);
                         }
-                    }
-                }).show();
+
+                        @Override
+                        public void onDismissed(Snackbar snackbar, int event) {
+                            //Its gone, remove it from db
+                            if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                                indexSpinner.setEnabled(true);
+                            }
+                            if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT || event == Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE) {
+                                indexSpinner.setEnabled(true);
+                                dbDiagnostics.deleteDiagnostic(diagnosis.getId());
+                            }
+                        }
+                    }).show();
             }
 
             public void onChildDraw(Canvas canvas, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
@@ -203,7 +204,6 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
                         canvas.drawCircle(cx, cy, circleRadius, circlePaint);
                         deleteIcon.setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP));
 
-
                     } else
                         deleteIcon.setColorFilter(new PorterDuffColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN));
 
@@ -223,9 +223,6 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
         return view;
     }
 
-    public int dpToPx(int dp) {
-        return (int) (dp * context.getResources().getDisplayMetrics().density + 0.5f);
-    }
 
     public Bitmap getBitmapFromVector(int resid) {
         Drawable vector = ContextCompat.getDrawable(context, resid);
@@ -247,20 +244,20 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
         searchView = (SearchView) menu.findItem(R.id.menu_search_diagnosis).getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
-            @Override
-            public boolean onQueryTextSubmit(String p1) {
-                return false;
-            }
+                @Override
+                public boolean onQueryTextSubmit(String p1) {
+                    return false;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String p1) {
-                if (p1.length() > 1)
-                    diagnosticsAdapter.filter(p1);
-                else
-                    diagnosticsAdapter.clearFilter();
-                return true;
-            }
-        });
+                @Override
+                public boolean onQueryTextChange(String p1) {
+                    if (p1.length() > 1)
+                        diagnosticsAdapter.filter(p1);
+                    else
+                        diagnosticsAdapter.clearFilter();
+                    return true;
+                }
+            });
     }
 
     @Override
@@ -311,20 +308,21 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
         }
 
         @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.menu_delete:
                     AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
 
-                    ArrayList<Diagnosis> diagnosisToRemove = new ArrayList<>();   //array con los objetos a remover
+                    final ArrayList<Diagnosis> diagnosisToRemove = new ArrayList<>();   //array con los objetos a remover
                     //Array clonado con las posiciones seleccionada se haca porque cuando se ejecuta
                     // mode.finish pues se resetea el array selecteditems
-                    ArrayList<Integer> clone_selectedItems = new ArrayList<>();
-                    clone_selectedItems.addAll(diagnosticsAdapter.getSelectedItems());
-                    if(diagnosticsAdapter.getSelectedItemCount()==1){
+                    final ArrayList<Integer> selectedItems = new ArrayList<>();
+                    selectedItems.addAll(diagnosticsAdapter.getSelectedItems());
+
+                    if (diagnosticsAdapter.getSelectedItemCount() == 1) {
                         builder.setTitle(getString(R.string.dialog_remove_one_diagnosis_TITLE));
                         builder.setMessage(getString(R.string.dialog_remove_one_diagnosis_MESSAGE));
-                    }else {
+                    } else {
                         builder.setTitle(getString(R.string.dialog_remove_multiple_diagnosis_TITLE));
                         builder.setMessage(getString(R.string.dialog_remove_multiple_diagnosis_MESSAGE));
                     }
@@ -334,55 +332,22 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
                     final AlertDialog dialog = builder.create();
                     dialog.show();
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            //objeto spinner para evitar el bug de q se inserte al array un elemento ya eliminado mientras se muestre el snackbar y se cambie de indice
-                            Spinner spinner = getView().findViewById(R.id.indexes_spnr);
-                            for (int i = 0; i < clone_selectedItems.size(); i++) {
-                                diagnosisToRemove.add(diagnosticsAdapter.getDiagnosis().get(clone_selectedItems.get(i))); //add al array los objetos diagnosis
-                                diagnosticsAdapter.notifyItemRemoved(clone_selectedItems.get(i)); //notificar al recycler q posisiones van a ser removidas
+                            @Override
+                            public void onClick(View view) {
+                                for (Integer i : selectedItems) {
+                                    diagnosisToRemove.add(diagnosticsAdapter.getDiagnosis().get(i)); //add al array los objetos diagnosis
+                                    diagnosticsAdapter.notifyItemRemoved(i); //notificar al recycler q posisiones van a ser removidas
+                                }
+                                diagnosticsAdapter.getDiagnosis().removeAll(diagnosisToRemove);  //remover la colleccion de datos entera
+
+                                for (int i = 0; i < diagnosisToRemove.size(); i++) {
+                                    dbDiagnostics.deleteDiagnostic(diagnosisToRemove.get(i).getId());
+                                }
+
+                                dialog.dismiss();
+                                mode.finish();
                             }
-                            diagnosticsAdapter.getDiagnosis().removeAll(diagnosisToRemove);  //remover la colleccion de datos entera
-
-                            Snackbar.make(diagnosisRv, getString(R.string.snackbar_text), Snackbar.LENGTH_LONG).setAction(getString(R.string.snackbar_action), new OnClickListener() {
-
-                                @Override
-                                public void onClick(View p1) {
-                            /*si el user se arrepiente volver a insertar los items aqui es donde se utiliza el arrayclonado
-                            puesto a que en este punto  diagnosticsAdapter.getSelectedItems().size es igual a cero
-                             */
-                                    for (int i = 0; i < diagnosisToRemove.size(); i++) {
-                                        diagnosticsAdapter.getDiagnosis().add(clone_selectedItems.get(i), diagnosisToRemove.get(i));
-                                        diagnosticsAdapter.notifyItemInserted(clone_selectedItems.get(i));
-                                    }
-                                }
-
-                            }).addCallback(new Snackbar.Callback() {
-                                @Override
-                                public void onShown(Snackbar sb) {
-                                    super.onShown(sb);
-                                    spinner.setEnabled(false); //Mientras se muestra el snack el spiner se deshabilita para evitar el bug
-                                }
-
-                                @Override
-                                public void onDismissed(Snackbar snackbar, int event) {
-                                    //Aqui se verifica si en el snackbar se hace la accion de restore se habilita el spinner si no se hace permanece deshbilitado
-                                    if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) {
-                                        spinner.setEnabled(true);
-                                    }
-                                    //aqui va a eliminar cuando el snack se va
-                                    if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
-                                        spinner.setEnabled(true);
-                                        for (int i = 0; i < diagnosisToRemove.size(); i++) {
-                                            dbDiagnostics.deleteDiagnostic(diagnosisToRemove.get(i).getId());
-                                        }
-                                    }
-                                }
-                            }).show();
-                            dialog.dismiss();
-                            mode.finish();
-                        }
-                    });
+                        });
                     return true;
 
                 default:

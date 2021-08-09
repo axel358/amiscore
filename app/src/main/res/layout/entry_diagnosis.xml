@@ -7,21 +7,13 @@
 	android:layout_height="wrap_content"
 	android:id="@+id/linear_entry_diagnosis"
 	android:orientation="horizontal"
-	android:gravity="center_vertical">
+	android:gravity="center">
 
+	<CheckBox
+		android:layout_width="wrap_content"
+		android:id="@+id/checkBox_select"
+		android:layout_height="match_parent"/>
 
-	<androidx.constraintlayout.widget.ConstraintLayout
-		android:layout_width="40dp"
-		android:id="@+id/constraint_check_select"
-		android:layout_height="match_parent">
-		<CheckBox
-			android:layout_width="match_parent"
-			android:id="@+id/checkBox_select"
-			android:layout_height="match_parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent">
-		</CheckBox>
-	</androidx.constraintlayout.widget.ConstraintLayout>
 	<ImageView
 		android:layout_height="40dp"
 		android:layout_width="40dp"

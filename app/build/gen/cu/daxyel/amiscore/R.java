@@ -4714,17 +4714,17 @@ containing a value of this type.
         public static final int action_bar_spinner=0x7f09001c;
         public static final int action_bar_subtitle=0x7f09006a;
         public static final int action_bar_title=0x7f090069;
-        public static final int action_container=0x7f0900bf;
+        public static final int action_container=0x7f0900c1;
         public static final int action_context_bar=0x7f09008e;
-        public static final int action_divider=0x7f0900ca;
-        public static final int action_image=0x7f0900c0;
+        public static final int action_divider=0x7f0900cc;
+        public static final int action_image=0x7f0900c2;
         public static final int action_menu_divider=0x7f09001d;
         public static final int action_menu_presenter=0x7f09001e;
         public static final int action_mode_bar=0x7f09008a;
         public static final int action_mode_bar_stub=0x7f090089;
         public static final int action_mode_close_button=0x7f09006b;
-        public static final int action_text=0x7f0900c1;
-        public static final int actions=0x7f0900cb;
+        public static final int action_text=0x7f0900c3;
+        public static final int actions=0x7f0900cd;
         public static final int activity_chooser_view_content=0x7f09006c;
         public static final int add=0x7f090042;
         public static final int alertTitle=0x7f09007f;
@@ -4739,8 +4739,9 @@ containing a value of this type.
         public static final int center=0x7f09002a;
         public static final int center_horizontal=0x7f090031;
         public static final int center_vertical=0x7f090032;
+        public static final int checkBox_select=0x7f0900b4;
         public static final int checkbox=0x7f090086;
-        public static final int chronometer=0x7f0900c9;
+        public static final int chronometer=0x7f0900cb;
         public static final int clip_horizontal=0x7f09004a;
         public static final int clip_vertical=0x7f09004b;
         public static final int collapseActionView=0x7f090065;
@@ -4749,7 +4750,7 @@ containing a value of this type.
         public static final int contentPanel=0x7f090075;
         public static final int coordinator=0x7f0900a7;
         public static final int criteria_chkbx=0x7f0900b2;
-        public static final int criteria_rv=0x7f0900b7;
+        public static final int criteria_rv=0x7f0900b9;
         public static final int custom=0x7f09007c;
         public static final int customPanel=0x7f09007b;
         public static final int decor_content_parent=0x7f09008b;
@@ -4759,15 +4760,15 @@ containing a value of this type.
         public static final int design_menu_item_action_area_stub=0x7f0900ad;
         public static final int design_menu_item_text=0x7f0900ac;
         public static final int design_navigation_view=0x7f0900ab;
-        public static final int diagnosis_date=0x7f0900b4;
-        public static final int diagnosis_disease=0x7f0900b6;
-        public static final int diagnosis_loading_pb=0x7f0900bd;
-        public static final int diagnosis_loading_tv=0x7f0900bc;
-        public static final int diagnosis_name_tv=0x7f0900b3;
-        public static final int diagnosis_patient_id=0x7f0900b5;
-        public static final int diagnosis_pb=0x7f0900b9;
-        public static final int diagnosis_rv=0x7f0900bb;
-        public static final int diagnosis_tv=0x7f0900b8;
+        public static final int diagnosis_date=0x7f0900b6;
+        public static final int diagnosis_disease=0x7f0900b8;
+        public static final int diagnosis_loading_pb=0x7f0900bf;
+        public static final int diagnosis_loading_tv=0x7f0900be;
+        public static final int diagnosis_name_tv=0x7f0900b5;
+        public static final int diagnosis_patient_id=0x7f0900b7;
+        public static final int diagnosis_pb=0x7f0900bb;
+        public static final int diagnosis_rv=0x7f0900bd;
+        public static final int diagnosis_tv=0x7f0900ba;
         public static final int disableHome=0x7f090054;
         public static final int drawer_layout=0x7f09009d;
         public static final int edit_query=0x7f09008f;
@@ -4788,14 +4789,14 @@ containing a value of this type.
         public static final int home=0x7f09001f;
         public static final int homeAsUp=0x7f090055;
         public static final int icon=0x7f090071;
-        public static final int icon_group=0x7f0900cc;
+        public static final int icon_group=0x7f0900ce;
         public static final int id_et=0x7f0900b1;
         public static final int ifRoom=0x7f090066;
         public static final int image=0x7f09006e;
-        public static final int imageView=0x7f0900be;
+        public static final int imageView=0x7f0900c0;
         public static final int image_splash=0x7f0900a2;
-        public static final int indexes_spnr=0x7f0900cd;
-        public static final int info=0x7f0900c5;
+        public static final int indexes_spnr=0x7f0900cf;
+        public static final int info=0x7f0900c7;
         public static final int italic=0x7f090051;
         public static final int item_touch_helper_previous_elevation=0x7f090000;
         public static final int labeled=0x7f09002d;
@@ -4803,12 +4804,14 @@ containing a value of this type.
         public static final int left=0x7f090034;
         public static final int line1=0x7f090013;
         public static final int line3=0x7f090014;
+        public static final int linear_entry_diagnosis=0x7f0900b3;
         public static final int listMode=0x7f090052;
         public static final int list_item=0x7f090070;
         public static final int main_container=0x7f09009f;
-        public static final int masked=0x7f0900cf;
-        public static final int menu_save=0x7f0900d6;
-        public static final int menu_search_diagnosis=0x7f0900d7;
+        public static final int masked=0x7f0900d1;
+        public static final int menu_delete=0x7f0900d8;
+        public static final int menu_save=0x7f0900d9;
+        public static final int menu_search_diagnosis=0x7f0900da;
         public static final int message=0x7f09009c;
         public static final int middle=0x7f09005d;
         public static final int mini=0x7f09003b;
@@ -4816,20 +4819,20 @@ containing a value of this type.
         public static final int mtrl_internal_children_alpha_tag=0x7f09000c;
         public static final int multiply=0x7f090043;
         public static final int name_et=0x7f0900b0;
-        public static final int nav_about=0x7f0900d5;
-        public static final int nav_diagnose=0x7f0900d0;
-        public static final int nav_manage_diagnosis=0x7f0900d1;
-        public static final int nav_manage_indexes=0x7f0900d3;
-        public static final int nav_manage_users=0x7f0900d2;
-        public static final int nav_statistics=0x7f0900d4;
+        public static final int nav_about=0x7f0900d7;
+        public static final int nav_diagnose=0x7f0900d2;
+        public static final int nav_manage_diagnosis=0x7f0900d3;
+        public static final int nav_manage_indexes=0x7f0900d5;
+        public static final int nav_manage_users=0x7f0900d4;
+        public static final int nav_statistics=0x7f0900d6;
         public static final int nav_view=0x7f0900a0;
         public static final int navigation_header_container=0x7f0900aa;
         public static final int never=0x7f090067;
         public static final int none=0x7f090038;
         public static final int normal=0x7f09003c;
-        public static final int notification_background=0x7f0900c7;
-        public static final int notification_main_column=0x7f0900c3;
-        public static final int notification_main_column_container=0x7f0900c2;
+        public static final int notification_background=0x7f0900c9;
+        public static final int notification_main_column=0x7f0900c5;
+        public static final int notification_main_column_container=0x7f0900c4;
         public static final int outline=0x7f090049;
         public static final int parallax=0x7f090039;
         public static final int parentPanel=0x7f090074;
@@ -4838,10 +4841,10 @@ containing a value of this type.
         public static final int progress_circular=0x7f090020;
         public static final int progress_horizontal=0x7f090021;
         public static final int radio=0x7f090087;
-        public static final int ribbon_index_layout=0x7f0900ba;
+        public static final int ribbon_index_layout=0x7f0900bc;
         public static final int right=0x7f090035;
-        public static final int right_icon=0x7f0900c6;
-        public static final int right_side=0x7f0900c4;
+        public static final int right_icon=0x7f0900c8;
+        public static final int right_side=0x7f0900c6;
         public static final int save_image_matrix=0x7f090003;
         public static final int save_non_transition_alpha=0x7f090004;
         public static final int save_scale_type=0x7f090005;
@@ -4896,7 +4899,7 @@ containing a value of this type.
         public static final int textinput_counter=0x7f09000f;
         public static final int textinput_error=0x7f090010;
         public static final int textinput_helper_text=0x7f090011;
-        public static final int time=0x7f0900c8;
+        public static final int time=0x7f0900ca;
         public static final int title=0x7f09001a;
         public static final int titleDividerNoCustom=0x7f090080;
         public static final int title_template=0x7f09007e;
@@ -4914,7 +4917,7 @@ containing a value of this type.
         public static final int up=0x7f090023;
         public static final int useLogo=0x7f090059;
         public static final int view_offset_helper=0x7f090012;
-        public static final int visible=0x7f0900ce;
+        public static final int visible=0x7f0900d0;
         public static final int withText=0x7f090068;
         public static final int wrap_content=0x7f09005b;
     }
@@ -5012,8 +5015,9 @@ containing a value of this type.
     }
     public static final class menu {
         public static final int activity_main_drawer=0x7f0f0000;
-        public static final int menu_diagnose=0x7f0f0001;
-        public static final int menu_manage_diagnosis=0x7f0f0002;
+        public static final int menu_delete=0x7f0f0001;
+        public static final int menu_diagnose=0x7f0f0002;
+        public static final int menu_manage_diagnosis=0x7f0f0003;
     }
     public static final class mipmap {
         public static final int ic_launcher=0x7f030000;
@@ -5064,8 +5068,8 @@ menu_mains TEXTS
          */
         public static final int action_settings=0x7f0e0039;
         public static final int app_name=0x7f0e0036;
-        /** activity_main_drawer TEXTS
-activity_main_drawer TEXTS
+        /** app TEXTS
+app TEXTS
          */
         public static final int app_name_version=0x7f0e0040;
         public static final int appbar_scrolling_view_behavior=0x7f0e0000;
@@ -5076,15 +5080,30 @@ activity_main_drawer TEXTS
 activity_main_drawer TEXTS
          */
         public static final int diagnose_patient=0x7f0e003b;
+        public static final int dialog_remove_diagnosis_DELETE=0x7f0e0056;
+        public static final int dialog_remove_multiple_diagnosis_MESSAGE=0x7f0e0057;
+        public static final int dialog_remove_multiple_diagnosis_TITLE=0x7f0e0054;
+        public static final int dialog_remove_one_diagnosis_MESSAGE=0x7f0e0055;
+        public static final int dialog_remove_one_diagnosis_TITLE=0x7f0e0053;
+        public static final int dialog_save_diagnosis_CANCEL=0x7f0e004b;
+        public static final int dialog_save_diagnosis_ID=0x7f0e004e;
+        public static final int dialog_save_diagnosis_QR=0x7f0e004c;
+        public static final int dialog_save_diagnosis_SAVE=0x7f0e004a;
+        public static final int dialog_save_diagnosis_TITLE=0x7f0e0049;
+        public static final int dialog_save_diagnosis_input_ID_error=0x7f0e0052;
+        public static final int dialog_save_diagnosis_input_name=0x7f0e004d;
+        public static final int dialog_save_diagnosis_input_name_error=0x7f0e0051;
         public static final int fab_transformation_scrim_behavior=0x7f0e0004;
         public static final int fab_transformation_sheet_behavior=0x7f0e0005;
         public static final int hide_bottom_view_on_scroll_behavior=0x7f0e0006;
         public static final int high_probability=0x7f0e0041;
+        public static final int index_ribbon=0x7f0e0046;
         public static final int low_probability=0x7f0e0043;
         public static final int manage_diagnosis=0x7f0e003c;
         public static final int manage_indexes=0x7f0e003e;
-        public static final int manage_patient=0x7f0e0044;
         public static final int manage_users=0x7f0e003d;
+        public static final int menu_delete=0x7f0e0048;
+        public static final int menu_save=0x7f0e0047;
         public static final int mtrl_chip_close_icon_content_description=0x7f0e0007;
         public static final int navigation_drawer_close=0x7f0e0038;
         public static final int navigation_drawer_open=0x7f0e0037;
@@ -5094,8 +5113,12 @@ activity_main_drawer TEXTS
         public static final int path_password_eye_mask_visible=0x7f0e000b;
         public static final int path_password_strike_through=0x7f0e000c;
         public static final int search_menu_title=0x7f0e0029;
+        public static final int snackbar_action=0x7f0e0045;
+        public static final int snackbar_text=0x7f0e0044;
         public static final int statistics=0x7f0e003f;
         public static final int status_bar_notification_info_overflow=0x7f0e000d;
+        public static final int toast_save_diagnosis_failed=0x7f0e0050;
+        public static final int toast_save_diagnosis_success=0x7f0e004f;
         public static final int very_high_probability=0x7f0e0042;
     }
     public static final class style {
