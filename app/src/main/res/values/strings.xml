@@ -38,5 +38,10 @@
     <string name="dialog_remove_one_diagnosis_MESSAGE">Are you sure you want to delete the diagnostic selected?</string>
     <string name="dialog_remove_diagnosis_DELETE">Delete</string>
     <string name="dialog_remove_multiple_diagnosis_MESSAGE">Are you sure you want to delete the diagnostics selected?</string>
+    <string name="toast_criteria">You must select any variable!</string>
+    <string name="dialog_save_diagnosis_input_observations">Observations</string>
+    <string name="dialog_edit_detail_button_Edit">Edit</string>
+    <string name="dialog_edit_detail_Title">Diagnosis</string>
+    <string name="dialog_edit_detail_Button">Ok</string>
 
 </resources>

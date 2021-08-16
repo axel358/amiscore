@@ -7,9 +7,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.CheckBox;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -63,16 +60,15 @@ public class DiagnosticsAdapter extends SelectableAdapter<DiagnosticsAdapter.Vie
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_diagnosis, null, false);
-        return new ViewHolder(view, clickListener);
+        return new ViewHolder(view, clickListener,context);
     }
 
     @Override
     public void onBindViewHolder(@NonNull DiagnosticsAdapter.ViewHolder holder, int position) {
-        String txt = filteredDiagnosis.get(position).getDisease() + " , " + filteredDiagnosis.get(position).getProbabilityInfo();
         holder.nameTv.setText(filteredDiagnosis.get(position).getName());
         holder.patient_id.setText(filteredDiagnosis.get(position).getCi());
-        holder.diagnosis_date.setText(filteredDiagnosis.get(position).getDate());
-        holder.disease.setText(txt);
+        holder.diagnosis_date.setText(filteredDiagnosis.get(position).getDate().split(",")[0]);
+        holder.disease.setText(filteredDiagnosis.get(position).getDisease() + ", " + filteredDiagnosis.get(position).getProbabilityInfo());
 
         if (isSelected(position)) {
             Anim anim=new Anim(Utils.dpToPx(context, 40), holder.checkBox);
@@ -100,13 +96,12 @@ public class DiagnosticsAdapter extends SelectableAdapter<DiagnosticsAdapter.Vie
         private LinearLayout linearLayout;
         private CheckBox checkBox;
 
-        public ViewHolder(@NonNull View itemView, ClickListener listener) {
-            super(itemView);
 
+        public ViewHolder(@NonNull View itemView, ClickListener listener,Context context) {
+            super(itemView);
             this.listener = listener;
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
-
             nameTv = itemView.findViewById(R.id.diagnosis_name_tv);
             patient_id = itemView.findViewById(R.id.diagnosis_patient_id);
             disease = itemView.findViewById(R.id.diagnosis_disease);

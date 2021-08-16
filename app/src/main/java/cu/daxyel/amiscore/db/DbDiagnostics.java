@@ -21,7 +21,7 @@ public class DbDiagnostics extends DbHelper {
         this.context = context;
     }
 
-    public long addDiagnostic(String full_name, String ci, String diseases, String probabilityInfo, String consult_date) {
+    public long addDiagnostic(String full_name, String ci, String diseases, String probabilityInfo, String consult_date,String observations) {
         long id = 0;
         try {
             DbHelper dbHelper = new DbHelper(context);
@@ -33,6 +33,7 @@ public class DbDiagnostics extends DbHelper {
             values.put(DiagnosisTable.COLUMN_DISEASES, diseases);
             values.put(DiagnosisTable.COLUMN_PROBABILITY_INFO, probabilityInfo);
             values.put(DiagnosisTable.COLUMN_CONSULT_DATE, consult_date);
+            values.put(DiagnosisTable.COLUMN_OBSERVATIONS,observations);
 
             id = db.insert(DiagnosisTable.TABLE_NAME, null, values);
         } catch (Exception e) {
@@ -61,7 +62,8 @@ public class DbDiagnostics extends DbHelper {
                     cursor.getString(cursor.getColumnIndex(DiagnosisTable.COLUMN_CI)),
                     cursor.getString(cursor.getColumnIndex(DiagnosisTable.COLUMN_DISEASES)),
                     cursor.getString(cursor.getColumnIndex(DiagnosisTable.COLUMN_PROBABILITY_INFO)),
-                    cursor.getString(cursor.getColumnIndex(DiagnosisTable.COLUMN_CONSULT_DATE))));
+                    cursor.getString(cursor.getColumnIndex(DiagnosisTable.COLUMN_CONSULT_DATE)),
+                    cursor.getString(cursor.getColumnIndex(DiagnosisTable.COLUMN_OBSERVATIONS))));
         }
         cursor.close();
         return diagnosisList;
@@ -91,7 +93,8 @@ public class DbDiagnostics extends DbHelper {
                     cursor.getString(cursor.getColumnIndex(DiagnosisTable.COLUMN_CI)),
                     cursor.getString(cursor.getColumnIndex(DiagnosisTable.COLUMN_DISEASES)),
                     cursor.getString(cursor.getColumnIndex(DiagnosisTable.COLUMN_PROBABILITY_INFO)),
-                    cursor.getString(cursor.getColumnIndex(DiagnosisTable.COLUMN_CONSULT_DATE))));
+                    cursor.getString(cursor.getColumnIndex(DiagnosisTable.COLUMN_CONSULT_DATE)),
+                    cursor.getString(cursor.getColumnIndex(DiagnosisTable.COLUMN_OBSERVATIONS))));
 
         }
         cursor.close();
@@ -113,7 +116,7 @@ public class DbDiagnostics extends DbHelper {
         return deletedRows;
     }
 
-    public int editDiagnostic(int id, String full_name, String ci, String diseases,String probabilityInfo, String consult_date) {
+    public int editDiagnostic(int id, String full_name, String ci, String diseases,String probabilityInfo, String consult_date,String observations) {
         int count = 0;
         DbHelper dbHelper = new DbHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -124,6 +127,7 @@ public class DbDiagnostics extends DbHelper {
         values.put(DiagnosisTable.COLUMN_DISEASES, diseases);
         values.put(DiagnosisTable.COLUMN_PROBABILITY_INFO,probabilityInfo);
         values.put(DiagnosisTable.COLUMN_CONSULT_DATE, consult_date);
+        values.put(DiagnosisTable.COLUMN_OBSERVATIONS,observations);
 
         String selection = BaseColumns._ID + " LIKE ?";
         String[] selectionArgs = {Integer.toString(id)};

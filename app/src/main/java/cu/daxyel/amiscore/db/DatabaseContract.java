@@ -12,5 +12,6 @@ public class DatabaseContract {
         public static final String COLUMN_DISEASES = "diseases";
         public static final String COLUMN_PROBABILITY_INFO = "probability_info";
         public static final String COLUMN_CONSULT_DATE = "consult_date";
+        public static final String COLUMN_OBSERVATIONS = "observations";
     }
 }

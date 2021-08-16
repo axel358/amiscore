@@ -1,43 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
-	android:padding="10dp"
-	style="@style/card">
+	android:padding="10dp">
 
 	<com.google.android.material.textfield.TextInputLayout
-		android:layout_height="wrap_content"
 		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
 		android:layout_marginLeft="10dp"
 		android:layout_marginRight="10dp">
 
 		<com.google.android.material.textfield.TextInputEditText
-			android:inputType="textPersonName"
+			android:id="@+id/name_et"
 			android:layout_width="match_parent"
-			android:ems="10"
 			android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+			android:ems="10"
 			android:hint="@string/dialog_save_diagnosis_input_name"
-			android:id="@+id/name_et"/>
+			android:maxLines="3" />
 
 	</com.google.android.material.textfield.TextInputLayout>
 
 	<com.google.android.material.textfield.TextInputLayout
-		android:layout_height="wrap_content"
 		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
 		android:layout_marginLeft="10dp"
 		android:layout_marginRight="10dp">
 
 		<com.google.android.material.textfield.TextInputEditText
-			android:inputType="number"
+			android:id="@+id/id_et"
 			android:layout_width="match_parent"
-			android:ems="10"
 			android:layout_height="wrap_content"
-			android:maxLength="11"
+			android:ems="10"
 			android:hint="@string/dialog_save_diagnosis_ID"
-			android:id="@+id/id_et"/>
+			android:inputType="number"
+			android:maxLength="11"/>
 
+	</com.google.android.material.textfield.TextInputLayout>
+
+	<com.google.android.material.textfield.TextInputLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp">
+
+		<com.google.android.material.textfield.TextInputEditText
+			android:id="@+id/observations_et"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:ems="10"
+			android:hint="@string/dialog_save_diagnosis_input_observations"
+			android:inputType="textMultiLine"
+			android:isScrollContainer="true"
+			android:maxLines="6" />
 	</com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

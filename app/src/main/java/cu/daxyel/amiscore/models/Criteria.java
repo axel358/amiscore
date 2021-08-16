@@ -4,11 +4,13 @@ public class Criteria
 {
     private int weight;
     private String name;
+    private boolean isSelected;
 
-    public Criteria(int weight, String name)
+    public Criteria(int weight, String name,boolean isSelected)
     {
         this.weight = weight;
         this.name = name;
+        this.isSelected=isSelected;
     }
 
     public int getWeight()
@@ -19,5 +21,13 @@ public class Criteria
     public String getName()
     {
         return name;
+    }
+    public boolean getSelected()
+    {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

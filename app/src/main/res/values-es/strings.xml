@@ -31,6 +31,7 @@
     <string name="dialog_save_diagnosis_QR">Escarnear QR</string>
     <string name="dialog_save_diagnosis_input_name">Nombre</string>
     <string name="dialog_save_diagnosis_ID">CI</string>
+    <string name="dialog_save_diagnosis_input_observations">Observaciones</string>
     <string name="toast_save_diagnosis_success">¡Diagnóstico Guardado!</string>
     <string name="toast_save_diagnosis_failed">¡Diagnóstico No Guardado!</string>
     <string name="dialog_save_diagnosis_input_name_error">Debe rellenar este campo</string>
@@ -40,5 +41,10 @@
     <string name="dialog_remove_one_diagnosis_MESSAGE">¿Está seguro de eliminar el diagnóstico seleccionado?</string>
     <string name="dialog_remove_multiple_diagnosis_MESSAGE">¿Está seguro de eliminar los diagnósticos seleccionados?</string>
     <string name="dialog_remove_diagnosis_DELETE">Eliminar</string>
+    <string name="toast_criteria">¡Debe de seleccionar alguna variable!</string>
+    <string name="dialog_edit_detail_button_Edit">Editar</string>
+    <string name="dialog_edit_detail_Title">Diagnóstico</string>
+    <string name="dialog_edit_detail_Button">Ok</string>
+
 
 </resources>

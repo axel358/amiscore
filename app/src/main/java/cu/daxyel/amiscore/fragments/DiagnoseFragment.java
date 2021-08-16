@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -53,6 +52,7 @@ public class DiagnoseFragment extends Fragment {
     private ProgressBar diagnosisPb;
     private Context context;
     private Spinner indexSpinner;
+    private CriteriaAdapter criteriaAdapter;
     private String probabilityInfo;
 
     @Override
@@ -61,12 +61,12 @@ public class DiagnoseFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -85,12 +85,178 @@ public class DiagnoseFragment extends Fragment {
         diagnosisPb.setMax(total);
 
         ArrayList<Criteria> criterias = new ArrayList<Criteria>();
-        criterias.add(new Criteria(21, "Adenomatosis intensa de la aorta"));
-        criterias.add(new Criteria(25, "Patrón gaseoso aumentado en ultrasonido"));
-        criterias.add(new Criteria(36, "Fibrilacion articular"));
-        criterias.add(new Criteria(39, "Lactato mayor a 2.1"));
+        criterias.add(new Criteria(21, "Adenomatosis intensa de la aorta", false));
+        criterias.add(new Criteria(25, "Patrón gaseoso aumentado en ultrasonido", false));
+        criterias.add(new Criteria(36, "Fibrilacion articular", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+        criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
 
-        criteriasRv.setAdapter(new CriteriaAdapter(criterias));
+        criteriaAdapter = new CriteriaAdapter(criterias);
+        criteriasRv.setAdapter(criteriaAdapter);
         indexSpinner = view.findViewById(R.id.indexes_spnr);
 
         //Create dummy data
@@ -102,6 +268,7 @@ public class DiagnoseFragment extends Fragment {
 
         return view;
     }
+
 
     public void updateProbability() {
         if (index > critValueHigh) {
@@ -117,7 +284,7 @@ public class DiagnoseFragment extends Fragment {
     }
 
     class CriteriaAdapter extends RecyclerView.Adapter<CriteriaAdapter.CriteriaViewHolder> {
-        ArrayList<Criteria> criteriaArrayList;
+        private ArrayList<Criteria> criteriaArrayList;
 
         public CriteriaAdapter(ArrayList<Criteria> criteriaArrayList) {
             this.criteriaArrayList = criteriaArrayList;
@@ -126,13 +293,31 @@ public class DiagnoseFragment extends Fragment {
         @NonNull
         @Override
         public CriteriaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view_entry_criteria = LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_criteria,null,false);
+            View view_entry_criteria = LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_criteria, null, false);
             return new CriteriaViewHolder(view_entry_criteria);
         }
 
         @Override
         public void onBindViewHolder(@NonNull CriteriaViewHolder holder, int position) {
             holder.criteriaChkbx.setText(criteriaArrayList.get(position).getName());
+            if (criteriaArrayList.get(position).getSelected()) {
+                holder.criteriaChkbx.setChecked(true);
+            } else {
+                holder.criteriaChkbx.setChecked(false);
+            }
+        }
+
+        public ArrayList<Criteria> getCriteriaArrayList() {
+            return criteriaArrayList;
+        }
+
+        public boolean isAnyChekBoxIsCheked() {
+            for (Criteria criteria : criteriaArrayList) {
+                if (criteria.getSelected()) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         @Override
@@ -142,25 +327,29 @@ public class DiagnoseFragment extends Fragment {
 
         public class CriteriaViewHolder extends RecyclerView.ViewHolder {
             CheckBox criteriaChkbx;
+
             public CriteriaViewHolder(@NonNull View itemView) {
                 super(itemView);
-                criteriaChkbx =itemView.findViewById(R.id.criteria_chkbx);
-                criteriaChkbx.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
+                criteriaChkbx = itemView.findViewById(R.id.criteria_chkbx);
+                criteriaChkbx.setOnClickListener(new OnClickListener() {
                     @Override
-                    public void onCheckedChanged(CompoundButton p1, boolean p2) {
-                        if (p2) {
-                            index += criteriaArrayList.get(getLayoutPosition()).getWeight();
+                    public void onClick(View view) {
+                        if (!criteriaArrayList.get(getAdapterPosition()).getSelected()) {
+                            index += criteriaArrayList.get(getAdapterPosition()).getWeight();
+                            criteriaArrayList.get(getAdapterPosition()).setSelected(true);
+                            diagnosisPb.setProgress(index);
+                            updateProbability();
                         } else {
-                            index -= criteriaArrayList.get(getLayoutPosition()).getWeight();;
+                            index -= criteriaArrayList.get(getAdapterPosition()).getWeight();
+                            criteriaArrayList.get(getAdapterPosition()).setSelected(false);
+                            diagnosisPb.setProgress(index);
+                            updateProbability();
+
                         }
-
-                        diagnosisPb.setProgress(index);
-
-                        updateProbability();
                     }
                 });
             }
+
         }
     }
 
@@ -173,17 +362,21 @@ public class DiagnoseFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_save:
-                showSaveDialog(null);
+                if (criteriaAdapter.isAnyChekBoxIsCheked()) {
+                    showSaveDialog(null);
+                } else {
+                    Toast.makeText(context, getString(R.string.toast_criteria), Toast.LENGTH_SHORT).show();
+                }
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void showSaveDialog(String[] info) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy, hh:mm aaa", Locale.getDefault());
         Date date = new Date();
         final String consult_date = dateFormat.format(date);
         final DbDiagnostics dbDiagnostics = new DbDiagnostics(context);
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Dialog);
         builder.setTitle(getString(R.string.dialog_save_diagnosis_TITLE));
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_save_diagnosis, null);
         builder.setView(view);
@@ -199,6 +392,8 @@ public class DiagnoseFragment extends Fragment {
 
         final TextInputEditText nameEt = view.findViewById(R.id.name_et);
         final TextInputEditText idEt = view.findViewById(R.id.id_et);
+        final TextInputEditText observationsEt = view.findViewById(R.id.observations_et);
+
 
         if (info != null) {
             nameEt.setText(info[0]);
@@ -214,13 +409,22 @@ public class DiagnoseFragment extends Fragment {
             public void onClick(View p1) {
                 String name = nameEt.getText().toString();
                 String id = idEt.getText().toString();
+                String observations = observationsEt.getText().toString();
                 if (name.isEmpty()) {
                     nameEt.setError(getString(R.string.dialog_save_diagnosis_input_name_error));
                 } else {
                     if (id.length() < 11) {
                         idEt.setError(getString(R.string.dialog_save_diagnosis_input_ID_error));
                     } else {
-                        long rowId = dbDiagnostics.addDiagnostic(name, id, indexSpinner.getSelectedItem().toString(), probabilityInfo, consult_date);
+                        long rowId = dbDiagnostics.addDiagnostic(name, id, indexSpinner.getSelectedItem().toString(), probabilityInfo, consult_date, observations);
+                        for (int i = 0; i < criteriaAdapter.getCriteriaArrayList().size(); i++) {
+                            criteriaAdapter.getCriteriaArrayList().get(i).setSelected(false);
+                            criteriaAdapter.notifyItemChanged(i);
+                            index = 0;
+                            diagnosisPb.setProgress(index);
+                            updateProbability();
+                        }
+
                         if (rowId > 0) {
                             Toast.makeText(context, getString(R.string.toast_save_diagnosis_success), Toast.LENGTH_SHORT).show();
                         } else {
