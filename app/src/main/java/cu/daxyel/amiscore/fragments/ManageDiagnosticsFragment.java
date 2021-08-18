@@ -274,18 +274,6 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
             builder.setNegativeButton(getString(R.string.dialog_save_diagnosis_CANCEL), null);
             builder.setNeutralButton(getString(R.string.dialog_edit_detail_button_Edit), null);
 
-            //////////////////////////////////////DUMMY DATA/////////////////////////////////////////////////
-            ArrayList<Criteria> criterias = new ArrayList<Criteria>();
-            criterias.add(new Criteria(21, "Adenomatosis intensa de la aorta", false));
-            criterias.add(new Criteria(25, "Patrón gaseoso aumentado en ultrasonido", false));
-            criterias.add(new Criteria(36, "Fibrilacion articular", false));
-            criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
-
-            Spinner indexSpinner = views.findViewById(R.id.dialog_edit_spinner);
-            String[] inexes = new String[]{"Index 1", "Index 2"};
-            indexSpinner.setAdapter(new ArrayAdapter<String>(context, R.layout.entry_spnr_edit_dialog, inexes));
-
-            //////////////////////////////////////DUMMY DATA/////////////////////////////////////////////////
             final TextInputEditText nameEt = views.findViewById(R.id.name_edit_details);
             final TextInputEditText idEt = views.findViewById(R.id.id_edit_details);
             final TextInputEditText observationsEt = views.findViewById(R.id.observations_edit_details);
@@ -293,11 +281,7 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
             nameEt.setText(diagnosticsAdapter.getDiagnosis().get(position).getName());
             idEt.setText(diagnosticsAdapter.getDiagnosis().get(position).getCi());
             observationsEt.setText(diagnosticsAdapter.getDiagnosis().get(position).getObservations());
-            for (int i = 0; i < inexes.length; i++) {
-                if (diagnosticsAdapter.getDiagnosis().get(position).getDisease().equalsIgnoreCase(inexes[i])) {
-                    indexSpinner.setSelection(i);
-                }
-            }
+
             Drawable drawableNameEt = nameEt.getBackground();
             nameEt.setFocusable(false);
             nameEt.setCursorVisible(false);
@@ -312,9 +296,6 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
             observationsEt.setFocusable(false);
             observationsEt.setCursorVisible(false);
             observationsEt.setBackgroundColor(Color.TRANSPARENT);
-
-            indexSpinner.setEnabled(false);
-
 
             final AlertDialog dialog = builder.create();
             dialog.show();
@@ -338,8 +319,6 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
                     observationsEt.setFocusableInTouchMode(true);
                     observationsEt.setBackground(drawableObservationEt);
 
-                    indexSpinner.setEnabled(true);
-
                 }
             });
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
@@ -349,7 +328,7 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
                     String name = nameEt.getText().toString();
                     String id = idEt.getText().toString();
                     String observations = observationsEt.getText().toString();
-                    String disease = indexSpinner.getSelectedItem().toString();
+                    String disease = diagnosticsAdapter.getDiagnosis().get(position).getDisease();
                     if (name.isEmpty()) {
                         nameEt.setError(getString(R.string.dialog_save_diagnosis_input_name_error));
                     } else {
