@@ -35,13 +35,15 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> exte
      * Toggle the selection status of the item at a given position
      * @param position Position of the item to toggle the selection status for
      */
-    public void toggleSelection(int position) {
+    public void toggleSelection(int position,ArrayList<Diagnosis>diagnosis) {
 
         if (selectedItems.get(position, false)) {
             selectedItems.delete(position);
+            diagnosis.get(position).setSelected(false);
 
         } else {
             selectedItems.put(position, true);
+            diagnosis.get(position).setSelected(true);
         }
         notifyItemChanged(position);
     }

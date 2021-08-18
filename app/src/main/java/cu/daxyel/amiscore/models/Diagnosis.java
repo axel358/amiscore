@@ -8,6 +8,7 @@ public class Diagnosis {
     private String probabilityInfo;
     private String date;
     private String observations;
+    private boolean isSelected;
 
     public Diagnosis(int id, String name, String ci, String disease, String probabilityInfo, String date, String observations) {
         this.id = id;
@@ -17,6 +18,14 @@ public class Diagnosis {
         this.probabilityInfo = probabilityInfo;
         this.date = date;
         this.observations = observations;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean isSelected) {
+        this.isSelected = isSelected;
     }
 
     public void setNamme(String name) {

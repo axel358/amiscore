@@ -4,8 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -60,7 +58,7 @@ public class DiagnosticsAdapter extends SelectableAdapter<DiagnosticsAdapter.Vie
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_diagnosis, null, false);
-        return new ViewHolder(view, clickListener,context);
+        return new ViewHolder(view, clickListener, context);
     }
 
     @Override
@@ -70,20 +68,14 @@ public class DiagnosticsAdapter extends SelectableAdapter<DiagnosticsAdapter.Vie
         holder.diagnosis_date.setText(filteredDiagnosis.get(position).getDate().split(",")[0]);
         holder.disease.setText(filteredDiagnosis.get(position).getDisease() + ", " + filteredDiagnosis.get(position).getProbabilityInfo());
 
-        if (isSelected(position)) {
-            Anim anim=new Anim(Utils.dpToPx(context, 40), holder.checkBox);
-            anim.setDuration(300);
-            holder.checkBox.setAnimation(anim);
+        if (filteredDiagnosis.get(position).isSelected()) {
+            holder.checkBox.setWidth(Utils.dpToPx(context, 40));
             holder.checkBox.setChecked(true);
             holder.checkBox.setClickable(false);
         } else {
-            Anim anim=new Anim(0, holder.checkBox);
-            anim.setDuration(300);
-            holder.checkBox.setAnimation(anim);
-            holder.checkBox.setChecked(false);
+            holder.checkBox.setWidth(Utils.dpToPx(context, 0));
         }
     }
-
 
     @Override
     public int getItemCount() {
@@ -95,11 +87,13 @@ public class DiagnosticsAdapter extends SelectableAdapter<DiagnosticsAdapter.Vie
         private ClickListener listener;
         private LinearLayout linearLayout;
         private CheckBox checkBox;
+        private Context context;
 
 
-        public ViewHolder(@NonNull View itemView, ClickListener listener,Context context) {
+        public ViewHolder(@NonNull View itemView, ClickListener listener, Context context) {
             super(itemView);
             this.listener = listener;
+            this.context = context;
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
             nameTv = itemView.findViewById(R.id.diagnosis_name_tv);
@@ -129,30 +123,6 @@ public class DiagnosticsAdapter extends SelectableAdapter<DiagnosticsAdapter.Vie
             void onItemClicked(int position);
 
             boolean onItemLongClicked(int position);
-        }
-    }
-
-    class Anim extends Animation {
-        private int width,startWidth;
-        private View view;
-
-        public Anim(int width, View view) {
-            this.width = width;
-            this.view = view;
-            this.startWidth = view.getWidth();
-        }
-
-        @Override
-        protected void applyTransformation(float interpolatedTime, Transformation t) {
-            int newWidth=startWidth + (int) ((width - startWidth) * interpolatedTime);
-            view.getLayoutParams().width = newWidth;
-            view.requestLayout();
-            super.applyTransformation(interpolatedTime, t);
-        }
-
-        @Override
-        public boolean willChangeBounds() {
-            return true;
         }
     }
 }

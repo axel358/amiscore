@@ -1,6 +1,7 @@
 package cu.daxyel.amiscore.fragments;
 
 import android.content.Context;
+import android.gesture.Gesture;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -19,10 +20,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -63,7 +67,7 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
     private DiagnosticsAdapter diagnosticsAdapter;
     private String index;
     private boolean show_load;
-    private ActionMode actionMode;
+    public ActionMode actionMode;
     private boolean editMode = false;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
 
@@ -265,6 +269,7 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
     public void onItemClicked(int position) {
         if (actionMode != null) {
             toggleSelection(position);
+
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Dialog);
             builder.setTitle(getResources().getString(R.string.dialog_edit_detail_Title));
@@ -359,7 +364,6 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
     public boolean onItemLongClicked(int position) {
         if (actionMode == null) {
             actionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(actionModeCallback);
-
         }
 
         toggleSelection(position);
@@ -368,9 +372,8 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
     }
 
     private void toggleSelection(int position) {
-        diagnosticsAdapter.toggleSelection(position);
+        diagnosticsAdapter.toggleSelection(position, diagnosticsAdapter.getDiagnosis());
         int count = diagnosticsAdapter.getSelectedItemCount();
-
         if (count == 0) {
             actionMode.finish();
         } else {
@@ -400,7 +403,6 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
             switch (item.getItemId()) {
                 case R.id.menu_delete:
                     AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Dialog);
-
                     final ArrayList<Diagnosis> diagnosisToRemove = new ArrayList<>();   //array con los objetos a remover
                     //Array clonado con las posiciones seleccionada se haca porque cuando se ejecuta
                     // mode.finish pues se resetea el array selecteditems
@@ -424,9 +426,10 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
                         public void onClick(View view) {
                             for (Integer i : selectedItems) {
                                 diagnosisToRemove.add(diagnosticsAdapter.getDiagnosis().get(i)); //add al array los objetos diagnosis
-                                diagnosticsAdapter.notifyItemRemoved(i); //notificar al recycler q posisiones van a ser removidas
+                                diagnosticsAdapter.getDiagnosis().get(i).setSelected(false);
                             }
                             diagnosticsAdapter.getDiagnosis().removeAll(diagnosisToRemove);  //remover la colleccion de datos entera
+                            diagnosticsAdapter.notifyDataSetChanged();
 
                             for (int i = 0; i < diagnosisToRemove.size(); i++) {
                                 dbDiagnostics.deleteDiagnostic(diagnosisToRemove.get(i).getId());
@@ -446,6 +449,9 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             diagnosticsAdapter.clearSelection();
+            for (int i = 0; i < diagnosticsAdapter.getDiagnosis().size(); i++) {
+                diagnosticsAdapter.getDiagnosis().get(i).setSelected(false);
+            }
             actionMode = null;
         }
     }
@@ -479,4 +485,5 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
             diagnosisRv.setAdapter(diagnosticsAdapter);
         }
     }
+
 }

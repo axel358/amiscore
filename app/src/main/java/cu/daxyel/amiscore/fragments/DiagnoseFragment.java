@@ -438,6 +438,7 @@ public class DiagnoseFragment extends Fragment {
             }
         });
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Utils.SCAN_REQUEST_CODE && data != null) {
