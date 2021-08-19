@@ -41,7 +41,9 @@
 				android:layout_weight="0.8"
 				android:text="Name"
 				android:textColor="#FF0E0E0E"
-				android:textSize="16sp"/>
+				android:textSize="16sp"
+				android:maxLines="1"
+				android:ellipsize="end"/>
 
 			<TextView
 				android:id="@+id/diagnosis_date"

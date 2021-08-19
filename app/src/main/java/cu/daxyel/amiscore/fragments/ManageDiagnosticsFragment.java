@@ -1,6 +1,7 @@
 package cu.daxyel.amiscore.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.gesture.Gesture;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ActionMode;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,7 +45,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
+import cu.daxyel.amiscore.MainActivity;
 import cu.daxyel.amiscore.R;
+import cu.daxyel.amiscore.SplashActivity;
 import cu.daxyel.amiscore.adapters.DiagnosticsAdapter;
 import cu.daxyel.amiscore.db.DbDiagnostics;
 import cu.daxyel.amiscore.models.Criteria;
@@ -70,6 +74,7 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
     public ActionMode actionMode;
     private boolean editMode = false;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
+    ItemTouchHelper itemTouchHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -142,7 +147,6 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
 
                 final int position = viewHolder.getAdapterPosition();
-
                 final Diagnosis diagnosis = diagnosticsAdapter.getDiagnosis().get(viewHolder.getAdapterPosition());
                 diagnosticsAdapter.getDiagnosis().remove(position);
                 diagnosticsAdapter.notifyItemRemoved(position);
@@ -222,7 +226,7 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
             }
 
         };
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(diagnosisRv);
 
         return view;
@@ -269,7 +273,6 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
     public void onItemClicked(int position) {
         if (actionMode != null) {
             toggleSelection(position);
-
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Dialog);
             builder.setTitle(getResources().getString(R.string.dialog_edit_detail_Title));
@@ -365,7 +368,6 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
         if (actionMode == null) {
             actionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(actionModeCallback);
         }
-
         toggleSelection(position);
 
         return true;
@@ -373,12 +375,14 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
 
     private void toggleSelection(int position) {
         diagnosticsAdapter.toggleSelection(position, diagnosticsAdapter.getDiagnosis());
+        itemTouchHelper.attachToRecyclerView(null);
         int count = diagnosticsAdapter.getSelectedItemCount();
         if (count == 0) {
             actionMode.finish();
         } else {
             actionMode.setTitle(String.valueOf(count));
             actionMode.invalidate();
+
         }
     }
 
@@ -390,6 +394,7 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             mode.getMenuInflater().inflate(R.menu.menu_delete, menu);
+            itemTouchHelper.attachToRecyclerView(null);
             return true;
         }
 
@@ -453,6 +458,13 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
                 diagnosticsAdapter.getDiagnosis().get(i).setSelected(false);
             }
             actionMode = null;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                 itemTouchHelper.attachToRecyclerView(diagnosisRv);
+                }
+            },100);
+
         }
     }
 
