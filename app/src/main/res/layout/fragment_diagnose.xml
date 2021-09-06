@@ -5,8 +5,8 @@
 	android:layout_height="fill_parent"
 	android:orientation="vertical">
 
-    <include layout="@layout/ribbon_index" />
-
+	<include
+		layout="@layout/ribbon_index"/>
 
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/criteria_rv"
@@ -15,7 +15,7 @@
 		android:layout_marginLeft="10dp"
 		android:layout_marginRight="10dp"
 		android:layout_weight="0.8"
-		android:divider="@null" />
+		android:divider="@null"/>
 
 	<LinearLayout
 		android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
 			android:id="@+id/diagnosis_tv"
 			android:gravity="center"
 			android:textSize="18sp"
-			android:textColor="#000000"/>
+			android:textAppearance="?android:attr/textAppearanceLarge"/>
 
 		<ProgressBar
 			style="?android:attr/progressBarStyleHorizontal"

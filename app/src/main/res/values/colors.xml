@@ -5,4 +5,6 @@
     <color name="color_text">#000000</color>
     <color name="color_delete">#FFF44336</color>
     <color name="delete_background">#FFE5E5E5</color>
+    <color name="vector_tint">#000000</color>
+    <color name="background">@color/primary_material_light</color>
    </resources>

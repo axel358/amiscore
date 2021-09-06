@@ -40,10 +40,10 @@
 				android:layout_height="wrap_content"
 				android:layout_weight="0.8"
 				android:text="Name"
-				android:textColor="#FF0E0E0E"
 				android:textSize="16sp"
 				android:maxLines="1"
-				android:ellipsize="end"/>
+				android:ellipsize="end"
+				android:textAppearance="?android:attr/textAppearanceLarge"/>
 
 			<TextView
 				android:id="@+id/diagnosis_date"
@@ -53,9 +53,9 @@
 				android:gravity="end"
 				android:text="Date"
 				android:textAlignment="textEnd"
-				android:textColor="#353535"
 				android:textSize="14sp"
-				android:layout_marginLeft="5dp"/>
+				android:layout_marginLeft="5dp"
+				android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 		</LinearLayout>
 
@@ -72,10 +72,9 @@
 			android:layout_marginStart="5dp"
 			android:layout_marginEnd="5dp"
 			android:layout_marginRight="5dp"
-			android:enabled="false"
 			android:text="CI:"
-			android:textColor="#353535"
-			android:textSize="14sp"/>
+			android:textSize="14sp"
+			android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 		<TextView
 			android:id="@+id/diagnosis_disease"
@@ -84,10 +83,9 @@
 			android:layout_marginStart="5dp"
 			android:layout_marginEnd="5dp"
 			android:layout_marginRight="5dp"
-			android:enabled="false"
 			android:text="Index"
-			android:textColor="#353535"
-			android:textSize="14sp"/>
+			android:textSize="14sp"
+			android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 	</LinearLayout>
 

@@ -270,7 +270,7 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
     }
 
     @Override
-    public void onItemClicked(int position) {
+    public void onItemClicked(final int position) {
         if (actionMode != null) {
             toggleSelection(position);
         } else {
@@ -290,17 +290,17 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
             idEt.setText(diagnosticsAdapter.getDiagnosis().get(position).getCi());
             observationsEt.setText(diagnosticsAdapter.getDiagnosis().get(position).getObservations());
 
-            Drawable drawableNameEt = nameEt.getBackground();
+            final Drawable drawableNameEt = nameEt.getBackground();
             nameEt.setFocusable(false);
             nameEt.setCursorVisible(false);
             nameEt.setBackgroundColor(Color.TRANSPARENT);
 
-            Drawable drawableIdEt = idEt.getBackground();
+            final Drawable drawableIdEt = idEt.getBackground();
             idEt.setFocusable(false);
             idEt.setCursorVisible(false);
             idEt.setBackgroundColor(Color.TRANSPARENT);
 
-            Drawable drawableObservationEt = observationsEt.getBackground();
+            final Drawable drawableObservationEt = observationsEt.getBackground();
             observationsEt.setFocusable(false);
             observationsEt.setCursorVisible(false);
             observationsEt.setBackgroundColor(Color.TRANSPARENT);
