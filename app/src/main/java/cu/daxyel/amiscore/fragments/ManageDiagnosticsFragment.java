@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ActionMode;
 
@@ -70,11 +71,11 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
     private SearchView searchView;
     private DiagnosticsAdapter diagnosticsAdapter;
     private String index;
-    private boolean show_load;
     public ActionMode actionMode;
     private boolean editMode = false;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     ItemTouchHelper itemTouchHelper;
+    private boolean selected_all = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,7 +111,6 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
             @Override
             public void onItemSelected(AdapterView<?> p1, View p2, int p3, long p4) {
                 index = p1.getItemAtPosition(p3).toString();
-                show_load = true;
                 if (index.equalsIgnoreCase("all")) {
                     new LoadDiagnosisTask().execute();
                 } else {
@@ -269,6 +269,7 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onItemClicked(final int position) {
         if (actionMode != null) {
@@ -363,6 +364,7 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onItemLongClicked(int position) {
         if (actionMode == null) {
@@ -373,10 +375,19 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void toggleSelection(int position) {
         diagnosticsAdapter.toggleSelection(position, diagnosticsAdapter.getDiagnosis());
         itemTouchHelper.attachToRecyclerView(null);
+        actionMode.getMenu().findItem(R.id.menu_delete).setEnabled(true);
+        actionMode.getMenu().findItem(R.id.menu_delete).getIcon().setTint(getResources().getColor((R.color.item_delete_enabled)));
         int count = diagnosticsAdapter.getSelectedItemCount();
+        if (count == diagnosticsAdapter.getDiagnosis().size()) {   //condicional q verifica cuando se esta seleccionando de 1 en 1 para determinar el icono a mostrar
+            actionMode.getMenu().findItem(R.id.menu_select_all).setIcon(R.drawable.ic_select_all_items_done);
+            selected_all = true;
+        } else {
+            actionMode.getMenu().findItem(R.id.menu_select_all).setIcon(R.drawable.ic_select_all_items);
+        }
         if (count == 0) {
             actionMode.finish();
         } else {
@@ -403,14 +414,13 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
             return false;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.menu_delete:
                     AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Dialog);
                     final ArrayList<Diagnosis> diagnosisToRemove = new ArrayList<>();   //array con los objetos a remover
-                    //Array clonado con las posiciones seleccionada se haca porque cuando se ejecuta
-                    // mode.finish pues se resetea el array selecteditems
                     final ArrayList<Integer> selectedItems = new ArrayList<>();
                     selectedItems.addAll(diagnosticsAdapter.getSelectedItems());
 
@@ -445,15 +455,37 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
                         }
                     });
                     return true;
+                case R.id.menu_select_all:
+                    if (!selected_all) {
+                        selected_all = true;                                   //variable usada para verificar el estado de los items
+                        item.setIcon(R.drawable.ic_select_all_items_done);
+                        actionMode.getMenu().findItem(R.id.menu_delete).setEnabled(true);
+                        actionMode.getMenu().findItem(R.id.menu_delete).getIcon().setTint(getResources().getColor((R.color.item_delete_enabled)));
+                        for (int i = 0; i < diagnosticsAdapter.getDiagnosis().size(); i++) {
+                            diagnosticsAdapter.selectAll(i, diagnosticsAdapter.getDiagnosis(), true);    //establecer toda la lista a selected
+                        }
+                    } else {
+                        selected_all = false;
+                        item.setIcon(R.drawable.ic_select_all_items);
+                        actionMode.getMenu().findItem(R.id.menu_delete).setEnabled(false);
+                        actionMode.getMenu().findItem(R.id.menu_delete).getIcon().setTint(getResources().getColor((R.color.item_delete_disabled)));
+                        for (int i = 0; i < diagnosticsAdapter.getDiagnosis().size(); i++) {
+                            diagnosticsAdapter.selectAll(i, diagnosticsAdapter.getDiagnosis(), false);   //establecer toda la lista a unselected
+                        }
+                    }
+                    actionMode.setTitle(String.valueOf(diagnosticsAdapter.getSelectedItemCount()));    //establecer title al action
 
                 default:
                     return false;
             }
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             diagnosticsAdapter.clearSelection();
+            actionMode.getMenu().findItem(R.id.menu_delete).getIcon().setTint(getResources().getColor((R.color.item_delete_enabled)));
+            selected_all = false;
             for (int i = 0; i < diagnosticsAdapter.getDiagnosis().size(); i++) {
                 diagnosticsAdapter.getDiagnosis().get(i).setSelected(false);
             }
@@ -461,9 +493,9 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                 itemTouchHelper.attachToRecyclerView(diagnosisRv);
+                    itemTouchHelper.attachToRecyclerView(diagnosisRv);
                 }
-            },100);
+            }, 100);
 
         }
     }
@@ -473,14 +505,8 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (show_load) {
-                loadingTv.setVisibility(View.VISIBLE);
-                loadingPb.setVisibility(View.VISIBLE);
-            } else {
-                loadingTv.setVisibility(View.INVISIBLE);
-                loadingPb.setVisibility(View.INVISIBLE);
-            }
-
+            loadingTv.setVisibility(View.VISIBLE);
+            loadingPb.setVisibility(View.VISIBLE);
         }
 
         @Override

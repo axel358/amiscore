@@ -7,4 +7,6 @@
     <color name="delete_background">#FFE5E5E5</color>
     <color name="vector_tint">#000000</color>
     <color name="background">@color/primary_material_light</color>
+    <color name="item_delete_enabled">#FFFFFFFF</color>
+    <color name="item_delete_disabled">@android:color/darker_gray</color>
    </resources>

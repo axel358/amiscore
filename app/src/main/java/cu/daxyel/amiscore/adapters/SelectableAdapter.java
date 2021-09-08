@@ -23,6 +23,7 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> exte
 
     /**
      * Indicates if the item at position position is selected
+     *
      * @param position Position of the item to check
      * @return true if the item is selected, false otherwise
      */
@@ -33,9 +34,10 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> exte
 
     /**
      * Toggle the selection status of the item at a given position
+     *
      * @param position Position of the item to toggle the selection status for
      */
-    public void toggleSelection(int position,ArrayList<Diagnosis>diagnosis) {
+    public void toggleSelection(int position, ArrayList<Diagnosis> diagnosis) {
 
         if (selectedItems.get(position, false)) {
             selectedItems.delete(position);
@@ -44,6 +46,20 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> exte
         } else {
             selectedItems.put(position, true);
             diagnosis.get(position).setSelected(true);
+        }
+        notifyItemChanged(position);
+    }
+
+    /**
+     * Add or remove all items from the selectedItems collection :)
+     */
+    public void selectAll(int position, ArrayList<Diagnosis> diagnosis, boolean selectAll) {
+        if (selectAll) {
+            selectedItems.put(position, true);
+            diagnosis.get(position).setSelected(true);
+        } else {
+            selectedItems.delete(position);
+            diagnosis.get(position).setSelected(false);
         }
         notifyItemChanged(position);
     }
@@ -61,6 +77,7 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> exte
 
     /**
      * Count the selected items
+     *
      * @return Selected items count
      */
     public int getSelectedItemCount() {
@@ -69,6 +86,7 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> exte
 
     /**
      * Indicates the list of selected items
+     *
      * @return List of selected items ids
      */
     public ArrayList<Integer> getSelectedItems() {
