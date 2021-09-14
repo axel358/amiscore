@@ -20,14 +20,6 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="card">
-        <item name="android:orientation">vertical</item>
-        <item name="android:background">@drawable/card_background</item>
-        <item name="android:elevation" tools:targetApi="lollipop">2dp</item>
-        <item name="android:translationZ" tools:targetApi="lollipop">2dp</item>
-        <item name="android:gravity">center</item>
-	</style>
-
     <style name="Dialog" parent="Theme.AppCompat.DayNight.Dialog.Alert">
         <item name="android:windowBackground">@drawable/dialog</item>
     </style>
