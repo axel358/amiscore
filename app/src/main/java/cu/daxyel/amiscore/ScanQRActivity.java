@@ -22,15 +22,6 @@ public class ScanQRActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        if (Build.VERSION.SDK_INT > 22)
-        {
-            if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
-            {
-                requestPermissions(new String[]{Manifest.permission.CAMERA}, 58);
-            }
-        }
-
         setContentView(R.layout.activity_scan_qr);
         CodeScannerView scannerView = findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(this, scannerView);

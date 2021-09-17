@@ -44,5 +44,5 @@
     <string name="dialog_edit_detail_Title">Diagnosis</string>
     <string name="dialog_edit_detail_Button">Ok</string>
     <string name="item_selectAll">Select all</string>
-
+    <string name="lang">Español</string>
 </resources>

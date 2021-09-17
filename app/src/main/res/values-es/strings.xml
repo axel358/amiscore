@@ -46,6 +46,6 @@
     <string name="dialog_edit_detail_Title">Diagnóstico</string>
     <string name="dialog_edit_detail_Button">Ok</string>
     <string name="item_selectAll">Seleccionar todo</string>
-
+    <string name="lang">English</string>
 
 </resources>

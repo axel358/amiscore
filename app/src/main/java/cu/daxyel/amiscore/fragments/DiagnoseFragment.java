@@ -1,44 +1,47 @@
 package cu.daxyel.amiscore.fragments;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import cu.daxyel.amiscore.models.Criteria;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.textfield.TextInputEditText;
 import cu.daxyel.amiscore.R;
+import cu.daxyel.amiscore.ScanQRActivity;
+import cu.daxyel.amiscore.Utils;
+import cu.daxyel.amiscore.db.DbDiagnostics;
+import cu.daxyel.amiscore.models.Criteria;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-import android.view.MenuInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import android.content.DialogInterface;
-import android.view.View.OnClickListener;
-import com.google.android.material.textfield.TextInputEditText;
-import android.content.Intent;
-import android.widget.Toast;
-import cu.daxyel.amiscore.ScanQRActivity;
-import cu.daxyel.amiscore.Utils;
-import cu.daxyel.amiscore.db.DbDiagnostics;
-import android.widget.Spinner;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.AdapterView;
-import android.widget.Adapter;
+import android.app.Activity;
 
 public class DiagnoseFragment extends Fragment {
     private RecyclerView criteriasRv;
-    private TextView diagnosisTv;
+    private TextView diagnosisTv,infoTv;
     private int index;
     private int total;
     private int critValueMed, critValueHigh;
@@ -68,11 +71,12 @@ public class DiagnoseFragment extends Fragment {
         criteriasRv.setLayoutManager(new LinearLayoutManager(context));
         diagnosisTv = view.findViewById(R.id.diagnosis_tv);
         diagnosisPb = view.findViewById(R.id.diagnosis_pb);
-        
+        infoTv = view.findViewById(R.id.info_tv);
+
         indexSpinner = view.findViewById(R.id.indexes_spnr);
-        
+
         //Create dummy data
-        String[] inexes = new String[]{"Index 1", "Index 2"};
+        String[] inexes = new String[]{"AMIscore", "Index 2"};
 
         indexSpinner.setAdapter(new ArrayAdapter<String>(context, R.layout.entry_index_spnr, inexes));
         indexSpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
@@ -86,66 +90,62 @@ public class DiagnoseFragment extends Fragment {
                 public void onNothingSelected(AdapterView<?> p1) {
                 }
             });
-        
-            
+
+
         return view;
     }
 
-    @Override
-    public void onViewStateRestored(Bundle savedInstanceState) {
-        if(savedInstanceState!=null){
-            Toast.makeText(context,"cea"+savedInstanceState.getInt("pos"),5000).show();
-            indexSpinner.setSelection(1);
-        }
-        super.onViewStateRestored(savedInstanceState);
-        
-    }
-    
-    
-    public void loadIndex(String name){
+
+    public void loadIndex(String name) {
         ArrayList<Criteria> criterias = new ArrayList<Criteria>();
-        
-        switch(name){
-            case "Index 1":
+        String info="";
+        switch (name) {
+            case "AMIscore":
                 total = 121;
                 critValueMed = 58;
                 critValueHigh = 81;
-                
-                criterias.add(new Criteria(21, "Adenomatosis intensa de la aorta", false));
-                criterias.add(new Criteria(25, "Patrón gaseoso aumentado en ultrasonido", false));
-                criterias.add(new Criteria(36, "Fibrilacion articular", false));
-                criterias.add(new Criteria(39, "Lactato mayor a 2.1", false));
+
+                if (Locale.getDefault().toString().startsWith("es")) {
+                    criterias.add(new Criteria(21, "Ateromatosis de la aorta", false));
+                    criterias.add(new Criteria(25, "Patrón gaseoso utrasonográfico aumentado", false));
+                    criterias.add(new Criteria(36, "Fibrilacion auricular", false));
+                    criterias.add(new Criteria(39, "Lactato mayor que 2.1", false));
+                    info = "Dolor abdominal inespecífico sin diagnóstico constatado \n+";
+                } else {
+                    criterias.add(new Criteria(21, "Aorta ateromatosis", false));
+                    criterias.add(new Criteria(25, "Increased ultrasonografic gaseous pattern", false));
+                    criterias.add(new Criteria(36, "Atrial fibrillation", false));
+                    criterias.add(new Criteria(39, "Lactate higher than 2.1", false));
+                    info = "Non specific abdominal pain without clear diagnosis \n+";
+                }
                 break;
             case "Index 2":
                 total = 122;
                 critValueMed = 59;
                 critValueHigh = 82;
 
-                criterias.add(new Criteria(21, "djhkjw", false));
-                criterias.add(new Criteria(25, "kjgjsdkgkahjsdksj", false));
-                criterias.add(new Criteria(37, "lkdjslkjsldls scdssss5", false));
-                criterias.add(new Criteria(39, "alalallalala 58", false));
+                criterias.add(new Criteria(21, "Variable 1", false));
+                criterias.add(new Criteria(25, "Variable 2", false));
+                criterias.add(new Criteria(37, "Variable 3", false));
+                criterias.add(new Criteria(39, "Variable 4", false));
                 break;
-                
+
         }
         diagnosisPb.setMax(total);
 
+        if (info.isEmpty()) {
+            infoTv.setVisibility(View.GONE);
+        } else {
+            infoTv.setVisibility(View.VISIBLE);
+            infoTv.setText(info);
+        }
+
         criteriaAdapter = new CriteriaAdapter(criterias);
         criteriasRv.setAdapter(criteriaAdapter);
-        
+
         updateProbability();
-        
-    }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putInt("pos",indexSpinner.getSelectedItemPosition());
-        super.onSaveInstanceState(outState);
-        Toast.makeText(context,"hdks",5000).show();
     }
-    
-    
-
 
     public void updateProbability() {
         if (index > critValueHigh) {
@@ -178,7 +178,7 @@ public class DiagnoseFragment extends Fragment {
         public void onBindViewHolder(@NonNull CriteriaViewHolder holder, int position) {
             holder.criteriaChkbx.setText(criteriaArrayList.get(position).getName());
             holder.criteriaChkbx.setChecked(criteriaArrayList.get(position).getSelected());
-           }
+        }
 
         public ArrayList<Criteria> getCriteriaArrayList() {
             return criteriaArrayList;
@@ -205,22 +205,22 @@ public class DiagnoseFragment extends Fragment {
                 super(itemView);
                 criteriaChkbx = itemView.findViewById(R.id.criteria_chkbx);
                 criteriaChkbx.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (!criteriaArrayList.get(getAdapterPosition()).getSelected()) {
-                            index += criteriaArrayList.get(getAdapterPosition()).getWeight();
-                            criteriaArrayList.get(getAdapterPosition()).setSelected(true);
-                            diagnosisPb.setProgress(index);
-                            updateProbability();
-                        } else {
-                            index -= criteriaArrayList.get(getAdapterPosition()).getWeight();
-                            criteriaArrayList.get(getAdapterPosition()).setSelected(false);
-                            diagnosisPb.setProgress(index);
-                            updateProbability();
+                        @Override
+                        public void onClick(View view) {
+                            if (!criteriaArrayList.get(getAdapterPosition()).getSelected()) {
+                                index += criteriaArrayList.get(getAdapterPosition()).getWeight();
+                                criteriaArrayList.get(getAdapterPosition()).setSelected(true);
+                                diagnosisPb.setProgress(index);
+                                updateProbability();
+                            } else {
+                                index -= criteriaArrayList.get(getAdapterPosition()).getWeight();
+                                criteriaArrayList.get(getAdapterPosition()).setSelected(false);
+                                diagnosisPb.setProgress(index);
+                                updateProbability();
 
+                            }
                         }
-                    }
-                });
+                    });
             }
 
         }
@@ -257,11 +257,15 @@ public class DiagnoseFragment extends Fragment {
         builder.setNegativeButton(getString(R.string.dialog_save_diagnosis_CANCEL), null);
         builder.setNeutralButton(getString(R.string.dialog_save_diagnosis_QR), new DialogInterface.OnClickListener() {
 
-            @Override
-            public void onClick(DialogInterface p1, int p2) {
-                startActivityForResult(new Intent(context, ScanQRActivity.class), Utils.SCAN_REQUEST_CODE);
-            }
-        });
+                @Override
+                public void onClick(DialogInterface p1, int p2) {
+                    if (Build.VERSION.SDK_INT < 22 || context.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                        startActivityForResult(new Intent(context, ScanQRActivity.class), Utils.SCAN_REQUEST_CODE);
+                    } else
+                        requestPermissions(new String[]{Manifest.permission.CAMERA}, 58);
+
+                }
+            });
 
         final TextInputEditText nameEt = view.findViewById(R.id.name_et);
         final TextInputEditText idEt = view.findViewById(R.id.id_et);
@@ -278,38 +282,38 @@ public class DiagnoseFragment extends Fragment {
         dialog.show();
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View p1) {
-                String name = nameEt.getText().toString();
-                String id = idEt.getText().toString();
-                String observations = observationsEt.getText().toString();
-                if (name.isEmpty()) {
-                    nameEt.setError(getString(R.string.dialog_save_diagnosis_input_name_error));
-                } else {
-                    if (id.length() < 11) {
-                        idEt.setError(getString(R.string.dialog_save_diagnosis_input_ID_error));
+                @Override
+                public void onClick(View p1) {
+                    String name = nameEt.getText().toString();
+                    String id = idEt.getText().toString();
+                    String observations = observationsEt.getText().toString();
+                    if (name.isEmpty()) {
+                        nameEt.setError(getString(R.string.dialog_save_diagnosis_input_name_error));
                     } else {
-                        long rowId = dbDiagnostics.addDiagnostic(name, id, indexSpinner.getSelectedItem().toString(), probabilityInfo, consult_date, observations);
-                        for (int i = 0; i < criteriaAdapter.getCriteriaArrayList().size(); i++) {
-                            criteriaAdapter.getCriteriaArrayList().get(i).setSelected(false);
-                            criteriaAdapter.notifyItemChanged(i);
-                            index = 0;
-                            diagnosisPb.setProgress(index);
-                            updateProbability();
-                        }
-
-                        if (rowId > 0) {
-                            Toast.makeText(context, getString(R.string.toast_save_diagnosis_success), Toast.LENGTH_SHORT).show();
+                        if (id.length() < 11) {
+                            idEt.setError(getString(R.string.dialog_save_diagnosis_input_ID_error));
                         } else {
-                            Toast.makeText(context, getString(R.string.toast_save_diagnosis_failed), Toast.LENGTH_SHORT).show();
+                            long rowId = dbDiagnostics.addDiagnostic(name, id, indexSpinner.getSelectedItem().toString(), probabilityInfo, consult_date, observations);
+                            for (int i = 0; i < criteriaAdapter.getCriteriaArrayList().size(); i++) {
+                                criteriaAdapter.getCriteriaArrayList().get(i).setSelected(false);
+                                criteriaAdapter.notifyItemChanged(i);
+                                index = 0;
+                                diagnosisPb.setProgress(index);
+                                updateProbability();
+                            }
+
+                            if (rowId > 0) {
+                                Toast.makeText(context, getString(R.string.toast_save_diagnosis_success), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(context, getString(R.string.toast_save_diagnosis_failed), Toast.LENGTH_SHORT).show();
+                            }
+                            dialog.dismiss();
+
                         }
-                        dialog.dismiss();
-
                     }
-                }
 
-            }
-        });
+                }
+            });
     }
 
     @Override
@@ -317,6 +321,8 @@ public class DiagnoseFragment extends Fragment {
         if (requestCode == Utils.SCAN_REQUEST_CODE && data != null) {
             String result = data.getStringExtra("result");
             showSaveDialog(Utils.parseScanResult(result));
+        } else if (requestCode == 58 && resultCode == Activity.RESULT_OK) {
+            startActivityForResult(new Intent(context, ScanQRActivity.class), Utils.SCAN_REQUEST_CODE);
         }
     }
 
