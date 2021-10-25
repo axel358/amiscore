@@ -61,6 +61,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Color;
 
 import cu.daxyel.amiscore.Utils;
+import android.widget.Button;
 
 public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAdapter.ViewHolder.ClickListener {
     private RecyclerView diagnosisRv;
@@ -76,6 +77,7 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     ItemTouchHelper itemTouchHelper;
     private boolean selected_all = false;
+    private Button indexButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,31 +99,12 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
         diagnosisRv.setLayoutManager(new LinearLayoutManager(context));
         loadingTv = view.findViewById(R.id.diagnosis_loading_tv);
         loadingPb = view.findViewById(R.id.diagnosis_loading_pb);
-        final Spinner indexSpinner = view.findViewById(R.id.indexes_spnr);
+        indexButton = view.findViewById(R.id.index_select_btn);
 
         dbDiagnostics = new DbDiagnostics(getActivity());
 
+        new LoadDiagnosisTask().execute();
 
-        //Create dummy data
-        String[] indexes = new String[]{"All", "Index 1", "Index 2"};
-
-        indexSpinner.setAdapter(new ArrayAdapter<String>(context, R.layout.entry_index_spnr, indexes));
-        indexSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> p1, View p2, int p3, long p4) {
-                index = p1.getItemAtPosition(p3).toString();
-                if (index.equalsIgnoreCase("all")) {
-                    new LoadDiagnosisTask().execute();
-                } else {
-                    new LoadDiagnosisTask().execute(index);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> p1) {
-            }
-        });
 
         ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
@@ -153,31 +136,31 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
 
                 Snackbar.make(diagnosisRv, getString(R.string.snackbar_text), Snackbar.LENGTH_LONG).setAction(getString(R.string.snackbar_action), new OnClickListener() {
 
-                    @Override
-                    public void onClick(View p1) {
-                        diagnosticsAdapter.getDiagnosis().add(position, diagnosis);
-                        diagnosticsAdapter.notifyItemInserted(position);
-                    }
-
-                }).addCallback(new Snackbar.Callback() {
-                    @Override
-                    public void onShown(Snackbar sb) {
-                        super.onShown(sb);
-                        indexSpinner.setEnabled(false);
-                    }
-
-                    @Override
-                    public void onDismissed(Snackbar snackbar, int event) {
-                        //Its gone, remove it from db
-                        if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) {
-                            indexSpinner.setEnabled(true);
+                        @Override
+                        public void onClick(View p1) {
+                            diagnosticsAdapter.getDiagnosis().add(position, diagnosis);
+                            diagnosticsAdapter.notifyItemInserted(position);
                         }
-                        if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT || event == Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE) {
-                            indexSpinner.setEnabled(true);
-                            dbDiagnostics.deleteDiagnostic(diagnosis.getId());
+
+                    }).addCallback(new Snackbar.Callback() {
+                        @Override
+                        public void onShown(Snackbar sb) {
+                            super.onShown(sb);
+                            indexButton.setEnabled(false);
                         }
-                    }
-                }).show();
+
+                        @Override
+                        public void onDismissed(Snackbar snackbar, int event) {
+                            //Its gone, remove it from db
+                            if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                                indexButton.setEnabled(true);
+                            }
+                            if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT || event == Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE) {
+                                indexButton.setEnabled(true);
+                                dbDiagnostics.deleteDiagnostic(diagnosis.getId());
+                            }
+                        }
+                    }).show();
             }
 
             public void onChildDraw(Canvas canvas, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
@@ -253,20 +236,20 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
         searchView = (SearchView) menu.findItem(R.id.menu_search_diagnosis).getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
-            @Override
-            public boolean onQueryTextSubmit(String p1) {
-                return false;
-            }
+                @Override
+                public boolean onQueryTextSubmit(String p1) {
+                    return false;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String p1) {
-                if (p1.length() > 1)
-                    diagnosticsAdapter.filter(p1);
-                else
-                    diagnosticsAdapter.clearFilter();
-                return true;
-            }
-        });
+                @Override
+                public boolean onQueryTextChange(String p1) {
+                    if (p1.length() > 1)
+                        diagnosticsAdapter.filter(p1);
+                    else
+                        diagnosticsAdapter.clearFilter();
+                    return true;
+                }
+            });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -310,55 +293,55 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
             dialog.show();
 
             dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    editMode = true;
-                    nameEt.setCursorVisible(true);
-                    nameEt.setFocusableInTouchMode(true);
-                    nameEt.requestFocus();
-                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(nameEt, InputMethodManager.SHOW_IMPLICIT);
-                    nameEt.setBackground(drawableNameEt);
+                    @Override
+                    public void onClick(View view) {
+                        editMode = true;
+                        nameEt.setCursorVisible(true);
+                        nameEt.setFocusableInTouchMode(true);
+                        nameEt.requestFocus();
+                        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(nameEt, InputMethodManager.SHOW_IMPLICIT);
+                        nameEt.setBackground(drawableNameEt);
 
-                    idEt.setCursorVisible(true);
-                    idEt.setFocusableInTouchMode(true);
-                    idEt.setBackground(drawableIdEt);
+                        idEt.setCursorVisible(true);
+                        idEt.setFocusableInTouchMode(true);
+                        idEt.setBackground(drawableIdEt);
 
-                    observationsEt.setCursorVisible(true);
-                    observationsEt.setFocusableInTouchMode(true);
-                    observationsEt.setBackground(drawableObservationEt);
+                        observationsEt.setCursorVisible(true);
+                        observationsEt.setFocusableInTouchMode(true);
+                        observationsEt.setBackground(drawableObservationEt);
 
-                }
-            });
+                    }
+                });
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
 
-                @Override
-                public void onClick(View p1) {
-                    String name = nameEt.getText().toString();
-                    String id = idEt.getText().toString();
-                    String observations = observationsEt.getText().toString();
-                    String disease = diagnosticsAdapter.getDiagnosis().get(position).getDisease();
-                    if (name.isEmpty()) {
-                        nameEt.setError(getString(R.string.dialog_save_diagnosis_input_name_error));
-                    } else {
-                        if (id.length() < 11) {
-                            idEt.setError(getString(R.string.dialog_save_diagnosis_input_ID_error));
+                    @Override
+                    public void onClick(View p1) {
+                        String name = nameEt.getText().toString();
+                        String id = idEt.getText().toString();
+                        String observations = observationsEt.getText().toString();
+                        String disease = diagnosticsAdapter.getDiagnosis().get(position).getDisease();
+                        if (name.isEmpty()) {
+                            nameEt.setError(getString(R.string.dialog_save_diagnosis_input_name_error));
                         } else {
-                            if (editMode) {
-                                dbDiagnostics.editDiagnostic(diagnosticsAdapter.getDiagnosis().get(position).getId(), name, id, disease, diagnosticsAdapter.getDiagnosis().get(position).getProbabilityInfo(), diagnosticsAdapter.getDiagnosis().get(position).getDate(), observations);
-                                diagnosticsAdapter.getDiagnosis().get(position).setNamme(name);
-                                diagnosticsAdapter.getDiagnosis().get(position).setCi(id);
-                                diagnosticsAdapter.getDiagnosis().get(position).setDisease(disease);
-                                diagnosticsAdapter.getDiagnosis().get(position).setObservations(observations);
-                                diagnosticsAdapter.notifyItemChanged(position);
+                            if (id.length() < 11) {
+                                idEt.setError(getString(R.string.dialog_save_diagnosis_input_ID_error));
+                            } else {
+                                if (editMode) {
+                                    dbDiagnostics.editDiagnostic(diagnosticsAdapter.getDiagnosis().get(position).getId(), name, id, disease, diagnosticsAdapter.getDiagnosis().get(position).getProbabilityInfo(), diagnosticsAdapter.getDiagnosis().get(position).getDate(), observations);
+                                    diagnosticsAdapter.getDiagnosis().get(position).setNamme(name);
+                                    diagnosticsAdapter.getDiagnosis().get(position).setCi(id);
+                                    diagnosticsAdapter.getDiagnosis().get(position).setDisease(disease);
+                                    diagnosticsAdapter.getDiagnosis().get(position).setObservations(observations);
+                                    diagnosticsAdapter.notifyItemChanged(position);
+                                }
+                                dialog.dismiss();
+
                             }
-                            dialog.dismiss();
-
                         }
-                    }
 
-                }
-            });
+                    }
+                });
         }
 
     }
@@ -437,23 +420,23 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
                     final AlertDialog dialog = builder.create();
                     dialog.show();
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            for (Integer i : selectedItems) {
-                                diagnosisToRemove.add(diagnosticsAdapter.getDiagnosis().get(i)); //add al array los objetos diagnosis
-                                diagnosticsAdapter.getDiagnosis().get(i).setSelected(false);
-                            }
-                            diagnosticsAdapter.getDiagnosis().removeAll(diagnosisToRemove);  //remover la colleccion de datos entera
-                            diagnosticsAdapter.notifyDataSetChanged();
+                            @Override
+                            public void onClick(View view) {
+                                for (Integer i : selectedItems) {
+                                    diagnosisToRemove.add(diagnosticsAdapter.getDiagnosis().get(i)); //add al array los objetos diagnosis
+                                    diagnosticsAdapter.getDiagnosis().get(i).setSelected(false);
+                                }
+                                diagnosticsAdapter.getDiagnosis().removeAll(diagnosisToRemove);  //remover la colleccion de datos entera
+                                diagnosticsAdapter.notifyDataSetChanged();
 
-                            for (int i = 0; i < diagnosisToRemove.size(); i++) {
-                                dbDiagnostics.deleteDiagnostic(diagnosisToRemove.get(i).getId());
-                            }
+                                for (int i = 0; i < diagnosisToRemove.size(); i++) {
+                                    dbDiagnostics.deleteDiagnostic(diagnosisToRemove.get(i).getId());
+                                }
 
-                            dialog.dismiss();
-                            mode.finish();
-                        }
-                    });
+                                dialog.dismiss();
+                                mode.finish();
+                            }
+                        });
                     return true;
                 case R.id.menu_select_all:
                     if (!selected_all) {
@@ -491,11 +474,11 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
             }
             actionMode = null;
             new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    itemTouchHelper.attachToRecyclerView(diagnosisRv);
-                }
-            }, 100);
+                    @Override
+                    public void run() {
+                        itemTouchHelper.attachToRecyclerView(diagnosisRv);
+                    }
+                }, 100);
 
         }
     }

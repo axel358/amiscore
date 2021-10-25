@@ -1,23 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    android:orientation="horizontal"
-    android:gravity="center"
-    android:padding="16dp"
-    android:background="@color/colorPrimary">
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="wrap_content"
+	android:layout_width="match_parent"
+	android:orientation="horizontal"
+	android:gravity="center"
+	android:padding="16dp"
+	android:background="@color/colorPrimary">
 
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="@string/index_ribbon"
-        android:layout_weight="1.0"
-        android:textSize="16sp"
-        android:textColor="#FFFFFFFF"/>
+	<TextView
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:text="@string/index_ribbon"
+		android:layout_weight="1.0"
+		android:textSize="16sp"
+		android:textColor="#FFFFFFFF"/>
 
-    <Spinner
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:id="@+id/indexes_spnr"/>
+	<Button
+		style="?android:attr/buttonBarButtonStyle"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:text="Load"
+		android:id="@+id/index_select_btn"
+		android:textColor="#FFFFFFFF"/>
 
 </LinearLayout>
+

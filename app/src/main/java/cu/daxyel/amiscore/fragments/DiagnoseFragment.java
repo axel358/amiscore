@@ -1,6 +1,7 @@
 package cu.daxyel.amiscore.fragments;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.ExpandableListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,13 +33,16 @@ import com.google.android.material.textfield.TextInputEditText;
 import cu.daxyel.amiscore.R;
 import cu.daxyel.amiscore.ScanQRActivity;
 import cu.daxyel.amiscore.Utils;
+import cu.daxyel.amiscore.adapters.IndexAdapter;
 import cu.daxyel.amiscore.db.DbDiagnostics;
+import cu.daxyel.amiscore.models.Category;
 import cu.daxyel.amiscore.models.Criteria;
+import cu.daxyel.amiscore.models.Index;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-import android.app.Activity;
+import android.widget.Button;
 
 public class DiagnoseFragment extends Fragment {
     private RecyclerView criteriasRv;
@@ -47,7 +52,7 @@ public class DiagnoseFragment extends Fragment {
     private int critValueMed, critValueHigh;
     private ProgressBar diagnosisPb;
     private Context context;
-    private Spinner indexSpinner;
+    private Button indexButton;
     private CriteriaAdapter criteriaAdapter;
     private String probabilityInfo;
 
@@ -73,34 +78,27 @@ public class DiagnoseFragment extends Fragment {
         diagnosisPb = view.findViewById(R.id.diagnosis_pb);
         infoTv = view.findViewById(R.id.info_tv);
 
-        indexSpinner = view.findViewById(R.id.indexes_spnr);
+        indexButton = view.findViewById(R.id.index_select_btn);
 
-        //Create dummy data
-        String[] inexes = new String[]{"AMIscore", "Index 2"};
-
-        indexSpinner.setAdapter(new ArrayAdapter<String>(context, R.layout.entry_index_spnr, inexes));
-        indexSpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
+        indexButton.setOnClickListener(new OnClickListener(){
 
                 @Override
-                public void onItemSelected(AdapterView<?> p1, View p2, int p3, long p4) {
-                    loadIndex(p1.getSelectedItem().toString());
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> p1) {
+                public void onClick(View p1) {
+                    showIndexPickerDialog();
                 }
             });
-
+        loadIndex("AMIScore");
 
         return view;
     }
 
 
     public void loadIndex(String name) {
+        indexButton.setText(name);
         ArrayList<Criteria> criterias = new ArrayList<Criteria>();
         String info="";
         switch (name) {
-            case "AMIscore":
+            case "AMIScore":
                 total = 121;
                 critValueMed = 58;
                 critValueHigh = 81;
@@ -293,7 +291,7 @@ public class DiagnoseFragment extends Fragment {
                         if (id.length() < 11) {
                             idEt.setError(getString(R.string.dialog_save_diagnosis_input_ID_error));
                         } else {
-                            long rowId = dbDiagnostics.addDiagnostic(name, id, indexSpinner.getSelectedItem().toString(), probabilityInfo, consult_date, observations);
+                            long rowId = dbDiagnostics.addDiagnostic(name, id, indexButton.getText().toString(), probabilityInfo, consult_date, observations);
                             for (int i = 0; i < criteriaAdapter.getCriteriaArrayList().size(); i++) {
                                 criteriaAdapter.getCriteriaArrayList().get(i).setSelected(false);
                                 criteriaAdapter.notifyItemChanged(i);
@@ -324,6 +322,56 @@ public class DiagnoseFragment extends Fragment {
         } else if (requestCode == 58 && resultCode == Activity.RESULT_OK) {
             startActivityForResult(new Intent(context, ScanQRActivity.class), Utils.SCAN_REQUEST_CODE);
         }
+    }
+    public void showIndexPickerDialog() {
+        final AlertDialog.Builder builder=new AlertDialog.Builder(context, R.style.Dialog);
+        View view = getLayoutInflater().inflate(R.layout.dialog_indexes, null);
+        ExpandableListView indexLv=view.findViewById(R.id.indexes_lv);
+        ArrayList<Category> categories=new ArrayList<Category>();
+
+        ArrayList<Index> traumaIndexes=new ArrayList<Index>();
+        traumaIndexes.add(new Index("Pediatric Trauma Score"));
+        traumaIndexes.add(new Index("Revised Trauma Score"));
+        traumaIndexes.add(new Index("Escala CRAMS"));
+        categories.add(new Category("Trauma", traumaIndexes));
+
+        categories.add(new Category("Abdomen agudo :", new ArrayList<Index>()));
+
+        ArrayList<Index> pancreatitisIndexes=new ArrayList<Index>();
+        pancreatitisIndexes.add(new Index("Indice CTSI"));
+        pancreatitisIndexes.add(new Index("Criterios de Ramson no biliares"));
+        pancreatitisIndexes.add(new Index("Criterios de Ramson biliares"));        
+        categories.add(new Category("Pancreatitis", pancreatitisIndexes));
+
+        ArrayList<Index> imaIndexes=new ArrayList<Index>();
+        imaIndexes.add(new Index("AMIScore"));
+        categories.add(new Category("Isquemia mesentérica aguda", imaIndexes));
+
+        categories.add(new Category("Apendicitis", new ArrayList<Index>()));
+
+        ArrayList<Index> peritonitisIndexes=new ArrayList<Index>();
+        peritonitisIndexes.add(new Index("Indice de Mannheim"));
+        peritonitisIndexes.add(new Index("IPR"));
+        categories.add(new Category("Peritonitis", peritonitisIndexes));
+
+        final IndexAdapter indexAdapter = new IndexAdapter(categories, context);
+        indexLv.setAdapter(indexAdapter);
+
+        builder.setView(view);
+
+        final AlertDialog dialog = builder.create();
+
+        indexLv.setOnChildClickListener(new ExpandableListView.OnChildClickListener(){
+
+                @Override
+                public boolean onChildClick(ExpandableListView p1, View p2, int p3, int p4, long p5) {
+                    Index ind=(Index) indexAdapter.getChild(p3, p4);
+                    loadIndex(ind.getName());
+                    dialog.dismiss();
+                    return false;
+                }
+            });
+        dialog.show();
     }
 
 
