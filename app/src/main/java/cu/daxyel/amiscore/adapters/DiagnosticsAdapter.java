@@ -77,6 +77,7 @@ public class DiagnosticsAdapter extends SelectableAdapter<DiagnosticsAdapter.Vie
         }
     }
 
+
     @Override
     public int getItemCount() {
         return filteredDiagnosis.size();
@@ -103,6 +104,7 @@ public class DiagnosticsAdapter extends SelectableAdapter<DiagnosticsAdapter.Vie
             linearLayout = itemView.findViewById(R.id.linear_entry_diagnosis);
             checkBox = itemView.findViewById(R.id.checkBox_select);
         }
+
 
         @Override
         public void onClick(View v) {

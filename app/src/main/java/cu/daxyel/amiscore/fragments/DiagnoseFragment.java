@@ -25,6 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -255,6 +256,7 @@ public class DiagnoseFragment extends Fragment {
         builder.setNegativeButton(getString(R.string.dialog_save_diagnosis_CANCEL), null);
         builder.setNeutralButton(getString(R.string.dialog_save_diagnosis_QR), new DialogInterface.OnClickListener() {
 
+                @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(DialogInterface p1, int p2) {
                     if (Build.VERSION.SDK_INT < 22 || context.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {

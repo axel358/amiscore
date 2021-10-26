@@ -17,7 +17,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginRight="10dp"
-        android:splitMotionEvents="false" />
+        android:splitMotionEvents="false"
+       />
 
     <TextView
         android:id="@+id/diagnosis_loading_tv"

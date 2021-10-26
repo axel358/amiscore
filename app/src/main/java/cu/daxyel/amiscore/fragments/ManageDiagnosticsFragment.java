@@ -1,8 +1,6 @@
 package cu.daxyel.amiscore.fragments;
 
 import android.content.Context;
-import android.content.Intent;
-import android.gesture.Gesture;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -16,6 +14,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ActionMode;
 
 import android.os.Handler;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,15 +22,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,12 +38,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
-import cu.daxyel.amiscore.MainActivity;
 import cu.daxyel.amiscore.R;
-import cu.daxyel.amiscore.SplashActivity;
 import cu.daxyel.amiscore.adapters.DiagnosticsAdapter;
 import cu.daxyel.amiscore.db.DbDiagnostics;
-import cu.daxyel.amiscore.models.Criteria;
 import cu.daxyel.amiscore.models.Diagnosis;
 
 import java.util.ArrayList;
@@ -61,6 +50,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Color;
 
 import cu.daxyel.amiscore.Utils;
+
 import android.widget.Button;
 
 public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAdapter.ViewHolder.ClickListener {
@@ -130,37 +120,56 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
 
                 final int position = viewHolder.getAdapterPosition();
+                final int sizeoriginalarray = diagnosticsAdapter.getDiagnosis().size();
+                SparseBooleanArray newSelected = new SparseBooleanArray();
                 final Diagnosis diagnosis = diagnosticsAdapter.getDiagnosis().get(viewHolder.getAdapterPosition());
                 diagnosticsAdapter.getDiagnosis().remove(position);
                 diagnosticsAdapter.notifyItemRemoved(position);
 
                 Snackbar.make(diagnosisRv, getString(R.string.snackbar_text), Snackbar.LENGTH_LONG).setAction(getString(R.string.snackbar_action), new OnClickListener() {
 
-                        @Override
-                        public void onClick(View p1) {
-                            diagnosticsAdapter.getDiagnosis().add(position, diagnosis);
-                            diagnosticsAdapter.notifyItemInserted(position);
-                        }
-
-                    }).addCallback(new Snackbar.Callback() {
-                        @Override
-                        public void onShown(Snackbar sb) {
-                            super.onShown(sb);
-                            indexButton.setEnabled(false);
-                        }
-
-                        @Override
-                        public void onDismissed(Snackbar snackbar, int event) {
-                            //Its gone, remove it from db
-                            if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) {
-                                indexButton.setEnabled(true);
+                    @Override
+                    public void onClick(View p1) {
+                        diagnosticsAdapter.getDiagnosis().add(position, diagnosis);
+                        diagnosticsAdapter.notifyItemInserted(position);
+                        if (position != sizeoriginalarray - 1) {
+                            int newd = 0;
+                            for (int i = 0; i < diagnosticsAdapter.getSelectedItemCount(); i++) {
+                                if (diagnosticsAdapter.getSelectedItems().get(i) == 0 && position != 0) {
+                                    newd = diagnosticsAdapter.getSelectedItems().get(i);
+                                } else {
+                                    newd = diagnosticsAdapter.getSelectedItems().get(i) + 1;
+                                }
+                                newSelected.put(newd, true);
                             }
-                            if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT || event == Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE) {
-                                indexButton.setEnabled(true);
-                                dbDiagnostics.deleteDiagnostic(diagnosis.getId());
-                            }
+                            diagnosticsAdapter.setNewValues(newSelected);
                         }
-                    }).show();
+                        for (int i = 0; i < diagnosticsAdapter.getSelectedItems().size(); i++) {
+                            System.out.println(diagnosticsAdapter.getSelectedItems().get(i));
+                        }
+                    }
+
+                }).addCallback(new Snackbar.Callback() {
+                    @Override
+                    public void onShown(Snackbar sb) {
+                        super.onShown(sb);
+                        indexButton.setEnabled(false);
+
+                    }
+
+                    @Override
+                    public void onDismissed(Snackbar snackbar, int event) {
+                        //Its gone, remove it from db
+                        if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                            indexButton.setEnabled(true);
+                        }
+                        if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT || event == Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE) {
+                            indexButton.setEnabled(true);
+                            dbDiagnostics.deleteDiagnostic(diagnosis.getId());
+
+                        }
+                    }
+                }).show();
             }
 
             public void onChildDraw(Canvas canvas, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
@@ -236,20 +245,20 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
         searchView = (SearchView) menu.findItem(R.id.menu_search_diagnosis).getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
-                @Override
-                public boolean onQueryTextSubmit(String p1) {
-                    return false;
-                }
+            @Override
+            public boolean onQueryTextSubmit(String p1) {
+                return false;
+            }
 
-                @Override
-                public boolean onQueryTextChange(String p1) {
-                    if (p1.length() > 1)
-                        diagnosticsAdapter.filter(p1);
-                    else
-                        diagnosticsAdapter.clearFilter();
-                    return true;
-                }
-            });
+            @Override
+            public boolean onQueryTextChange(String p1) {
+                if (p1.length() > 1)
+                    diagnosticsAdapter.filter(p1);
+                else
+                    diagnosticsAdapter.clearFilter();
+                return true;
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -293,55 +302,55 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
             dialog.show();
 
             dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        editMode = true;
-                        nameEt.setCursorVisible(true);
-                        nameEt.setFocusableInTouchMode(true);
-                        nameEt.requestFocus();
-                        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.showSoftInput(nameEt, InputMethodManager.SHOW_IMPLICIT);
-                        nameEt.setBackground(drawableNameEt);
+                @Override
+                public void onClick(View view) {
+                    editMode = true;
+                    nameEt.setCursorVisible(true);
+                    nameEt.setFocusableInTouchMode(true);
+                    nameEt.requestFocus();
+                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(nameEt, InputMethodManager.SHOW_IMPLICIT);
+                    nameEt.setBackground(drawableNameEt);
 
-                        idEt.setCursorVisible(true);
-                        idEt.setFocusableInTouchMode(true);
-                        idEt.setBackground(drawableIdEt);
+                    idEt.setCursorVisible(true);
+                    idEt.setFocusableInTouchMode(true);
+                    idEt.setBackground(drawableIdEt);
 
-                        observationsEt.setCursorVisible(true);
-                        observationsEt.setFocusableInTouchMode(true);
-                        observationsEt.setBackground(drawableObservationEt);
+                    observationsEt.setCursorVisible(true);
+                    observationsEt.setFocusableInTouchMode(true);
+                    observationsEt.setBackground(drawableObservationEt);
 
-                    }
-                });
+                }
+            });
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
 
-                    @Override
-                    public void onClick(View p1) {
-                        String name = nameEt.getText().toString();
-                        String id = idEt.getText().toString();
-                        String observations = observationsEt.getText().toString();
-                        String disease = diagnosticsAdapter.getDiagnosis().get(position).getDisease();
-                        if (name.isEmpty()) {
-                            nameEt.setError(getString(R.string.dialog_save_diagnosis_input_name_error));
+                @Override
+                public void onClick(View p1) {
+                    String name = nameEt.getText().toString();
+                    String id = idEt.getText().toString();
+                    String observations = observationsEt.getText().toString();
+                    String disease = diagnosticsAdapter.getDiagnosis().get(position).getDisease();
+                    if (name.isEmpty()) {
+                        nameEt.setError(getString(R.string.dialog_save_diagnosis_input_name_error));
+                    } else {
+                        if (id.length() < 11) {
+                            idEt.setError(getString(R.string.dialog_save_diagnosis_input_ID_error));
                         } else {
-                            if (id.length() < 11) {
-                                idEt.setError(getString(R.string.dialog_save_diagnosis_input_ID_error));
-                            } else {
-                                if (editMode) {
-                                    dbDiagnostics.editDiagnostic(diagnosticsAdapter.getDiagnosis().get(position).getId(), name, id, disease, diagnosticsAdapter.getDiagnosis().get(position).getProbabilityInfo(), diagnosticsAdapter.getDiagnosis().get(position).getDate(), observations);
-                                    diagnosticsAdapter.getDiagnosis().get(position).setNamme(name);
-                                    diagnosticsAdapter.getDiagnosis().get(position).setCi(id);
-                                    diagnosticsAdapter.getDiagnosis().get(position).setDisease(disease);
-                                    diagnosticsAdapter.getDiagnosis().get(position).setObservations(observations);
-                                    diagnosticsAdapter.notifyItemChanged(position);
-                                }
-                                dialog.dismiss();
-
+                            if (editMode) {
+                                dbDiagnostics.editDiagnostic(diagnosticsAdapter.getDiagnosis().get(position).getId(), name, id, disease, diagnosticsAdapter.getDiagnosis().get(position).getProbabilityInfo(), diagnosticsAdapter.getDiagnosis().get(position).getDate(), observations);
+                                diagnosticsAdapter.getDiagnosis().get(position).setNamme(name);
+                                diagnosticsAdapter.getDiagnosis().get(position).setCi(id);
+                                diagnosticsAdapter.getDiagnosis().get(position).setDisease(disease);
+                                diagnosticsAdapter.getDiagnosis().get(position).setObservations(observations);
+                                diagnosticsAdapter.notifyItemChanged(position);
                             }
-                        }
+                            dialog.dismiss();
 
+                        }
                     }
-                });
+
+                }
+            });
         }
 
     }
@@ -420,23 +429,23 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
                     final AlertDialog dialog = builder.create();
                     dialog.show();
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                for (Integer i : selectedItems) {
-                                    diagnosisToRemove.add(diagnosticsAdapter.getDiagnosis().get(i)); //add al array los objetos diagnosis
-                                    diagnosticsAdapter.getDiagnosis().get(i).setSelected(false);
-                                }
-                                diagnosticsAdapter.getDiagnosis().removeAll(diagnosisToRemove);  //remover la colleccion de datos entera
-                                diagnosticsAdapter.notifyDataSetChanged();
-
-                                for (int i = 0; i < diagnosisToRemove.size(); i++) {
-                                    dbDiagnostics.deleteDiagnostic(diagnosisToRemove.get(i).getId());
-                                }
-
-                                dialog.dismiss();
-                                mode.finish();
+                        @Override
+                        public void onClick(View view) {
+                            for (Integer i : selectedItems) {
+                                diagnosisToRemove.add(diagnosticsAdapter.getDiagnosis().get(i)); //add al array los objetos diagnosis
+                                diagnosticsAdapter.getDiagnosis().get(i).setSelected(false);
                             }
-                        });
+                            diagnosticsAdapter.getDiagnosis().removeAll(diagnosisToRemove);  //remover la colleccion de datos entera
+                            diagnosticsAdapter.notifyDataSetChanged();
+
+                            for (int i = 0; i < diagnosisToRemove.size(); i++) {
+                                dbDiagnostics.deleteDiagnostic(diagnosisToRemove.get(i).getId());
+                            }
+
+                            dialog.dismiss();
+                            mode.finish();
+                        }
+                    });
                     return true;
                 case R.id.menu_select_all:
                     if (!selected_all) {
@@ -474,11 +483,11 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
             }
             actionMode = null;
             new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        itemTouchHelper.attachToRecyclerView(diagnosisRv);
-                    }
-                }, 100);
+                @Override
+                public void run() {
+                    itemTouchHelper.attachToRecyclerView(diagnosisRv);
+                }
+            }, 100);
 
         }
     }

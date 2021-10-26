@@ -96,4 +96,9 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> exte
         }
         return items;
     }
+
+    public void setNewValues(SparseBooleanArray new_values) {
+        selectedItems.clear();
+        selectedItems = new_values;
+    }
 }
