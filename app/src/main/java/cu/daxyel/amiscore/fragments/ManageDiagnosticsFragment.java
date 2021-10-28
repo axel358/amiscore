@@ -135,7 +135,7 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
                         if (position != sizeoriginalarray - 1) {
                             int newd = 0;
                             for (int i = 0; i < diagnosticsAdapter.getSelectedItemCount(); i++) {
-                                if (diagnosticsAdapter.getSelectedItems().get(i) == 0 && position != 0) {
+                                if (diagnosticsAdapter.getSelectedItems().get(i) < position && position != 0) {
                                     newd = diagnosticsAdapter.getSelectedItems().get(i);
                                 } else {
                                     newd = diagnosticsAdapter.getSelectedItems().get(i) + 1;
