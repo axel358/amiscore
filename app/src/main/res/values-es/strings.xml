@@ -14,9 +14,9 @@
 
     <!--app TEXTS-->
     <string name="app_name_version">AMIScore 1.0</string>
-	<string name="very_high_probability">Muy alta probabilidad</string>
-	<string name="high_probability">Alta probabilidad</string>
-	<string name="low_probability">Baja probabilidad</string>
+    <string name="very_high_probability">Muy alta probabilidad</string>
+    <string name="high_probability">Alta probabilidad</string>
+    <string name="low_probability">Baja probabilidad</string>
     <string name="manage_diagnosis">Gestionar Diagnósticos</string>
     <string name="manage_indexes">Gestionar Índices</string>
     <string name="statistics">Estadísticas</string>
@@ -47,5 +47,26 @@
     <string name="dialog_edit_detail_Button">Ok</string>
     <string name="item_selectAll">Seleccionar todo</string>
     <string name="lang">English</string>
+    <string name="crams_crit_serious">Grave</string>
+    <string name="crams_crit_not_serious">No grave</string>
+    <string name="crams_section_one">Circulación</string>
+    <string name="crams_section_two">Respiración</string>
+    <string name="crams_section_three">Abdomen y tórax</string>
+    <string name="crams_section_four">Sonidos</string>
+    <string name="crams_section_one_crit1">Relleno capilar y TAS>99 mmHg</string>
+    <string name="crams_section_one_crit2">Relleno capilar lento o TAS entre 85 y 99 mmHg</string>
+    <string name="crams_section_one_crit3">Ausencia de relleno capilar o TAS<![CDATA[<85mmgg]]></string>
+    <string name="crams_section_two_crit1">Normal</string>
+    <string name="crams_section_two_crit2">Anormal</string>
+    <string name="crams_section_two_crit3">Ausente</string>
+    <string name="crams_section_three_crit1">Abdomen y tórax no doloroso</string>
+    <string name="crams_section_three_crit2">Abdomen o tórax doloroso</string>
+    <string name="crams_section_three_crit3">Abdomen rígido, volet costal o herida penetrante</string>
+    <string name="crams_section_four_crit1">Abdomen y tórax no doloroso</string>
+    <string name="crams_section_four_crit2">Respuestas confusas o inapropiadas</string>
+    <string name="crams_section_four_crit3">Sonidos incomprensibles o ausentes</string>
+
+
+
 
 </resources>

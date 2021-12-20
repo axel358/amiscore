@@ -45,4 +45,22 @@
     <string name="dialog_edit_detail_Button">Ok</string>
     <string name="item_selectAll">Select all</string>
     <string name="lang">Español</string>
+    <string name="crams_crit_serious">Serious</string>
+    <string name="crams_crit_not_serious">Not serious</string>
+    <string name="crams_section_one">Circulation</string>
+    <string name="crams_section_two">Breathing</string>
+    <string name="crams_section_three">Abdomen and chest</string>
+    <string name="crams_section_four">Sounds</string>
+    <string name="crams_section_one_crit1">Capillary filler and TAS>99mmHg</string>
+    <string name="crams_section_one_crit2">Slow capillary filler or TAS between 85 and 99 mmHg</string>
+    <string name="crams_section_two_crit1">Normal</string>
+    <string name="crams_section_two_crit2">Abnormal</string>
+    <string name="crams_section_two_crit3">Absent</string>
+    <string name="crams_section_three_crit1">Painless abdomen and chest</string>
+    <string name="crams_section_three_crit2">Painful abdomen or chest</string>
+    <string name="crams_section_three_crit3">Stiff abdomen, rib volet or penetrating wound</string>
+    <string name="crams_section_four_crit1">Painless abdomen and chest</string>
+    <string name="crams_section_four_crit2">Confusing or inappropiate responses</string>
+    <string name="crams_section_four_crit3">Incomprehensible or absent sounds</string>
+    <string name="crams_section_one_crit3">Absence of capillary filler or TAS<![CDATA[<85mmgg]]></string>
 </resources>
