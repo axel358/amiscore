@@ -110,16 +110,6 @@ public class DiagnoseSimpleFragment extends Fragment {
                     info = "Non specific abdominal pain without clear diagnosis \n+";
                 }
                 break;
-            case "Escala CRAMS":
-                total = 122;
-                critValueMed = 59;
-                critValueHigh = 82;
-
-                criterias.add(new Criteria(21, "Variable 1", false));
-                criterias.add(new Criteria(25, "Variable 2", false));
-                criterias.add(new Criteria(37, "Variable 3", false));
-                criterias.add(new Criteria(39, "Variable 4", false));
-                break;
 
         }
         diagnosisPb.setMax(total);

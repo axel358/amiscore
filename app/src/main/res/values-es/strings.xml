@@ -65,8 +65,18 @@
     <string name="crams_section_four_crit1">Abdomen y tórax no doloroso</string>
     <string name="crams_section_four_crit2">Respuestas confusas o inapropiadas</string>
     <string name="crams_section_four_crit3">Sonidos incomprensibles o ausentes</string>
-
-
-
-
+    <string name="Balthazar_section_one">Inflamación pancreática</string>
+    <string name="Balthazar_section_two">Necrosis pancreática</string>
+    <string name="Balthazar_section_one_crit1">Páncreas normal</string>
+    <string name="Balthazar_section_one_crit2">Aumento de tamaño focal o difuso del páncreas</string>
+    <string name="Balthazar_section_one_crit3">Alteraciones pancreáticas intrínsecas con cambios inflamatorios en la grasa peripancreática</string>
+    <string name="Balthazar_section_one_crit4">Acumulación única de líquido o flemón</string>
+    <string name="Balthazar_section_one_crit5">Dos o más acumulaciones de líquido o gas en el páncreas o adyacentes a él</string>
+    <string name="Balthazar_section_two_crit1">Ninguna</string>
+    <string name="Balthazar_section_two_crit2"><![CDATA[≤30%]]></string>
+    <string name="Balthazar_section_two_crit3">30-50%</string>
+    <string name="Balthazar_section_two_crit4"><![CDATA[>50%]]></string>
+    <string name="Balthazar_crit_good_diagnose">Buen pronóstico</string>
+    <string name="Balthazar_crit_reserved_diagnose">Pronóstico reservado</string>
+    <string name="Balthazar_crit_bad_diagnose">Mal pronóstico</string>
 </resources>

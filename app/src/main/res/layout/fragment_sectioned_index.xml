@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/diagnosisCRAMS_rv"
+        android:id="@+id/diagnosisSectioned_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
@@ -21,7 +21,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/diagnosisCRAMS_tv"
+            android:id="@+id/diagnosisSectioned_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -30,7 +30,7 @@
             android:textSize="18sp" />
 
         <ProgressBar
-            android:id="@+id/diagnosisCRAMS_pb"
+            android:id="@+id/diagnosisSectioned_pb"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -38,7 +38,7 @@ import cu.daxyel.amiscore.db.DbDiagnostics;
 import cu.daxyel.amiscore.models.Criteria;
 import cu.daxyel.amiscore.models.Section;
 
-public class CRAMSIndexFragment extends Fragment {
+public class DiagnoseSectionedIndexFragment extends Fragment {
     private Context context;
     private int total;
     private int critValueMed, critValueHigh;
@@ -67,75 +67,124 @@ public class CRAMSIndexFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_crams_index, container, false);
-        diagnosisTv = view.findViewById(R.id.diagnosisCRAMS_tv);
-        diagnosisPb = view.findViewById(R.id.diagnosisCRAMS_pb);
+        View view = inflater.inflate(R.layout.fragment_sectioned_index, container, false);
+        diagnosisTv = view.findViewById(R.id.diagnosisSectioned_tv);
+        diagnosisPb = view.findViewById(R.id.diagnosisSectioned_pb);
         indexButton = getActivity().findViewById(R.id.index_select_btn);
-        mainRecycler = view.findViewById(R.id.diagnosisCRAMS_rv);
+        mainRecycler = view.findViewById(R.id.diagnosisSectioned_rv);
         mainRecycler.setLayoutManager(new LinearLayoutManager(context));
 
 
-        loadIndex();
+        loadIndex(indexButton.getText().toString());
 
         return view;
     }
 
-    public void loadIndex() {
-        total = 12;
-        critValueHigh = 8;
-        Utils.index=0;
+    public void loadIndex(String name) {
+        switch (name) {
+            case "Escala CRAMS":
+                total = 12;
+                critValueHigh = 8;
+                Utils.index = 0;
 
-        String sectionOne = getString(R.string.crams_section_one);
-        String sectionTwo = getString(R.string.crams_section_two);
-        String sectionThree = getString(R.string.crams_section_three);
-        String sectionFour = getString(R.string.crams_section_four);
+                String sectionOne = getString(R.string.crams_section_one);
+                String sectionTwo = getString(R.string.crams_section_two);
+                String sectionThree = getString(R.string.crams_section_three);
+                String sectionFour = getString(R.string.crams_section_four);
 
-        ArrayList<Criteria> sectionOneItems = new ArrayList<Criteria>();
-        sectionOneItems.add(new Criteria(2, getString(R.string.crams_section_one_crit1), false));
-        sectionOneItems.add(new Criteria(1, getString(R.string.crams_section_one_crit2), false));
-        sectionOneItems.add(new Criteria(0, getString(R.string.crams_section_one_crit3), false));
+                ArrayList<Criteria> sectionOneItems = new ArrayList<Criteria>();
+                sectionOneItems.add(new Criteria(2, getString(R.string.crams_section_one_crit1), false));
+                sectionOneItems.add(new Criteria(1, getString(R.string.crams_section_one_crit2), false));
+                sectionOneItems.add(new Criteria(0, getString(R.string.crams_section_one_crit3), false));
 
+                ArrayList<Criteria> sectionTwoItems = new ArrayList<Criteria>();
+                sectionTwoItems.add(new Criteria(2, getString(R.string.crams_section_two_crit1), false));
+                sectionTwoItems.add(new Criteria(1, getString(R.string.crams_section_two_crit2), false));
+                sectionTwoItems.add(new Criteria(0, getString(R.string.crams_section_two_crit3), false));
 
-        ArrayList<Criteria> sectionTwoItems = new ArrayList<Criteria>();
-        sectionTwoItems.add(new Criteria(2, getString(R.string.crams_section_two_crit1), false));
-        sectionTwoItems.add(new Criteria(1, getString(R.string.crams_section_two_crit2), false));
-        sectionTwoItems.add(new Criteria(0, getString(R.string.crams_section_two_crit3), false));
+                ArrayList<Criteria> sectionThreeItems = new ArrayList<Criteria>();
+                sectionThreeItems.add(new Criteria(2, getString(R.string.crams_section_three_crit1), false));
+                sectionThreeItems.add(new Criteria(1, getString(R.string.crams_section_three_crit2), false));
+                sectionThreeItems.add(new Criteria(0, getString(R.string.crams_section_three_crit3), false));
 
-        ArrayList<Criteria> sectionThreeItems = new ArrayList<Criteria>();
-        sectionThreeItems.add(new Criteria(2, getString(R.string.crams_section_three_crit1), false));
-        sectionThreeItems.add(new Criteria(1, getString(R.string.crams_section_three_crit2), false));
-        sectionThreeItems.add(new Criteria(0, getString(R.string.crams_section_three_crit3), false));
+                ArrayList<Criteria> sectionFourItems = new ArrayList<Criteria>();
+                sectionFourItems.add(new Criteria(2, getString(R.string.crams_section_four_crit1), false));
+                sectionFourItems.add(new Criteria(1, getString(R.string.crams_section_four_crit2), false));
+                sectionFourItems.add(new Criteria(0, getString(R.string.crams_section_four_crit3), false));
 
-        ArrayList<Criteria> sectionFourItems = new ArrayList<Criteria>();
-        sectionFourItems.add(new Criteria(2, getString(R.string.crams_section_four_crit1), false));
-        sectionFourItems.add(new Criteria(1, getString(R.string.crams_section_four_crit2), false));
-        sectionFourItems.add(new Criteria(0, getString(R.string.crams_section_four_crit3), false));
+                sectionList.add(new Section(sectionOne, sectionOneItems));
+                sectionList.add(new Section(sectionTwo, sectionTwoItems));
+                sectionList.add(new Section(sectionThree, sectionThreeItems));
+                sectionList.add(new Section(sectionFour, sectionFourItems));
+                sectionAdapter = new SectionAdapter(sectionList);
+                mainRecycler.setAdapter(sectionAdapter);
 
+                diagnosisPb.setMax(total);
 
-        sectionList.add(new Section(sectionOne, sectionOneItems));
-        sectionList.add(new Section(sectionTwo, sectionTwoItems));
-        sectionList.add(new Section(sectionThree, sectionThreeItems));
-        sectionList.add(new Section(sectionFour, sectionFourItems));
-        sectionAdapter = new SectionAdapter(sectionList);
-        mainRecycler.setAdapter(sectionAdapter);
+                updateProbability(indexButton.getText().toString());
+                break;
+            case "Indice de Balthazar":
+                total = 22;
+                critValueHigh = 6;
+                critValueMed=4;
+                Utils.index = 0;
 
-        diagnosisPb.setMax(total);
+                String sectionFirst = getString(R.string.Balthazar_section_one);
+                String sectionSecond = getString(R.string.Balthazar_section_two);
+                ArrayList<Criteria> sectionFirstItems = new ArrayList<Criteria>();
+                sectionFirstItems.add(new Criteria(0, getString(R.string.Balthazar_section_one_crit1), false));
+                sectionFirstItems.add(new Criteria(1, getString(R.string.Balthazar_section_one_crit2), false));
+                sectionFirstItems.add(new Criteria(2, getString(R.string.Balthazar_section_one_crit3), false));
+                sectionFirstItems.add(new Criteria(3, getString(R.string.Balthazar_section_one_crit4), false));
+                sectionFirstItems.add(new Criteria(4, getString(R.string.Balthazar_section_one_crit5), false));
 
-       updateProbability();
+                ArrayList<Criteria> sectionSecondItems = new ArrayList<Criteria>();
+                sectionSecondItems.add(new Criteria(0, getString(R.string.Balthazar_section_two_crit1), false));
+                sectionSecondItems.add(new Criteria(2, getString(R.string.Balthazar_section_two_crit2), false));
+                sectionSecondItems.add(new Criteria(4, getString(R.string.Balthazar_section_two_crit3), false));
+                sectionSecondItems.add(new Criteria(6, getString(R.string.Balthazar_section_two_crit4), false));
 
+                sectionList.add(new Section(sectionFirst, sectionFirstItems));
+                sectionList.add(new Section(sectionSecond, sectionSecondItems));
+                sectionAdapter = new SectionAdapter(sectionList);
+                mainRecycler.setAdapter(sectionAdapter);
 
-    }
-    public void updateProbability() {
-        if (Utils.index > critValueHigh) {
-            diagnosisTv.setText(getString(R.string.crams_crit_not_serious) + " " + Utils.index + "/" + total);
-            probabilityInfo = getString(R.string.crams_crit_not_serious).toLowerCase();
-        }  else if(Utils.index<=critValueHigh) {
-            diagnosisTv.setText(getString(R.string.crams_crit_serious) + " " + Utils.index + "/" + total);
-            probabilityInfo = getString(R.string.crams_crit_serious).toLowerCase();
+                diagnosisPb.setMax(total);
+
+                updateProbability(indexButton.getText().toString());
         }
+
+
     }
 
-    class CriteriaAdapter extends RecyclerView.Adapter<CRAMSIndexFragment.CriteriaAdapter.CriteriaViewHolder> {
+    public void updateProbability(String name) {
+        switch (name) {
+            case "Escala CRAMS":
+                if (Utils.index > critValueHigh) {
+                    diagnosisTv.setText(getString(R.string.crams_crit_not_serious) + " " + Utils.index + "/" + total);
+                    probabilityInfo = getString(R.string.crams_crit_not_serious).toLowerCase();
+                } else if (Utils.index <= critValueHigh) {
+                    diagnosisTv.setText(getString(R.string.crams_crit_serious) + " " + Utils.index + "/" + total);
+                    probabilityInfo = getString(R.string.crams_crit_serious).toLowerCase();
+                }
+                break;
+            case "Indice de Balthazar":
+                if(Utils.index>critValueHigh){
+                    diagnosisTv.setText(getString(R.string.Balthazar_crit_bad_diagnose) + " " + Utils.index + "/" + total);
+                    probabilityInfo = getString(R.string.Balthazar_crit_bad_diagnose).toLowerCase();
+                }else if(Utils.index>=critValueMed&&Utils.index<=critValueHigh){
+                    diagnosisTv.setText(getString(R.string.Balthazar_crit_reserved_diagnose) + " " + Utils.index + "/" + total);
+                    probabilityInfo = getString(R.string.Balthazar_crit_reserved_diagnose).toLowerCase();
+                }
+                else {
+                    diagnosisTv.setText(getString(R.string.Balthazar_crit_good_diagnose) + " " + Utils.index + "/" + total);
+                    probabilityInfo = getString(R.string.Balthazar_crit_good_diagnose).toLowerCase();
+                }
+        }
+
+    }
+
+    class CriteriaAdapter extends RecyclerView.Adapter<DiagnoseSectionedIndexFragment.CriteriaAdapter.CriteriaViewHolder> {
         private ArrayList<Criteria> criteriaArrayList;
 
         public CriteriaAdapter(ArrayList<Criteria> criteriaArrayList) {
@@ -144,12 +193,10 @@ public class CRAMSIndexFragment extends Fragment {
 
         @NonNull
         @Override
-        public CRAMSIndexFragment.CriteriaAdapter.CriteriaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public DiagnoseSectionedIndexFragment.CriteriaAdapter.CriteriaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view_entry_criteria = LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_criteria, null, false);
-            return new CRAMSIndexFragment.CriteriaAdapter.CriteriaViewHolder(view_entry_criteria);
+            return new DiagnoseSectionedIndexFragment.CriteriaAdapter.CriteriaViewHolder(view_entry_criteria);
         }
-
-
 
         @Override
         public void onBindViewHolder(@NonNull CriteriaAdapter.CriteriaViewHolder holder, int position) {
@@ -180,12 +227,12 @@ public class CRAMSIndexFragment extends Fragment {
                             Utils.index += criteriaArrayList.get(getAdapterPosition()).getWeight();
                             criteriaArrayList.get(getAdapterPosition()).setSelected(true);
                             diagnosisPb.setProgress(Utils.index);
-                            updateProbability();
+                            updateProbability(indexButton.getText().toString());
                         } else {
                             Utils.index -= criteriaArrayList.get(getAdapterPosition()).getWeight();
                             criteriaArrayList.get(getAdapterPosition()).setSelected(false);
                             diagnosisPb.setProgress(Utils.index);
-                            updateProbability();
+                            updateProbability(indexButton.getText().toString());
 
                         }
                     }
@@ -194,25 +241,24 @@ public class CRAMSIndexFragment extends Fragment {
 
         }
     }
-    class SectionAdapter extends RecyclerView.Adapter<CRAMSIndexFragment.SectionAdapter.ViexHolder> {
+
+    class SectionAdapter extends RecyclerView.Adapter<DiagnoseSectionedIndexFragment.SectionAdapter.ViexHolder> {
         private ArrayList<Section> sectionArrayList;
-        private CriteriaAdapter criteriaAdapte;
-
-
+        private CriteriaAdapter criteriaAdapter;
 
         public SectionAdapter(ArrayList<Section> sectionArrayList) {
             this.sectionArrayList = sectionArrayList;
         }
 
         public CriteriaAdapter getCriteriaAdapte() {
-            return criteriaAdapte;
+            return criteriaAdapter;
         }
 
         @NonNull
         @Override
-        public CRAMSIndexFragment.SectionAdapter.ViexHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public DiagnoseSectionedIndexFragment.SectionAdapter.ViexHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sectionrow, null, false);
-            return new CRAMSIndexFragment.SectionAdapter.ViexHolder(view);
+            return new DiagnoseSectionedIndexFragment.SectionAdapter.ViexHolder(view);
         }
 
         @Override
@@ -221,10 +267,10 @@ public class CRAMSIndexFragment extends Fragment {
             String sectionname = section.getSection_name();
             ArrayList<Criteria> items = section.getSection_Items();
             holder.sectionname.setText(sectionname);
-            criteriaAdapte = new CriteriaAdapter(items);
+            criteriaAdapter = new CriteriaAdapter(items);
 
             holder.child.setLayoutManager(new LinearLayoutManager(context));
-            holder.child.setAdapter(criteriaAdapte);
+            holder.child.setAdapter(criteriaAdapter);
 
         }
 
@@ -255,7 +301,7 @@ public class CRAMSIndexFragment extends Fragment {
                 for (int i = 0; i < sectionList.size(); i++) {
                     allCriterias.addAll(sectionList.get(i).getSection_Items());
                 }
-                criteriaAdapter=new CriteriaAdapter(allCriterias);
+                criteriaAdapter = new CriteriaAdapter(allCriterias);
                 if (Utils.isAnyChekBoxIsCheked(criteriaAdapter.getCriteriaArrayList())) {
                     showSaveDialog(null);
                 } else {
@@ -320,14 +366,14 @@ public class CRAMSIndexFragment extends Fragment {
                     } else {
                         long rowId = dbDiagnostics.addDiagnostic(name, id, indexButton.getText().toString(), probabilityInfo, consult_date, observations);
                         for (int i = 0; i < sectionAdapter.sectionArrayList.size(); i++) {
-                            for (int j = 0; j <sectionAdapter.sectionArrayList.get(i).getSection_Items().size() ; j++) {
-                               sectionAdapter.sectionArrayList.get(i).getSection_Items().get(j).setSelected(false);
-                                sectionAdapter.criteriaAdapte.notifyItemChanged(j);
+                            for (int j = 0; j < sectionAdapter.sectionArrayList.get(i).getSection_Items().size(); j++) {
+                                sectionAdapter.sectionArrayList.get(i).getSection_Items().get(j).setSelected(false);
+                                sectionAdapter.criteriaAdapter.notifyItemChanged(j);
                             }
                             sectionAdapter.notifyItemChanged(i);
                             Utils.index = 0;
                             diagnosisPb.setProgress(Utils.index);
-                            updateProbability();
+                            updateProbability(indexButton.getText().toString());
                         }
 
 

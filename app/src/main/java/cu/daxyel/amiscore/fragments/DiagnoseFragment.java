@@ -1,53 +1,25 @@
 package cu.daxyel.amiscore.fragments;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.ExpandableListView;
-import android.widget.ProgressBar;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.textfield.TextInputEditText;
 
 import cu.daxyel.amiscore.R;
-import cu.daxyel.amiscore.ScanQRActivity;
-import cu.daxyel.amiscore.Utils;
 import cu.daxyel.amiscore.adapters.IndexAdapter;
-import cu.daxyel.amiscore.db.DbDiagnostics;
 import cu.daxyel.amiscore.models.Category;
-import cu.daxyel.amiscore.models.Criteria;
 import cu.daxyel.amiscore.models.Index;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 import android.widget.Button;
 
@@ -99,8 +71,8 @@ public class DiagnoseFragment extends Fragment {
         indexButton.setText(name);
         if (name == "AMIScore") {
             fm.beginTransaction().replace(R.id.containerIndexes, new DiagnoseSimpleFragment()).commit();
-        } else if (name == "Escala CRAMS") {
-            fm.beginTransaction().replace(R.id.containerIndexes, new CRAMSIndexFragment()).commit();
+        } else if (name == "Escala CRAMS"||name=="Indice de Balthazar") {
+            fm.beginTransaction().replace(R.id.containerIndexes, new DiagnoseSectionedIndexFragment()).commit();
 
         }
     }
@@ -123,6 +95,7 @@ public class DiagnoseFragment extends Fragment {
         pancreatitisIndexes.add(new Index("Indice CTSI"));
         pancreatitisIndexes.add(new Index("Criterios de Ramson no biliares"));
         pancreatitisIndexes.add(new Index("Criterios de Ramson biliares"));
+        pancreatitisIndexes.add(new Index("Indice de Balthazar"));
         categories.add(new Category("Pancreatitis", pancreatitisIndexes));
 
         ArrayList<Index> imaIndexes = new ArrayList<Index>();
