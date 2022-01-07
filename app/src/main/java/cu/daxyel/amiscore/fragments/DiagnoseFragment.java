@@ -13,6 +13,7 @@ import android.widget.ExpandableListView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import cu.daxyel.amiscore.R;
 import cu.daxyel.amiscore.adapters.IndexAdapter;
@@ -22,11 +23,13 @@ import cu.daxyel.amiscore.models.Index;
 import java.util.ArrayList;
 
 import android.widget.Button;
+import android.widget.TextView;
 
 public class DiagnoseFragment extends Fragment {
 
     private Context context;
-    private Button indexButton;
+    private Button loadIndexButton;
+    private TextView showIndexLoaded;
     private FragmentManager fm;
 
     @Override
@@ -47,8 +50,9 @@ public class DiagnoseFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_diagnose, container, false);
         fm = getParentFragmentManager();
 
-        indexButton = view.findViewById(R.id.index_select_btn);
-        indexButton.setOnClickListener(new OnClickListener() {
+        loadIndexButton = view.findViewById(R.id.load_index_btn);
+        showIndexLoaded=view.findViewById(R.id.index_selected);
+        loadIndexButton.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View p1) {
@@ -68,11 +72,12 @@ public class DiagnoseFragment extends Fragment {
 
 
     public void loadIndex(String name) {
-        indexButton.setText(name);
+        showIndexLoaded.setText(name);
         if (name == "AMIScore") {
             fm.beginTransaction().replace(R.id.containerIndexes, new DiagnoseSimpleFragment()).commit();
         } else if (name == "Escala CRAMS"||name=="Indice de Balthazar") {
-            fm.beginTransaction().replace(R.id.containerIndexes, new DiagnoseSectionedIndexFragment()).commit();
+            fm.beginTransaction().replace(R.id.containerIndexes, new DiagnoseSectionedIndexFragment()).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+
 
         }
     }
@@ -121,7 +126,6 @@ public class DiagnoseFragment extends Fragment {
             @Override
             public boolean onChildClick(ExpandableListView p1, View p2, int p3, int p4, long p5) {
                 Index ind = (Index) indexAdapter.getChild(p3, p4);
-                System.out.println(ind.getName());
                 loadIndex(ind.getName());
                 dialog.dismiss();
                 return true;

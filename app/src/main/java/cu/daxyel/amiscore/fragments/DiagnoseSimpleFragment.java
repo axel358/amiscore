@@ -9,14 +9,10 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ExpandableListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,11 +35,8 @@ import java.util.Locale;
 import cu.daxyel.amiscore.R;
 import cu.daxyel.amiscore.ScanQRActivity;
 import cu.daxyel.amiscore.Utils;
-import cu.daxyel.amiscore.adapters.IndexAdapter;
 import cu.daxyel.amiscore.db.DbDiagnostics;
-import cu.daxyel.amiscore.models.Category;
 import cu.daxyel.amiscore.models.Criteria;
-import cu.daxyel.amiscore.models.Index;
 
 public class DiagnoseSimpleFragment extends Fragment {
     private RecyclerView criteriasRv;
@@ -53,7 +46,7 @@ public class DiagnoseSimpleFragment extends Fragment {
     private int critValueMed, critValueHigh;
     private ProgressBar diagnosisPb;
     private Context context;
-    private Button indexButton;
+    private TextView showIndexLoaded;
     private CriteriaAdapter criteriaAdapter;
     private String probabilityInfo;
     private FragmentManager fm;
@@ -78,10 +71,10 @@ public class DiagnoseSimpleFragment extends Fragment {
         criteriasRv.setLayoutManager(new LinearLayoutManager(context));
         diagnosisTv = view.findViewById(R.id.diagnosis_tv);
         diagnosisPb = view.findViewById(R.id.diagnosis_pb);
-        indexButton = getActivity().findViewById(R.id.index_select_btn);
+        showIndexLoaded = getActivity().findViewById(R.id.index_selected);
         infoTv = view.findViewById(R.id.info_tv);
 
-        loadIndex(indexButton.getText().toString());
+        loadIndex(showIndexLoaded.getText().toString());
 
         return view;
     }
@@ -262,7 +255,7 @@ public class DiagnoseSimpleFragment extends Fragment {
                     if (id.length() < 11) {
                         idEt.setError(getString(R.string.dialog_save_diagnosis_input_ID_error));
                     } else {
-                        long rowId = dbDiagnostics.addDiagnostic(name, id, indexButton.getText().toString(), probabilityInfo, consult_date, observations);
+                        long rowId = dbDiagnostics.addDiagnostic(name, id, showIndexLoaded.getText().toString(), probabilityInfo, consult_date, observations);
                         for (int i = 0; i < criteriaAdapter.getCriteriaArrayList().size(); i++) {
                             criteriaAdapter.getCriteriaArrayList().get(i).setSelected(false);
                             criteriaAdapter.notifyItemChanged(i);

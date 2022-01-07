@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -45,7 +44,7 @@ public class DiagnoseSectionedIndexFragment extends Fragment {
     private ProgressBar diagnosisPb;
     private String probabilityInfo;
     private CriteriaAdapter criteriaAdapter;
-    private Button indexButton;
+    private TextView showLoadedIndex;
     private TextView diagnosisTv;
     private ArrayList<Section> sectionList = new ArrayList<>();
     private RecyclerView mainRecycler;
@@ -70,12 +69,12 @@ public class DiagnoseSectionedIndexFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_sectioned_index, container, false);
         diagnosisTv = view.findViewById(R.id.diagnosisSectioned_tv);
         diagnosisPb = view.findViewById(R.id.diagnosisSectioned_pb);
-        indexButton = getActivity().findViewById(R.id.index_select_btn);
+        showLoadedIndex = getActivity().findViewById(R.id.index_selected);
         mainRecycler = view.findViewById(R.id.diagnosisSectioned_rv);
         mainRecycler.setLayoutManager(new LinearLayoutManager(context));
 
 
-        loadIndex(indexButton.getText().toString());
+        loadIndex(showLoadedIndex.getText().toString());
 
         return view;
     }
@@ -121,7 +120,7 @@ public class DiagnoseSectionedIndexFragment extends Fragment {
 
                 diagnosisPb.setMax(total);
 
-                updateProbability(indexButton.getText().toString());
+                updateProbability(showLoadedIndex.getText().toString());
                 break;
             case "Indice de Balthazar":
                 total = 22;
@@ -151,7 +150,7 @@ public class DiagnoseSectionedIndexFragment extends Fragment {
 
                 diagnosisPb.setMax(total);
 
-                updateProbability(indexButton.getText().toString());
+                updateProbability(showLoadedIndex.getText().toString());
         }
 
 
@@ -227,12 +226,12 @@ public class DiagnoseSectionedIndexFragment extends Fragment {
                             Utils.index += criteriaArrayList.get(getAdapterPosition()).getWeight();
                             criteriaArrayList.get(getAdapterPosition()).setSelected(true);
                             diagnosisPb.setProgress(Utils.index);
-                            updateProbability(indexButton.getText().toString());
+                            updateProbability(showLoadedIndex.getText().toString());
                         } else {
                             Utils.index -= criteriaArrayList.get(getAdapterPosition()).getWeight();
                             criteriaArrayList.get(getAdapterPosition()).setSelected(false);
                             diagnosisPb.setProgress(Utils.index);
-                            updateProbability(indexButton.getText().toString());
+                            updateProbability(showLoadedIndex.getText().toString());
 
                         }
                     }
@@ -364,7 +363,7 @@ public class DiagnoseSectionedIndexFragment extends Fragment {
                     if (id.length() < 11) {
                         idEt.setError(getString(R.string.dialog_save_diagnosis_input_ID_error));
                     } else {
-                        long rowId = dbDiagnostics.addDiagnostic(name, id, indexButton.getText().toString(), probabilityInfo, consult_date, observations);
+                        long rowId = dbDiagnostics.addDiagnostic(name, id, showLoadedIndex.getText().toString(), probabilityInfo, consult_date, observations);
                         for (int i = 0; i < sectionAdapter.sectionArrayList.size(); i++) {
                             for (int j = 0; j < sectionAdapter.sectionArrayList.get(i).getSection_Items().size(); j++) {
                                 sectionAdapter.sectionArrayList.get(i).getSection_Items().get(j).setSelected(false);
@@ -373,7 +372,7 @@ public class DiagnoseSectionedIndexFragment extends Fragment {
                             sectionAdapter.notifyItemChanged(i);
                             Utils.index = 0;
                             diagnosisPb.setProgress(Utils.index);
-                            updateProbability(indexButton.getText().toString());
+                            updateProbability(showLoadedIndex.getText().toString());
                         }
 
 

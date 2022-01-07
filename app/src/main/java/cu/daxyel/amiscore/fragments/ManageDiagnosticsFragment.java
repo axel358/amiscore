@@ -51,8 +51,6 @@ import android.graphics.Color;
 
 import cu.daxyel.amiscore.Utils;
 
-import android.widget.Button;
-
 public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAdapter.ViewHolder.ClickListener {
     private RecyclerView diagnosisRv;
     private DbDiagnostics dbDiagnostics;
@@ -67,7 +65,7 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     ItemTouchHelper itemTouchHelper;
     private boolean selected_all = false;
-    private Button indexButton;
+    private TextView showIndexLoaded;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,7 +87,7 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
         diagnosisRv.setLayoutManager(new LinearLayoutManager(context));
         loadingTv = view.findViewById(R.id.diagnosis_loading_tv);
         loadingPb = view.findViewById(R.id.diagnosis_loading_pb);
-        indexButton = view.findViewById(R.id.index_select_btn);
+        showIndexLoaded = view.findViewById(R.id.index_selected);
 
         dbDiagnostics = new DbDiagnostics(getActivity());
 
@@ -153,7 +151,7 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
                     @Override
                     public void onShown(Snackbar sb) {
                         super.onShown(sb);
-                        indexButton.setEnabled(false);
+                        showIndexLoaded.setEnabled(false);
 
                     }
 
@@ -161,10 +159,10 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
                     public void onDismissed(Snackbar snackbar, int event) {
                         //Its gone, remove it from db
                         if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) {
-                            indexButton.setEnabled(true);
+                            showIndexLoaded.setEnabled(true);
                         }
                         if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT || event == Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE) {
-                            indexButton.setEnabled(true);
+                            showIndexLoaded.setEnabled(true);
                             dbDiagnostics.deleteDiagnostic(diagnosis.getId());
 
                         }
