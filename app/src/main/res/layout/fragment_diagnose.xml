@@ -1,60 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
-	<include
-		layout="@layout/ribbon_index"/>
+    <include layout="@layout/ribbon_index"/>
 
-	<TextView
-		android:layout_height="wrap_content"
-		android:layout_width="match_parent"
-		android:text="Text"
-		android:id="@+id/info_tv"
-		android:gravity="center"
-		android:textAppearance="?android:attr/textAppearanceLarge"
-		android:layout_marginTop="10dp"
-		android:textSize="18sp"
-		android:layout_marginLeft="10dp"
-		android:layout_marginRight="10dp"/>
-
-	<androidx.recyclerview.widget.RecyclerView
-		android:id="@+id/criteria_rv"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:layout_marginLeft="10dp"
-		android:layout_marginRight="10dp"
-		android:layout_weight="0.8"
-		android:divider="@null"/>
-
-	<LinearLayout
-		android:layout_height="wrap_content"
-		android:layout_width="match_parent"
-		android:orientation="vertical"
-		android:gravity="bottom|center">
-
-		<TextView
-			android:layout_height="wrap_content"
-			android:layout_width="match_parent"
-			android:text="Low chance 0%"
-			android:id="@+id/diagnosis_tv"
-			android:gravity="center"
-			android:textSize="18sp"
-			android:textAppearance="?android:attr/textAppearanceLarge"/>
-
-		<ProgressBar
-			style="?android:attr/progressBarStyleHorizontal"
-			android:layout_height="wrap_content"
-			android:layout_width="match_parent"
-			android:id="@+id/diagnosis_pb"
-			android:layout_marginTop="10dp"
-			android:layout_marginBottom="10dp"
-			android:layout_marginLeft="16dp"
-			android:layout_marginRight="16dp"/>
-
-	</LinearLayout>
-
+    <LinearLayout
+        android:id="@+id/containerIndexes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
 </LinearLayout>
 

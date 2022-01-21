@@ -11,6 +11,7 @@ public class Criteria
         this.weight = weight;
         this.name = name;
         this.isSelected=isSelected;
+
     }
 
     public int getWeight()
