@@ -123,7 +123,7 @@ public class DiagnoseSectionedIndexFragment extends Fragment {
                 updateProbability(showLoadedIndex.getText().toString());
                 break;
             case "Indice de Balthazar":
-                total = 22;
+                total = 10;
                 critValueHigh = 6;
                 critValueMed=4;
                 Utils.index = 0;
@@ -220,24 +220,32 @@ public class DiagnoseSectionedIndexFragment extends Fragment {
                 super(itemView);
                 criteriaChkbx = itemView.findViewById(R.id.criteria_chkbx);
                 criteriaChkbx.setOnClickListener(new View.OnClickListener() {
+
                     @Override
                     public void onClick(View view) {
-                        if (!criteriaArrayList.get(getAdapterPosition()).getSelected()) {
+                        if (!criteriaArrayList.get(getAdapterPosition()).getSelected()&&radioGroupFunction(criteriaArrayList)==-1) {
                             Utils.index += criteriaArrayList.get(getAdapterPosition()).getWeight();
                             criteriaArrayList.get(getAdapterPosition()).setSelected(true);
                             diagnosisPb.setProgress(Utils.index);
                             updateProbability(showLoadedIndex.getText().toString());
-                        } else {
+                        } else if(criteriaArrayList.get(getAdapterPosition()).getSelected()) {
                             Utils.index -= criteriaArrayList.get(getAdapterPosition()).getWeight();
                             criteriaArrayList.get(getAdapterPosition()).setSelected(false);
                             diagnosisPb.setProgress(Utils.index);
                             updateProbability(showLoadedIndex.getText().toString());
-
+                        }else if(radioGroupFunction(criteriaArrayList)!=-1){
+                            int old_position_selected =radioGroupFunction(criteriaArrayList);
+                            criteriaArrayList.get(old_position_selected).setSelected(false);
+                            Utils.index += criteriaArrayList.get(getAdapterPosition()).getWeight();
+                            Utils.index -= criteriaArrayList.get(old_position_selected).getWeight();
+                            criteriaArrayList.get(getAdapterPosition()).setSelected(true);
+                            notifyItemChanged(old_position_selected);
+                            diagnosisPb.setProgress(Utils.index);
+                            updateProbability(showLoadedIndex.getText().toString());
                         }
                     }
                 });
             }
-
         }
     }
 
@@ -311,7 +319,14 @@ public class DiagnoseSectionedIndexFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
+    private int radioGroupFunction(ArrayList<Criteria> criteriaArrayList){
+        for (int i = 0; i <criteriaArrayList.size() ; i++) {
+            if(criteriaArrayList.get(i).getSelected()){
+                return i;
+            }
+        }
+        return -1;
+    }
 
     private void showSaveDialog(String[] info) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy, hh:mm aaa", Locale.getDefault());
