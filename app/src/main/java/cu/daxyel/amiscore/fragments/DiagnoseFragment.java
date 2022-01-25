@@ -48,7 +48,7 @@ public class DiagnoseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_diagnose, container, false);
-        fm = getParentFragmentManager();
+        fm = getActivity().getSupportFragmentManager();
 
         loadIndexButton = view.findViewById(R.id.load_index_btn);
         showIndexLoaded=view.findViewById(R.id.index_selected);
