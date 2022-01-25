@@ -119,7 +119,7 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
 
                 final int position = viewHolder.getAdapterPosition();
                 final int sizeoriginalarray = diagnosticsAdapter.getDiagnosis().size();
-                SparseBooleanArray newSelected = new SparseBooleanArray();
+                final SparseBooleanArray newSelected = new SparseBooleanArray();
                 final Diagnosis diagnosis = diagnosticsAdapter.getDiagnosis().get(viewHolder.getAdapterPosition());
                 diagnosticsAdapter.getDiagnosis().remove(position);
                 diagnosticsAdapter.notifyItemRemoved(position);

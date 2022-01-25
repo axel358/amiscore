@@ -24,6 +24,8 @@ import android.content.res.Configuration;
 import android.view.Menu;
 import cu.daxyel.amiscore.fragments.StatisticsFragment;
 import cu.daxyel.amiscore.fragments.AboutFragment;
+import cu.daxyel.amiscore.fragments.LoginFragment;
+import cu.daxyel.amiscore.fragments.CreateAccountFragment;
 
 public class MainActivity extends AppCompatActivity
 implements NavigationView.OnNavigationItemSelectedListener {
@@ -130,7 +132,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
                 selected = 1;
                 break;
             case R.id.nav_manage_indexes:
-                fm.beginTransaction().replace(R.id.main_container, new ManageIndexesFragment()).commit();
+                fm.beginTransaction().replace(R.id.main_container, new CreateAccountFragment()).commit();
                 selected = 2;
                 break;
             case R.id.nav_statistics:
