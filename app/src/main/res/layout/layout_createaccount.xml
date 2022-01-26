@@ -109,6 +109,7 @@
                 android:layout_marginTop="10dp"/>
 
             <Button
+                android:id="@+id/switch_sign_in_btn"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
