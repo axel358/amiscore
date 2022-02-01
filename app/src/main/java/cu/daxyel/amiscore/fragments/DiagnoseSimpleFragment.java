@@ -83,55 +83,124 @@ public class DiagnoseSimpleFragment extends Fragment {
     public void loadIndex(String name) {
         ArrayList<Criteria> criterias = new ArrayList<Criteria>();
         String info = "";
-        switch (name) {
-            case "AMIScore":
-                total = 121;
-                critValueMed = 58;
-                critValueHigh = 81;
+        if (name == "AMIScore") {
+            criterias.clear();
+            total = 121;
+            critValueMed = 58;
+            critValueHigh = 81;
+            index = 0;
 
-                if (Locale.getDefault().toString().startsWith("es")) {
-                    criterias.add(new Criteria(21, "Ateromatosis de la aorta", false));
-                    criterias.add(new Criteria(25, "Patrón gaseoso utrasonográfico aumentado", false));
-                    criterias.add(new Criteria(36, "Fibrilacion auricular", false));
-                    criterias.add(new Criteria(39, "Lactato mayor que 2.1", false));
-                    info = "Dolor abdominal inespecífico sin diagnóstico constatado \n+";
-                } else {
-                    criterias.add(new Criteria(21, "Aorta ateromatosis", false));
-                    criterias.add(new Criteria(25, "Increased ultrasonografic gaseous pattern", false));
-                    criterias.add(new Criteria(36, "Atrial fibrillation", false));
-                    criterias.add(new Criteria(39, "Lactate higher than 2.1", false));
-                    info = "Non specific abdominal pain without clear diagnosis \n+";
-                }
-                break;
+            if (Locale.getDefault().toString().startsWith("es")) {
+                criterias.add(new Criteria(21, "Ateromatosis de la aorta", false));
+                criterias.add(new Criteria(25, "Patrón gaseoso utrasonográfico aumentado", false));
+                criterias.add(new Criteria(36, "Fibrilacion auricular", false));
+                criterias.add(new Criteria(39, "Lactato mayor que 2.1", false));
+                info = "Dolor abdominal inespecífico sin diagnóstico constatado \n+";
+            } else {
+                criterias.add(new Criteria(21, "Aorta ateromatosis", false));
+                criterias.add(new Criteria(25, "Increased ultrasonografic gaseous pattern", false));
+                criterias.add(new Criteria(36, "Atrial fibrillation", false));
+                criterias.add(new Criteria(39, "Lactate higher than 2.1", false));
+                info = "Non specific abdominal pain without clear diagnosis \n+";
+            }
+            diagnosisPb.setMax(total);
 
+            if (info.isEmpty()) {
+                infoTv.setVisibility(View.GONE);
+            } else {
+                infoTv.setVisibility(View.VISIBLE);
+                infoTv.setText(info);
+            }
+            criteriaAdapter = new DiagnoseSimpleFragment.CriteriaAdapter(criterias);
+            criteriasRv.setAdapter(criteriaAdapter);
+
+            updateProbability(showIndexLoaded.getText().toString());
+        } else if (name == getString(R.string.escala_alvarado)) {
+            criterias.clear();
+            total = 10;
+            index = 0;
+
+            criterias.add(new Criteria(1, getString(R.string.alvarado_index_crit1), false));
+            criterias.add(new Criteria(1, getString(R.string.alvarado_index_crit2), false));
+            criterias.add(new Criteria(1, getString(R.string.alvarado_index_crit3), false));
+            criterias.add(new Criteria(2, getString(R.string.alvarado_index_crit4), false));
+            criterias.add(new Criteria(1, getString(R.string.alvarado_index_crit5), false));
+            criterias.add(new Criteria(1, getString(R.string.alvarado_index_crit6), false));
+            criterias.add(new Criteria(2, getString(R.string.alvarado_index_crit7), false));
+            criterias.add(new Criteria(1, getString(R.string.alvarado_index_crit8), false));
+
+            diagnosisPb.setMax(total);
+
+            if (info.isEmpty()) {
+                infoTv.setVisibility(View.GONE);
+            }
+            criteriaAdapter = new DiagnoseSimpleFragment.CriteriaAdapter(criterias);
+            criteriasRv.setAdapter(criteriaAdapter);
+            updateProbability(showIndexLoaded.getText().toString());
+
+        } else if (name == getString(R.string.Mannheim_index)) {
+            criterias.clear();
+            total = 53;
+            index = 0;
+
+            criterias.add(new Criteria(5, getString(R.string.mannheim_index_crit1), false));
+            criterias.add(new Criteria(5, getString(R.string.mannheim_index_crit2), false));
+            criterias.add(new Criteria(7, getString(R.string.mannheim_index_crit3), false));
+            criterias.add(new Criteria(4, getString(R.string.mannheim_index_crit4), false));
+            criterias.add(new Criteria(4, getString(R.string.mannheim_index_crit5), false));
+            criterias.add(new Criteria(4, getString(R.string.mannheim_index_crit6), false));
+            criterias.add(new Criteria(6, getString(R.string.mannheim_index_crit7), false));
+            criterias.add(new Criteria(0, getString(R.string.mannheim_index_crit8), false));
+            criterias.add(new Criteria(6, getString(R.string.mannheim_index_crit9), false));
+            criterias.add(new Criteria(12, getString(R.string.mannheim_index_crit10), false));
+
+            diagnosisPb.setMax(total);
+
+            if (info.isEmpty()) {
+                infoTv.setVisibility(View.GONE);
+            }
+            criteriaAdapter = new DiagnoseSimpleFragment.CriteriaAdapter(criterias);
+            criteriasRv.setAdapter(criteriaAdapter);
+            updateProbability(showIndexLoaded.getText().toString());
         }
-        diagnosisPb.setMax(total);
-
-        if (info.isEmpty()) {
-            infoTv.setVisibility(View.GONE);
-        } else {
-            infoTv.setVisibility(View.VISIBLE);
-            infoTv.setText(info);
-        }
-
-        criteriaAdapter = new DiagnoseSimpleFragment.CriteriaAdapter(criterias);
-        criteriasRv.setAdapter(criteriaAdapter);
-
-        updateProbability();
-
     }
 
-    public void updateProbability() {
-        if (index > critValueHigh) {
-            diagnosisTv.setText(getString(R.string.very_high_probability) + " " + index + "/" + total);
-            probabilityInfo = getString(R.string.very_high_probability).toLowerCase();
-        } else if (index > critValueMed) {
-            diagnosisTv.setText(getString(R.string.high_probability) + " " + index + "/" + total);
-            probabilityInfo = getString(R.string.high_probability).toLowerCase();
-        } else {
-            diagnosisTv.setText(getString(R.string.low_probability) + " " + index + "/" + total);
-            probabilityInfo = getString(R.string.low_probability).toLowerCase();
+    public void updateProbability(String name) {
+        if (name == "AMIScore") {
+            if (index > critValueHigh) {
+                diagnosisTv.setText(getString(R.string.very_high_probability) + " " + index + "/" + total);
+                probabilityInfo = getString(R.string.very_high_probability).toLowerCase();
+            } else if (index > critValueMed) {
+                diagnosisTv.setText(getString(R.string.high_probability) + " " + index + "/" + total);
+                probabilityInfo = getString(R.string.high_probability).toLowerCase();
+            } else {
+                diagnosisTv.setText(getString(R.string.low_probability) + " " + index + "/" + total);
+                probabilityInfo = getString(R.string.low_probability).toLowerCase();
+            }
+        } else if (name == getString(R.string.escala_alvarado)) {
+            if (index > 7) {
+                diagnosisTv.setText(getString(R.string.alvarado_index_diagnose3) + " " + index + "/" + total);
+                probabilityInfo = getString(R.string.alvarado_index_diagnose3).toLowerCase();
+            } else if (index >= 5 && index <= 7) {
+                diagnosisTv.setText(getString(R.string.alvarado_index_diagnose2) + " " + index + "/" + total);
+                probabilityInfo = getString(R.string.alvarado_index_diagnose2).toLowerCase();
+            } else {
+                diagnosisTv.setText(getString(R.string.alvarado_index_diagnose1) + " " + index + "/" + total);
+                probabilityInfo = getString(R.string.alvarado_index_diagnose1).toLowerCase();
+            }
+        }else if(name==getString(R.string.Mannheim_index)){
+            if(index>27){
+                diagnosisTv.setText(getString(R.string.mannheim_index_diagnose3) + " " + index + "/" + total);
+                probabilityInfo = getString(R.string.mannheim_index_diagnose3).toLowerCase();
+            }else if(index<21){
+                diagnosisTv.setText(getString(R.string.mannheim_index_diagnose1) + " " + index + "/" + total);
+                probabilityInfo = getString(R.string.mannheim_index_diagnose1).toLowerCase();
+            }else{
+                diagnosisTv.setText(getString(R.string.mannheim_index_diagnose2) + " " + index + "/" + total);
+                probabilityInfo = getString(R.string.mannheim_index_diagnose2).toLowerCase();
+            }
         }
+
     }
 
     class CriteriaAdapter extends RecyclerView.Adapter<DiagnoseSimpleFragment.CriteriaAdapter.CriteriaViewHolder> {
@@ -177,12 +246,12 @@ public class DiagnoseSimpleFragment extends Fragment {
                             index += criteriaArrayList.get(getAdapterPosition()).getWeight();
                             criteriaArrayList.get(getAdapterPosition()).setSelected(true);
                             diagnosisPb.setProgress(index);
-                            updateProbability();
+                            updateProbability(showIndexLoaded.getText().toString());
                         } else {
                             index -= criteriaArrayList.get(getAdapterPosition()).getWeight();
                             criteriaArrayList.get(getAdapterPosition()).setSelected(false);
                             diagnosisPb.setProgress(index);
-                            updateProbability();
+                            updateProbability(showIndexLoaded.getText().toString());
 
                         }
                     }
@@ -261,7 +330,7 @@ public class DiagnoseSimpleFragment extends Fragment {
                             criteriaAdapter.notifyItemChanged(i);
                             index = 0;
                             diagnosisPb.setProgress(index);
-                            updateProbability();
+                            updateProbability(showIndexLoaded.getText().toString());
                         }
 
                         if (rowId > 0) {
