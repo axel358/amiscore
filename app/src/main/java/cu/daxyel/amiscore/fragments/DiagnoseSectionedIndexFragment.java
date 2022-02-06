@@ -80,107 +80,250 @@ public class DiagnoseSectionedIndexFragment extends Fragment {
     }
 
     public void loadIndex(String name) {
-        switch (name) {
-            case "Escala CRAMS":
-                total = 12;
-                critValueHigh = 8;
-                Utils.index = 0;
+        if (name == getString(R.string.CRAMS_index)) {
+            total = 12;
+            critValueHigh = 8;
+            Utils.index = 0;
 
-                String sectionOne = getString(R.string.crams_section_one);
-                String sectionTwo = getString(R.string.crams_section_two);
-                String sectionThree = getString(R.string.crams_section_three);
-                String sectionFour = getString(R.string.crams_section_four);
+            String sectionOne = getString(R.string.crams_section_one);
+            String sectionTwo = getString(R.string.crams_section_two);
+            String sectionThree = getString(R.string.crams_section_three);
+            String sectionFour = getString(R.string.crams_section_four);
 
-                ArrayList<Criteria> sectionOneItems = new ArrayList<Criteria>();
-                sectionOneItems.add(new Criteria(2, getString(R.string.crams_section_one_crit1), false));
-                sectionOneItems.add(new Criteria(1, getString(R.string.crams_section_one_crit2), false));
-                sectionOneItems.add(new Criteria(0, getString(R.string.crams_section_one_crit3), false));
+            ArrayList<Criteria> sectionOneItems = new ArrayList<Criteria>();
+            sectionOneItems.add(new Criteria(2, getString(R.string.crams_section_one_crit1), false));
+            sectionOneItems.add(new Criteria(1, getString(R.string.crams_section_one_crit2), false));
+            sectionOneItems.add(new Criteria(0, getString(R.string.crams_section_one_crit3), false));
 
-                ArrayList<Criteria> sectionTwoItems = new ArrayList<Criteria>();
-                sectionTwoItems.add(new Criteria(2, getString(R.string.crams_section_two_crit1), false));
-                sectionTwoItems.add(new Criteria(1, getString(R.string.crams_section_two_crit2), false));
-                sectionTwoItems.add(new Criteria(0, getString(R.string.crams_section_two_crit3), false));
+            ArrayList<Criteria> sectionTwoItems = new ArrayList<Criteria>();
+            sectionTwoItems.add(new Criteria(2, getString(R.string.crams_section_two_crit1), false));
+            sectionTwoItems.add(new Criteria(1, getString(R.string.crams_section_two_crit2), false));
+            sectionTwoItems.add(new Criteria(0, getString(R.string.crams_section_two_crit3), false));
 
-                ArrayList<Criteria> sectionThreeItems = new ArrayList<Criteria>();
-                sectionThreeItems.add(new Criteria(2, getString(R.string.crams_section_three_crit1), false));
-                sectionThreeItems.add(new Criteria(1, getString(R.string.crams_section_three_crit2), false));
-                sectionThreeItems.add(new Criteria(0, getString(R.string.crams_section_three_crit3), false));
+            ArrayList<Criteria> sectionThreeItems = new ArrayList<Criteria>();
+            sectionThreeItems.add(new Criteria(2, getString(R.string.crams_section_three_crit1), false));
+            sectionThreeItems.add(new Criteria(1, getString(R.string.crams_section_three_crit2), false));
+            sectionThreeItems.add(new Criteria(0, getString(R.string.crams_section_three_crit3), false));
 
-                ArrayList<Criteria> sectionFourItems = new ArrayList<Criteria>();
-                sectionFourItems.add(new Criteria(2, getString(R.string.crams_section_four_crit1), false));
-                sectionFourItems.add(new Criteria(1, getString(R.string.crams_section_four_crit2), false));
-                sectionFourItems.add(new Criteria(0, getString(R.string.crams_section_four_crit3), false));
+            ArrayList<Criteria> sectionFourItems = new ArrayList<Criteria>();
+            sectionFourItems.add(new Criteria(2, getString(R.string.crams_section_four_crit1), false));
+            sectionFourItems.add(new Criteria(1, getString(R.string.crams_section_four_crit2), false));
+            sectionFourItems.add(new Criteria(0, getString(R.string.crams_section_four_crit3), false));
 
-                sectionList.add(new Section(sectionOne, sectionOneItems));
-                sectionList.add(new Section(sectionTwo, sectionTwoItems));
-                sectionList.add(new Section(sectionThree, sectionThreeItems));
-                sectionList.add(new Section(sectionFour, sectionFourItems));
-                sectionAdapter = new SectionAdapter(sectionList);
-                mainRecycler.setAdapter(sectionAdapter);
+            sectionList.add(new Section(sectionOne, sectionOneItems));
+            sectionList.add(new Section(sectionTwo, sectionTwoItems));
+            sectionList.add(new Section(sectionThree, sectionThreeItems));
+            sectionList.add(new Section(sectionFour, sectionFourItems));
+            sectionAdapter = new SectionAdapter(sectionList);
+            mainRecycler.setAdapter(sectionAdapter);
 
-                diagnosisPb.setMax(total);
+            diagnosisPb.setMax(total);
 
-                updateProbability(showLoadedIndex.getText().toString());
-                break;
-            case "Indice de Balthazar":
-                total = 10;
-                critValueHigh = 6;
-                critValueMed=4;
-                Utils.index = 0;
+            updateProbability(showLoadedIndex.getText().toString());
+        } else if (name == getString(R.string.Balthazar_index)) {
+            total = 10;
+            critValueHigh = 6;
+            critValueMed = 4;
+            Utils.index = 0;
 
-                String sectionFirst = getString(R.string.Balthazar_section_one);
-                String sectionSecond = getString(R.string.Balthazar_section_two);
-                ArrayList<Criteria> sectionFirstItems = new ArrayList<Criteria>();
-                sectionFirstItems.add(new Criteria(0, getString(R.string.Balthazar_section_one_crit1), false));
-                sectionFirstItems.add(new Criteria(1, getString(R.string.Balthazar_section_one_crit2), false));
-                sectionFirstItems.add(new Criteria(2, getString(R.string.Balthazar_section_one_crit3), false));
-                sectionFirstItems.add(new Criteria(3, getString(R.string.Balthazar_section_one_crit4), false));
-                sectionFirstItems.add(new Criteria(4, getString(R.string.Balthazar_section_one_crit5), false));
+            String sectionFirst = getString(R.string.Balthazar_section_one);
+            String sectionSecond = getString(R.string.Balthazar_section_two);
+            ArrayList<Criteria> sectionFirstItems = new ArrayList<Criteria>();
+            sectionFirstItems.add(new Criteria(0, getString(R.string.Balthazar_section_one_crit1), false));
+            sectionFirstItems.add(new Criteria(1, getString(R.string.Balthazar_section_one_crit2), false));
+            sectionFirstItems.add(new Criteria(2, getString(R.string.Balthazar_section_one_crit3), false));
+            sectionFirstItems.add(new Criteria(3, getString(R.string.Balthazar_section_one_crit4), false));
+            sectionFirstItems.add(new Criteria(4, getString(R.string.Balthazar_section_one_crit5), false));
 
-                ArrayList<Criteria> sectionSecondItems = new ArrayList<Criteria>();
-                sectionSecondItems.add(new Criteria(0, getString(R.string.Balthazar_section_two_crit1), false));
-                sectionSecondItems.add(new Criteria(2, getString(R.string.Balthazar_section_two_crit2), false));
-                sectionSecondItems.add(new Criteria(4, getString(R.string.Balthazar_section_two_crit3), false));
-                sectionSecondItems.add(new Criteria(6, getString(R.string.Balthazar_section_two_crit4), false));
+            ArrayList<Criteria> sectionSecondItems = new ArrayList<Criteria>();
+            sectionSecondItems.add(new Criteria(0, getString(R.string.Balthazar_section_two_crit1), false));
+            sectionSecondItems.add(new Criteria(2, getString(R.string.Balthazar_section_two_crit2), false));
+            sectionSecondItems.add(new Criteria(4, getString(R.string.Balthazar_section_two_crit3), false));
+            sectionSecondItems.add(new Criteria(6, getString(R.string.Balthazar_section_two_crit4), false));
 
-                sectionList.add(new Section(sectionFirst, sectionFirstItems));
-                sectionList.add(new Section(sectionSecond, sectionSecondItems));
-                sectionAdapter = new SectionAdapter(sectionList);
-                mainRecycler.setAdapter(sectionAdapter);
+            sectionList.add(new Section(sectionFirst, sectionFirstItems));
+            sectionList.add(new Section(sectionSecond, sectionSecondItems));
+            sectionAdapter = new SectionAdapter(sectionList);
+            mainRecycler.setAdapter(sectionAdapter);
 
-                diagnosisPb.setMax(total);
+            diagnosisPb.setMax(total);
 
-                updateProbability(showLoadedIndex.getText().toString());
+            updateProbability(showLoadedIndex.getText().toString());
+        } else if (name == "Pediatric Trauma Score") {
+            total = 12;
+            Utils.index = 0;
+
+            String sectionOne = getString(R.string.PediatricTS_section1);
+            String sectionTwo = getString(R.string.PediatricTS_section2);
+            String sectionThree = getString(R.string.PediatricTS_section3);
+            String sectionFour = getString(R.string.PediatricTS_section4);
+            String sectionFive = getString(R.string.PediatricTS_section5);
+            String sectionSixth = getString(R.string.PediatricTS_section6);
+
+            ArrayList<Criteria> sectionOneItems = new ArrayList<Criteria>();
+            sectionOneItems.add(new Criteria(2, getString(R.string.PediatricTS_section1_crit1), false));
+            sectionOneItems.add(new Criteria(1, getString(R.string.PediatricTS_section1_crit2), false));
+            sectionOneItems.add(new Criteria(-1, getString(R.string.PediatricTS_section1_crit3), false));
+
+            ArrayList<Criteria> sectionTwoItems = new ArrayList<Criteria>();
+            sectionTwoItems.add(new Criteria(2, getString(R.string.PediatricTS_section2_crit1), false));
+            sectionTwoItems.add(new Criteria(1, getString(R.string.PediatricTS_section2_crit2), false));
+            sectionTwoItems.add(new Criteria(-1, getString(R.string.PediatricTS_section2_crit3), false));
+
+            ArrayList<Criteria> sectionThreeItems = new ArrayList<Criteria>();
+            sectionThreeItems.add(new Criteria(2, getString(R.string.PediatricTS_section3_crit1), false));
+            sectionThreeItems.add(new Criteria(1, getString(R.string.PediatricTS_section3_crit2), false));
+            sectionThreeItems.add(new Criteria(-1, getString(R.string.PediatricTS_section3_crit3), false));
+
+            ArrayList<Criteria> sectionFourItems = new ArrayList<Criteria>();
+            sectionFourItems.add(new Criteria(2, getString(R.string.PediatricTS_section4_crit1), false));
+            sectionFourItems.add(new Criteria(1, getString(R.string.PediatricTS_section4_crit2), false));
+            sectionFourItems.add(new Criteria(-1, getString(R.string.PediatricTS_section4_crit3), false));
+
+            ArrayList<Criteria> sectionFiveItems = new ArrayList<Criteria>();
+            sectionFiveItems.add(new Criteria(2, getString(R.string.PediatricTS_section5_crit1), false));
+            sectionFiveItems.add(new Criteria(1, getString(R.string.PediatricTS_section5_crit2), false));
+            sectionFiveItems.add(new Criteria(-1, getString(R.string.PediatricTS_section5_crit3), false));
+
+            ArrayList<Criteria> sectionSixthItems = new ArrayList<Criteria>();
+            sectionSixthItems.add(new Criteria(2, getString(R.string.PediatricTS_section6_crit1), false));
+            sectionSixthItems.add(new Criteria(1, getString(R.string.PediatricTS_section6_crit2), false));
+            sectionSixthItems.add(new Criteria(-1, getString(R.string.PediatricTS_section6_crit3), false));
+
+            sectionList.add(new Section(sectionOne, sectionOneItems));
+            sectionList.add(new Section(sectionTwo, sectionTwoItems));
+            sectionList.add(new Section(sectionThree, sectionThreeItems));
+            sectionList.add(new Section(sectionFour, sectionFourItems));
+            sectionList.add(new Section(sectionFive, sectionFiveItems));
+            sectionList.add(new Section(sectionSixth, sectionSixthItems));
+            sectionAdapter = new SectionAdapter(sectionList);
+            mainRecycler.setAdapter(sectionAdapter);
+
+            diagnosisPb.setMax(total);
+            updateProbability(showLoadedIndex.getText().toString());
+        } else if (name == getString(R.string.criterios_de_ramson_no_biliares_index)) {
+            total = 11;
+            Utils.index = 0;
+
+            String sectionOne = getString(R.string.ranson_nobiliar_biliar_indexes_sect0);
+            String sectionTwo = getString(R.string.ranson_nobiliar_biliar_indexes_sect1);
+
+            ArrayList<Criteria> sectionOneItems = new ArrayList<Criteria>();
+            sectionOneItems.add(new Criteria(1, getString(R.string.ranson_nobiliar_index_sect1_crit1), false));
+            sectionOneItems.add(new Criteria(1, getString(R.string.ranson_nobiliar_index_sect1_crit2), false));
+            sectionOneItems.add(new Criteria(1, getString(R.string.ranson_nobiliar_index_sect1_crit3), false));
+            sectionOneItems.add(new Criteria(1, getString(R.string.ranson_nobiliar_index_sect1_crit4), false));
+            sectionOneItems.add(new Criteria(1, getString(R.string.ranson_nobiliar_index_sect1_crit5), false));
+
+            ArrayList<Criteria> sectionTwoItems = new ArrayList<Criteria>();
+            sectionTwoItems.add(new Criteria(1, getString(R.string.ranson_nobiliar_index_sect2_crit1), false));
+            sectionTwoItems.add(new Criteria(1, getString(R.string.ranson_nobiliar_index_sect2_crit2), false));
+            sectionTwoItems.add(new Criteria(1, getString(R.string.ranson_nobiliar_index_sect2_crit3), false));
+            sectionTwoItems.add(new Criteria(1, getString(R.string.ranson_nobiliar_index_sect2_crit4), false));
+            sectionTwoItems.add(new Criteria(1, getString(R.string.ranson_nobiliar_index_sect2_crit5), false));
+            sectionTwoItems.add(new Criteria(1, getString(R.string.ranson_nobiliar_index_sect2_crit6), false));
+
+
+            sectionList.add(new Section(sectionOne, sectionOneItems));
+            sectionList.add(new Section(sectionTwo, sectionTwoItems));
+            sectionAdapter = new SectionAdapter(sectionList);
+            mainRecycler.setAdapter(sectionAdapter);
+
+            diagnosisPb.setMax(total);
+            updateProbability(showLoadedIndex.getText().toString());
         }
+        else if (name == getString(R.string.criterios_de_ramson_biliares_index)) {
+            total = 11;
+            Utils.index = 0;
 
+            String sectionOne = getString(R.string.ranson_nobiliar_biliar_indexes_sect0);
+            String sectionTwo = getString(R.string.ranson_nobiliar_biliar_indexes_sect1);
+
+            ArrayList<Criteria> sectionOneItems = new ArrayList<Criteria>();
+            sectionOneItems.add(new Criteria(1, getString(R.string.ranson_biliar_index_sect1_crit1), false));
+            sectionOneItems.add(new Criteria(1, getString(R.string.ranson_biliar_index_sect1_crit2), false));
+            sectionOneItems.add(new Criteria(1, getString(R.string.ranson_biliar_index_sect1_crit3), false));
+            sectionOneItems.add(new Criteria(1, getString(R.string.ranson_biliar_index_sect1_crit4), false));
+            sectionOneItems.add(new Criteria(1, getString(R.string.ranson_biliar_index_sect1_crit5), false));
+
+            ArrayList<Criteria> sectionTwoItems = new ArrayList<Criteria>();
+            sectionTwoItems.add(new Criteria(1, getString(R.string.ranson_biliar_index_sect2_crit1), false));
+            sectionTwoItems.add(new Criteria(1, getString(R.string.ranson_biliar_index_sect2_crit2), false));
+            sectionTwoItems.add(new Criteria(1, getString(R.string.ranson_biliar_index_sect2_crit3), false));
+            sectionTwoItems.add(new Criteria(1, getString(R.string.ranson_biliar_index_sect2_crit4), false));
+            sectionTwoItems.add(new Criteria(1, getString(R.string.ranson_biliar_index_sect2_crit5), false));
+            sectionTwoItems.add(new Criteria(1, getString(R.string.ranson_biliar_index_sect2_crit6), false));
+
+
+            sectionList.add(new Section(sectionOne, sectionOneItems));
+            sectionList.add(new Section(sectionTwo, sectionTwoItems));
+            sectionAdapter = new SectionAdapter(sectionList);
+            mainRecycler.setAdapter(sectionAdapter);
+
+            diagnosisPb.setMax(total);
+            updateProbability(showLoadedIndex.getText().toString());
+        }
 
     }
 
     public void updateProbability(String name) {
-        switch (name) {
-            case "Escala CRAMS":
-                if (Utils.index > critValueHigh) {
-                    diagnosisTv.setText(getString(R.string.crams_crit_not_serious) + " " + Utils.index + "/" + total);
-                    probabilityInfo = getString(R.string.crams_crit_not_serious).toLowerCase();
-                } else if (Utils.index <= critValueHigh) {
-                    diagnosisTv.setText(getString(R.string.crams_crit_serious) + " " + Utils.index + "/" + total);
-                    probabilityInfo = getString(R.string.crams_crit_serious).toLowerCase();
-                }
-                break;
-            case "Indice de Balthazar":
-                if(Utils.index>critValueHigh){
-                    diagnosisTv.setText(getString(R.string.Balthazar_crit_bad_diagnose) + " " + Utils.index + "/" + total);
-                    probabilityInfo = getString(R.string.Balthazar_crit_bad_diagnose).toLowerCase();
-                }else if(Utils.index>=critValueMed&&Utils.index<=critValueHigh){
-                    diagnosisTv.setText(getString(R.string.Balthazar_crit_reserved_diagnose) + " " + Utils.index + "/" + total);
-                    probabilityInfo = getString(R.string.Balthazar_crit_reserved_diagnose).toLowerCase();
-                }
-                else {
-                    diagnosisTv.setText(getString(R.string.Balthazar_crit_good_diagnose) + " " + Utils.index + "/" + total);
-                    probabilityInfo = getString(R.string.Balthazar_crit_good_diagnose).toLowerCase();
-                }
-        }
+        if (name == getString(R.string.CRAMS_index)) {
+            if (Utils.index > critValueHigh) {
+                diagnosisTv.setText(getString(R.string.crams_crit_not_serious) + " " + Utils.index + "/" + total);
+                probabilityInfo = getString(R.string.crams_crit_not_serious).toLowerCase();
+            } else if (Utils.index <= critValueHigh) {
+                diagnosisTv.setText(getString(R.string.crams_crit_serious) + " " + Utils.index + "/" + total);
+                probabilityInfo = getString(R.string.crams_crit_serious).toLowerCase();
+            }
+        } else if (name == getString(R.string.Balthazar_index)) {
+            if (Utils.index > critValueHigh) {
+                diagnosisTv.setText(getString(R.string.Balthazar_crit_bad_diagnose) + " " + Utils.index + "/" + total);
+                probabilityInfo = getString(R.string.Balthazar_crit_bad_diagnose).toLowerCase();
+            } else if (Utils.index >= critValueMed && Utils.index <= critValueHigh) {
+                diagnosisTv.setText(getString(R.string.Balthazar_crit_reserved_diagnose) + " " + Utils.index + "/" + total);
+                probabilityInfo = getString(R.string.Balthazar_crit_reserved_diagnose).toLowerCase();
+            } else {
+                diagnosisTv.setText(getString(R.string.Balthazar_crit_good_diagnose) + " " + Utils.index + "/" + total);
+                probabilityInfo = getString(R.string.Balthazar_crit_good_diagnose).toLowerCase();
+            }
+        } else if (name == "Pediatric Trauma Score") {
+            if (Utils.index >= 2 && Utils.index < 6) {
+                diagnosisTv.setText(getString(R.string.PediatricTS_diagnose2) + " " + Utils.index + "/" + total);
+                probabilityInfo = getString(R.string.PediatricTS_diagnose2).toLowerCase();
+            } else if (Utils.index >= 6 && Utils.index <= 10) {
+                diagnosisTv.setText(getString(R.string.PediatricTS_diagnose3) + " " + Utils.index + "/" + total);
+                probabilityInfo = getString(R.string.PediatricTS_diagnose3).toLowerCase();
+            } else if (Utils.index > 10) {
+                diagnosisTv.setText(getString(R.string.PediatricTS_diagnose4) + " " + Utils.index + "/" + total);
+                probabilityInfo = getString(R.string.PediatricTS_diagnose4).toLowerCase();
+            } else {
+                diagnosisTv.setText(getString(R.string.PediatricTS_diagnose1) + " " + Utils.index + "/" + total);
+                probabilityInfo = getString(R.string.PediatricTS_diagnose1).toLowerCase();
+            }
+        } else if (name == getString(R.string.criterios_de_ramson_no_biliares_index)) {
+            if (Utils.index <= 2) {
+                diagnosisTv.setText(getString(R.string.ranson_nobiliar_index_diagnose1) + " " + Utils.index + "/" + total);
+                probabilityInfo = getString(R.string.ranson_nobiliar_index_diagnose1).toLowerCase();
+            } else if (Utils.index == 3 || Utils.index == 4) {
+                diagnosisTv.setText(getString(R.string.ranson_nobiliar_index_diagnose2) + " " + Utils.index + "/" + total);
+                probabilityInfo = getString(R.string.ranson_nobiliar_index_diagnose2).toLowerCase();
+            } else if (Utils.index == 5 || Utils.index == 6) {
+                diagnosisTv.setText(getString(R.string.ranson_nobiliar_index_diagnose3) + " " + Utils.index + "/" + total);
+                probabilityInfo = getString(R.string.ranson_nobiliar_index_diagnose3).toLowerCase();
+            } else {
+                diagnosisTv.setText(getString(R.string.ranson_nobiliar_index_diagnose4) + " " + Utils.index + "/" + total);
+                probabilityInfo = getString(R.string.ranson_nobiliar_index_diagnose4).toLowerCase();
+            }
+        }else if(name == getString(R.string.criterios_de_ramson_biliares_index)){
+            if(Utils.index>=3){
+                diagnosisTv.setText(getString(R.string.ranson_biliar_index_diagnose2) + " " + Utils.index + "/" + total);
+                probabilityInfo = getString(R.string.ranson_biliar_index_diagnose2).toLowerCase();
+            }else{
+                diagnosisTv.setText(getString(R.string.ranson_biliar_index_diagnose1) + " " + Utils.index + "/" + total);
+                probabilityInfo = getString(R.string.ranson_biliar_index_diagnose1).toLowerCase();
+            }
 
+        }
     }
 
     class CriteriaAdapter extends RecyclerView.Adapter<DiagnoseSectionedIndexFragment.CriteriaAdapter.CriteriaViewHolder> {
@@ -223,26 +366,41 @@ public class DiagnoseSectionedIndexFragment extends Fragment {
 
                     @Override
                     public void onClick(View view) {
-                        if (!criteriaArrayList.get(getAdapterPosition()).getSelected()&&radioGroupFunction(criteriaArrayList)==-1) {
-                            Utils.index += criteriaArrayList.get(getAdapterPosition()).getWeight();
-                            criteriaArrayList.get(getAdapterPosition()).setSelected(true);
-                            diagnosisPb.setProgress(Utils.index);
-                            updateProbability(showLoadedIndex.getText().toString());
-                        } else if(criteriaArrayList.get(getAdapterPosition()).getSelected()) {
-                            Utils.index -= criteriaArrayList.get(getAdapterPosition()).getWeight();
-                            criteriaArrayList.get(getAdapterPosition()).setSelected(false);
-                            diagnosisPb.setProgress(Utils.index);
-                            updateProbability(showLoadedIndex.getText().toString());
-                        }else if(radioGroupFunction(criteriaArrayList)!=-1){
-                            int old_position_selected =radioGroupFunction(criteriaArrayList);
-                            criteriaArrayList.get(old_position_selected).setSelected(false);
-                            Utils.index += criteriaArrayList.get(getAdapterPosition()).getWeight();
-                            Utils.index -= criteriaArrayList.get(old_position_selected).getWeight();
-                            criteriaArrayList.get(getAdapterPosition()).setSelected(true);
-                            notifyItemChanged(old_position_selected);
-                            diagnosisPb.setProgress(Utils.index);
-                            updateProbability(showLoadedIndex.getText().toString());
+                        if (showLoadedIndex.getText().toString() == getString(R.string.criterios_de_ramson_no_biliares_index)||showLoadedIndex.getText().toString() == getString(R.string.criterios_de_ramson_biliares_index)) {
+                            if (!criteriaArrayList.get(getAdapterPosition()).getSelected()) {
+                                Utils.index += criteriaArrayList.get(getAdapterPosition()).getWeight();
+                                criteriaArrayList.get(getAdapterPosition()).setSelected(true);
+                                diagnosisPb.setProgress(Utils.index);
+                                updateProbability(showLoadedIndex.getText().toString());
+                            } else {
+                                Utils.index -= criteriaArrayList.get(getAdapterPosition()).getWeight();
+                                criteriaArrayList.get(getAdapterPosition()).setSelected(false);
+                                diagnosisPb.setProgress(Utils.index);
+                                updateProbability(showLoadedIndex.getText().toString());
+                            }
+                        } else {
+                            if (!criteriaArrayList.get(getAdapterPosition()).getSelected() && radioGroupFunction(criteriaArrayList) == -1) {
+                                Utils.index += criteriaArrayList.get(getAdapterPosition()).getWeight();
+                                criteriaArrayList.get(getAdapterPosition()).setSelected(true);
+                                diagnosisPb.setProgress(Utils.index);
+                                updateProbability(showLoadedIndex.getText().toString());
+                            } else if (criteriaArrayList.get(getAdapterPosition()).getSelected()) {
+                                Utils.index -= criteriaArrayList.get(getAdapterPosition()).getWeight();
+                                criteriaArrayList.get(getAdapterPosition()).setSelected(false);
+                                diagnosisPb.setProgress(Utils.index);
+                                updateProbability(showLoadedIndex.getText().toString());
+                            } else if (radioGroupFunction(criteriaArrayList) != -1) {
+                                int old_position_selected = radioGroupFunction(criteriaArrayList);
+                                criteriaArrayList.get(old_position_selected).setSelected(false);
+                                Utils.index += criteriaArrayList.get(getAdapterPosition()).getWeight();
+                                Utils.index -= criteriaArrayList.get(old_position_selected).getWeight();
+                                criteriaArrayList.get(getAdapterPosition()).setSelected(true);
+                                notifyItemChanged(old_position_selected);
+                                diagnosisPb.setProgress(Utils.index);
+                                updateProbability(showLoadedIndex.getText().toString());
+                            }
                         }
+
                     }
                 });
             }
@@ -319,9 +477,10 @@ public class DiagnoseSectionedIndexFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-    private int radioGroupFunction(ArrayList<Criteria> criteriaArrayList){
-        for (int i = 0; i <criteriaArrayList.size() ; i++) {
-            if(criteriaArrayList.get(i).getSelected()){
+
+    private int radioGroupFunction(ArrayList<Criteria> criteriaArrayList) {
+        for (int i = 0; i < criteriaArrayList.size(); i++) {
+            if (criteriaArrayList.get(i).getSelected()) {
                 return i;
             }
         }
@@ -389,7 +548,6 @@ public class DiagnoseSectionedIndexFragment extends Fragment {
                             diagnosisPb.setProgress(Utils.index);
                             updateProbability(showLoadedIndex.getText().toString());
                         }
-
 
                         if (rowId > 0) {
                             Toast.makeText(context, getString(R.string.toast_save_diagnosis_success), Toast.LENGTH_SHORT).show();

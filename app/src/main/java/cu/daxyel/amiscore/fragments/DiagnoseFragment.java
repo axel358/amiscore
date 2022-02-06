@@ -73,12 +73,10 @@ public class DiagnoseFragment extends Fragment {
 
     public void loadIndex(String name) {
         showIndexLoaded.setText(name);
-        if (name == "AMIScore") {
+        if (name == "AMIScore"||name==getString(R.string.escala_alvarado)||name==getString(R.string.Mannheim_index)) {
             fm.beginTransaction().replace(R.id.containerIndexes, new DiagnoseSimpleFragment()).commit();
-        } else if (name == "Escala CRAMS"||name=="Indice de Balthazar") {
+        } else if (name == getString(R.string.CRAMS_index)||name==getString(R.string.Balthazar_index)|| name=="Pediatric Trauma Score"||name==getString(R.string.criterios_de_ramson_no_biliares_index)||name==getString(R.string.criterios_de_ramson_biliares_index)) {
             fm.beginTransaction().replace(R.id.containerIndexes, new DiagnoseSectionedIndexFragment()).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
-
-
         }
     }
 
@@ -91,28 +89,30 @@ public class DiagnoseFragment extends Fragment {
         ArrayList<Index> traumaIndexes = new ArrayList<Index>();
         traumaIndexes.add(new Index("Pediatric Trauma Score"));
         traumaIndexes.add(new Index("Revised Trauma Score"));
-        traumaIndexes.add(new Index("Escala CRAMS"));
-        categories.add(new Category("Trauma", traumaIndexes));
+        traumaIndexes.add(new Index(getString(R.string.CRAMS_index)));
+        categories.add(new Category(getString(R.string.trauma_category), traumaIndexes));
 
-        categories.add(new Category("Abdomen agudo :", new ArrayList<Index>()));
+        categories.add(new Category(getString(R.string.abdomen_agudo_category), new ArrayList<Index>()));
 
         ArrayList<Index> pancreatitisIndexes = new ArrayList<Index>();
-        pancreatitisIndexes.add(new Index("Indice CTSI"));
-        pancreatitisIndexes.add(new Index("Criterios de Ramson no biliares"));
-        pancreatitisIndexes.add(new Index("Criterios de Ramson biliares"));
-        pancreatitisIndexes.add(new Index("Indice de Balthazar"));
-        categories.add(new Category("Pancreatitis", pancreatitisIndexes));
+        pancreatitisIndexes.add(new Index(getString(R.string.CTSI_index)));
+        pancreatitisIndexes.add(new Index(getString(R.string.criterios_de_ramson_no_biliares_index)));
+        pancreatitisIndexes.add(new Index(getString(R.string.criterios_de_ramson_biliares_index)));
+        pancreatitisIndexes.add(new Index(getString(R.string.Balthazar_index)));
+        categories.add(new Category(getString(R.string.pancreatitis_category), pancreatitisIndexes));
 
         ArrayList<Index> imaIndexes = new ArrayList<Index>();
         imaIndexes.add(new Index("AMIScore"));
-        categories.add(new Category("Isquemia mesentérica aguda", imaIndexes));
+        categories.add(new Category(getString(R.string.isquemia_mesenterica_aguda_category), imaIndexes));
 
-        categories.add(new Category("Apendicitis", new ArrayList<Index>()));
+        ArrayList<Index> appIndexes = new ArrayList<Index>();
+        appIndexes.add(new Index(getString(R.string.escala_alvarado)));
+        categories.add(new Category(getString(R.string.apendicitis_category),appIndexes));
 
         ArrayList<Index> peritonitisIndexes = new ArrayList<Index>();
-        peritonitisIndexes.add(new Index("Indice de Mannheim"));
+        peritonitisIndexes.add(new Index(getString(R.string.Mannheim_index)));
         peritonitisIndexes.add(new Index("IPR"));
-        categories.add(new Category("Peritonitis", peritonitisIndexes));
+        categories.add(new Category(getString(R.string.peritonitis_category), peritonitisIndexes));
 
         final IndexAdapter indexAdapter = new IndexAdapter(categories, context);
         indexLv.setAdapter(indexAdapter);
