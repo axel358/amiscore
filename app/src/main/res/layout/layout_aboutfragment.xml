@@ -1,8 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical">
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical">
+
+	<androidx.cardview.widget.CardView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:elevation="2dp"
+        android:layout_margin="16dp"
+		android:translationZ="2dp"
+		app:cardCornerRadius="15dp">
+
+		<LinearLayout
+			android:padding="20dp"
+			android:orientation="vertical"
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent">
+
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="horizontal"
+				android:gravity="center_vertical">
+
+				<ImageView
+					android:layout_height="50dp"
+					android:layout_width="50dp"
+					android:src="@mipmap/ic_launcher"/>
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textAppearance="?android:attr/textAppearanceLarge"
+					android:text="@string/app_name"
+					android:layout_marginLeft="10dp"/>
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_marginTop="10dp"
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="horizontal"
+				android:gravity="center_vertical">
+
+				<ImageView
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					app:srcCompat="@drawable/ic_nav_about"/>
+
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textAppearance="?android:attr/textAppearanceMedium"
+					android:text="An app for easy and reliable diagnose of surgical related diseases"
+					android:textSize="16sp"
+					android:layout_marginLeft="5dp"/>
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="horizontal"
+				android:gravity="center_vertical"
+				android:layout_marginTop="10dp">
+
+				<ImageView
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					app:srcCompat="@drawable/ic_code"/>
+
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textAppearance="?android:attr/textAppearanceMedium"
+					android:text="v 1.0"
+					android:textSize="16sp"
+					android:layout_marginLeft="5dp"/>
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="horizontal"
+				android:gravity="center_vertical"
+				android:layout_marginTop="10dp">
+
+				<ImageView
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					app:srcCompat="@drawable/ic_license"/>
+
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textAppearance="?android:attr/textAppearanceMedium"
+					android:text="GPL v3.0"
+					android:textSize="16sp"
+					android:layout_marginLeft="5dp"/>
+
+			</LinearLayout>
+
+		</LinearLayout>
+
+	</androidx.cardview.widget.CardView>
+
+	<androidx.cardview.widget.CardView
+		android:layout_margin="16dp"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:elevation="2dp"
+		android:translationZ="2dp"
+		app:cardCornerRadius="15dp">
+
+		<LinearLayout
+			android:padding="16dp"
+			android:orientation="vertical"
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:text="Authors"
+				android:textSize="17sp"/>
+
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="horizontal"
+				android:gravity="center_vertical"
+				android:layout_marginTop="10dp">
+
+				<ImageView
+					android:layout_height="40dp"
+					android:layout_width="40dp"
+					app:srcCompat="@drawable/ic_github"/>
+
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textAppearance="?android:attr/textAppearanceMedium"
+					android:text="Axel358"
+					android:textSize="16sp"
+					android:layout_marginLeft="5dp"/>
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="horizontal"
+				android:gravity="center_vertical"
+				android:layout_marginTop="10dp">
+
+				<ImageView
+					android:layout_height="40dp"
+					android:layout_width="40dp"
+					app:srcCompat="@drawable/ic_github"/>
+
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textAppearance="?android:attr/textAppearanceMedium"
+					android:text="DayanGH"
+					android:textSize="16sp"
+					android:layout_marginLeft="5dp"/>
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="horizontal"
+				android:gravity="center_vertical"
+				android:layout_marginTop="10dp">
+
+				<ImageView
+					android:layout_height="40dp"
+					android:layout_width="40dp"
+					app:srcCompat="@drawable/ic_account"/>
+
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textAppearance="?android:attr/textAppearanceMedium"
+					android:text="Dr. Pedro Something"
+					android:textSize="16sp"
+					android:layout_marginLeft="5dp"/>
+
+			</LinearLayout>
+
+		</LinearLayout>
+
+	</androidx.cardview.widget.CardView>
 
 </LinearLayout>
+
