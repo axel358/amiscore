@@ -11,7 +11,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import androidx.fragment.app.FragmentManager;
 import cu.daxyel.amiscore.fragments.DiagnoseFragment;
-import cu.daxyel.amiscore.fragments.ManageIndexesFragment;
 import cu.daxyel.amiscore.fragments.ManageDiagnosticsFragment;
 import android.view.View;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -22,7 +21,6 @@ import java.util.Locale;
 import android.content.res.Resources;
 import android.content.res.Configuration;
 import android.view.Menu;
-import cu.daxyel.amiscore.fragments.StatisticsFragment;
 import cu.daxyel.amiscore.fragments.AboutFragment;
 import cu.daxyel.amiscore.fragments.LoginFragment;
 import cu.daxyel.amiscore.fragments.CreateAccountFragment;
@@ -131,17 +129,13 @@ implements NavigationView.OnNavigationItemSelectedListener {
                 fm.beginTransaction().replace(R.id.main_container, new ManageDiagnosticsFragment()).commit();
                 selected = 1;
                 break;
-            case R.id.nav_manage_indexes:
+            case R.id.nav_manage_patients:
                 fm.beginTransaction().replace(R.id.main_container, new CreateAccountFragment()).commit();
                 selected = 2;
                 break;
-            case R.id.nav_statistics:
-                fm.beginTransaction().replace(R.id.main_container, new StatisticsFragment()).commit();
-                selected = 3;
-                break;
             case R.id.nav_about:
                 fm.beginTransaction().replace(R.id.main_container, new AboutFragment()).commit();
-                selected = 4;
+                selected = 3;
                 break;
         }
 

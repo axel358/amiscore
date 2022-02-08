@@ -11,9 +11,19 @@
     <!--activity_main_drawer TEXTS-->
     <string name="diagnose_patient">Diagnosticar Paciente</string>
     <string name="manage_users">Gestionar Usuarios</string>
+    <string name="manage_patients">Gestionar Pacientes</string>
 
     <!--app TEXTS-->
+    <string name="log_in">Acceder</string>
+     <string name="sign_up">Crear cuenta</string>
+    <string name="user_name_or_email">Nombre de usuario o email</string>
+    <string name="password">Contraseña</string>
+    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="or">o</string>
+    <string name="sign_in">Acceder</string>
+    <string name="authors">Autores</string>
     <string name="app_name_version">AMIScore 1.0</string>
+    <string name="app_desc">Una app para el diagnostico de enfermedades con intervencion quirurgica</string>
     <string name="very_high_probability">Muy alta probabilidad</string>
     <string name="high_probability">Alta probabilidad</string>
     <string name="low_probability">Baja probabilidad</string>

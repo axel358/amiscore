@@ -11,13 +11,9 @@
             android:icon="@drawable/ic_nav_manage_patients"
             android:title="@string/manage_diagnosis" />
           <item
-            android:id="@+id/nav_manage_indexes"
+            android:id="@+id/nav_manage_patients"
             android:icon="@drawable/ic_nav_manage_indexes"
-            android:title="@string/manage_indexes" />
-        <item
-            android:id="@+id/nav_statistics"
-            android:icon="@drawable/ic_nav_chart"
-            android:title="@string/statistics" />
+            android:title="@string/manage_patients" />
 
         <item
             android:icon="@drawable/ic_nav_about"
