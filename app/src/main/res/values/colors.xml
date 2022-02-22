@@ -9,4 +9,5 @@
     <color name="background">@color/primary_material_light</color>
     <color name="item_delete_enabled">#FFFFFFFF</color>
     <color name="item_delete_disabled">@android:color/darker_gray</color>
+    <color name="text">#000000</color>
    </resources>

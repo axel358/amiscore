@@ -3,16 +3,14 @@ package cu.daxyel.amiscore.fragments;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.view.ActionMode;
-
 import android.os.Handler;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -23,10 +21,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ExpandableListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -34,22 +35,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
-
 import cu.daxyel.amiscore.R;
-import cu.daxyel.amiscore.adapters.DiagnosticsAdapter;
-import cu.daxyel.amiscore.db.DbDiagnostics;
-import cu.daxyel.amiscore.models.Diagnosis;
-
-import java.util.ArrayList;
-
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.PorterDuff;
-import android.graphics.Color;
-
 import cu.daxyel.amiscore.Utils;
+import cu.daxyel.amiscore.adapters.DiagnosticsAdapter;
+import cu.daxyel.amiscore.adapters.IndexAdapter;
+import cu.daxyel.amiscore.db.DbDiagnostics;
+import cu.daxyel.amiscore.models.Category;
+import cu.daxyel.amiscore.models.Diagnosis;
+import cu.daxyel.amiscore.models.Index;
+import java.util.ArrayList;
+import android.widget.Button;
 
 public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAdapter.ViewHolder.ClickListener {
     private RecyclerView diagnosisRv;
@@ -88,7 +85,15 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
         loadingTv = view.findViewById(R.id.diagnosis_loading_tv);
         loadingPb = view.findViewById(R.id.diagnosis_loading_pb);
         showIndexLoaded = view.findViewById(R.id.index_selected);
+        Button loadIndexBtn = view.findViewById(R.id.load_index_btn);
+        loadIndexBtn.setOnClickListener(new OnClickListener(){
 
+                @Override
+                public void onClick(View p1) {
+                    showIndexPickerDialog();
+                }
+            });
+        
         dbDiagnostics = new DbDiagnostics(getActivity());
 
         new LoadDiagnosisTask().execute();
@@ -513,5 +518,58 @@ public class ManageDiagnosticsFragment extends Fragment implements DiagnosticsAd
             diagnosisRv.setAdapter(diagnosticsAdapter);
         }
     }
+    public void showIndexPickerDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Dialog);
+        View view = getLayoutInflater().inflate(R.layout.dialog_indexes, null);
+        ExpandableListView indexLv = view.findViewById(R.id.indexes_lv);
+        ArrayList<Category> categories = new ArrayList<Category>();
 
+        ArrayList<Index> traumaIndexes = new ArrayList<Index>();
+        traumaIndexes.add(new Index("Pediatric Trauma Score"));
+        traumaIndexes.add(new Index("Revised Trauma Score"));
+        traumaIndexes.add(new Index(getString(R.string.CRAMS_index)));
+        categories.add(new Category(getString(R.string.trauma_category), traumaIndexes));
+
+        categories.add(new Category(getString(R.string.abdomen_agudo_category), new ArrayList<Index>()));
+
+        ArrayList<Index> pancreatitisIndexes = new ArrayList<Index>();
+        pancreatitisIndexes.add(new Index(getString(R.string.CTSI_index)));
+        pancreatitisIndexes.add(new Index(getString(R.string.criterios_de_ramson_no_biliares_index)));
+        pancreatitisIndexes.add(new Index(getString(R.string.criterios_de_ramson_biliares_index)));
+        pancreatitisIndexes.add(new Index(getString(R.string.Balthazar_index)));
+        categories.add(new Category(getString(R.string.pancreatitis_category), pancreatitisIndexes));
+
+        ArrayList<Index> imaIndexes = new ArrayList<Index>();
+        imaIndexes.add(new Index("AMIScore"));
+        categories.add(new Category(getString(R.string.isquemia_mesenterica_aguda_category), imaIndexes));
+
+        ArrayList<Index> appIndexes = new ArrayList<Index>();
+        appIndexes.add(new Index(getString(R.string.escala_alvarado)));
+        categories.add(new Category(getString(R.string.apendicitis_category),appIndexes));
+
+        ArrayList<Index> peritonitisIndexes = new ArrayList<Index>();
+        peritonitisIndexes.add(new Index(getString(R.string.Mannheim_index)));
+        peritonitisIndexes.add(new Index("IPR"));
+        categories.add(new Category(getString(R.string.peritonitis_category), peritonitisIndexes));
+
+        final IndexAdapter indexAdapter = new IndexAdapter(categories, context);
+        indexLv.setAdapter(indexAdapter);
+
+        builder.setView(view);
+
+        final AlertDialog dialog = builder.create();
+
+        indexLv.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+                @Override
+                public boolean onChildClick(ExpandableListView p1, View p2, int p3, int p4, long p5) {
+                    Index ind = (Index) indexAdapter.getChild(p3, p4);
+                    new LoadDiagnosisTask().execute(ind.getName());
+                    showIndexLoaded.setText(ind.getName());
+                    dialog.dismiss();
+                    return true;
+                }
+            });
+        dialog.show();
+    }
 }

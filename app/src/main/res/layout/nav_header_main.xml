@@ -39,7 +39,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="5dp"
-		android:text="Not logged in"
+		android:text="@string/not_logged_in"
 		android:textColor="#FFFFFFFF"
 		android:textSize="15sp"
 		android:id="@+id/user_nav_tv"/>

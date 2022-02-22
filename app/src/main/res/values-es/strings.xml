@@ -3,7 +3,8 @@
     <string name="app_name">Surgical Scores</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
+    <string name="statistics">Estadisticas</string>
+    
     <!--menu_mains TEXTS-->
     <string name="action_settings">Ajustes</string>
     <string name="action_about">Acerca de</string>
@@ -14,7 +15,11 @@
     <string name="manage_patients">Gestionar Pacientes</string>
 
     <!--app TEXTS-->
+    <string name="filter_by_index">Filtrar por indice</string>
+    <string name="all">Todod</string>
+    <string name="loading">Cargando...</string>
     <string name="log_in">Acceder</string>
+    <string name="not_logged_in">Sin registrar</string>
      <string name="sign_up">Crear cuenta</string>
     <string name="user_name_or_email">Nombre de usuario o email</string>
     <string name="password">Contraseña</string>
@@ -23,7 +28,7 @@
     <string name="sign_in">Acceder</string>
     <string name="authors">Autores</string>
     <string name="app_name_version">AMIScore 1.0</string>
-    <string name="app_desc">Una app para el diagnostico de enfermedades con intervencion quirurgica</string>
+    <string name="app_desc">Una app para el diagnóstico de enfermedades que requieren intervencion quirúrgica</string>
     <string name="very_high_probability">Muy alta probabilidad</string>
     <string name="high_probability">Alta probabilidad</string>
     <string name="low_probability">Baja probabilidad</string>

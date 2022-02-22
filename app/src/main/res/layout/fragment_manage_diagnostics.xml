@@ -1,44 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:gravity="center"
-    android:orientation="vertical">
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:gravity="center"
+	android:orientation="vertical">
 
-    <include
-        android:id="@+id/ribbon_index_layout"
-        layout="@layout/ribbon_index" />
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="horizontal"
+		android:gravity="center"
+		android:padding="10dp"
+		android:background="@color/colorPrimary">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/diagnosis_rv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/ribbon_index_layout"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="10dp"
-        android:splitMotionEvents="false"
-       />
+		<Button
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="@string/filter_by_index"
+			android:id="@+id/load_index_btn"
+			android:layout_weight="1.0"
+			android:textAlignment="textStart"
+			android:textColor="#FFFFFFFF"/>
 
-    <TextView
-        android:id="@+id/diagnosis_loading_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Loading..."
-        android:visibility="gone" />
+		<TextView
+			android:textSize="16sp"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:id="@+id/index_selected"
+			android:textColor="#FFFFFFFF"
+			android:text="@string/all"/>
 
-    <ProgressBar
-        android:id="@+id/diagnosis_loading_pb"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/diagnosis_loading_tv"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:indeterminate="true"
-        android:visibility="gone" />
+	</LinearLayout>
 
-</RelativeLayout>
+	<androidx.recyclerview.widget.RecyclerView
+		android:id="@+id/diagnosis_rv"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:splitMotionEvents="false"
+		android:layout_margin="16dp"/>
+
+	<TextView
+		android:id="@+id/diagnosis_loading_tv"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
+		android:text="@string/loading"
+		android:visibility="gone"/>
+
+	<ProgressBar
+		android:id="@+id/diagnosis_loading_pb"
+		style="?android:attr/progressBarStyleHorizontal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/diagnosis_loading_tv"
+		android:layout_centerInParent="true"
+		android:layout_marginStart="20dp"
+		android:layout_marginEnd="20dp"
+		android:indeterminate="true"
+		android:visibility="gone"/>
+
+</LinearLayout>
 
