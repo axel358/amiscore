@@ -22,7 +22,7 @@ public class StatisticsFragment extends Fragment {
         View view = inflater.inflate(R.layout.layout_statisticsfragment, container, false);
         PieChart chart = view.findViewById(R.id.stats_chart);
         chart.setCenterTextSize(16.0f);
-        chart.setCenterText("Diagnosticos por indice");
+        chart.setCenterText(getString(R.string.diagnostics_by_index));
         chart.setHoleColor(getResources().getColor(android.R.color.transparent, getActivity().getTheme()));
         chart.setCenterTextColor(getResources().getColor(R.color.text, getActivity().getTheme()));
         

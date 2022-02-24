@@ -84,27 +84,6 @@
 
 			</LinearLayout>
 
-			<LinearLayout
-				android:layout_height="wrap_content"
-				android:layout_width="match_parent"
-				android:orientation="horizontal"
-				android:gravity="center_vertical"
-				android:layout_marginTop="10dp">
-
-				<ImageView
-					android:layout_height="wrap_content"
-					android:layout_width="wrap_content"
-					app:srcCompat="@drawable/ic_license"/>
-
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:textAppearance="?android:attr/textAppearanceMedium"
-					android:text="GPL v3.0"
-					android:textSize="16sp"
-					android:layout_marginLeft="5dp"/>
-
-			</LinearLayout>
 
 		</LinearLayout>
 
@@ -191,7 +170,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:textAppearance="?android:attr/textAppearanceMedium"
-					android:text="Dr. Pedro"
+					android:text="Dr. Pedro Lazáro Fernández Sanz"
 					android:textSize="16sp"
 					android:layout_marginLeft="5dp"/>
 

@@ -15,8 +15,9 @@
     <string name="manage_patients">Gestionar Pacientes</string>
 
     <!--app TEXTS-->
-    <string name="filter_by_index">Filtrar por indice</string>
-    <string name="all">Todod</string>
+    <string name="diagnostics_by_index">Diagnósticos por índice</string>
+    <string name="filter_by_index">Filtrar por índice</string>
+    <string name="all">Todos</string>
     <string name="loading">Cargando...</string>
     <string name="log_in">Acceder</string>
     <string name="not_logged_in">Sin registrar</string>
